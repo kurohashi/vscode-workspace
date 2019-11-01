@@ -1,0 +1,135 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+        integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        #_ft_nps_ask_ {
+            color:
+                #263238;
+            background-color:
+                #fff;
+            padding: 17px 0px;
+            border-radius: 6px;
+            width: 30rem;
+            min-width: 150px;
+            font-weight: 100;
+            font-size: 13px;
+            line-height: 15px;
+            font-family: Helvetica, Arial, sans-serif;
+            bottom: 85px;
+            right: 50px;
+            position: fixed;
+            box-shadow: 0px 0px 10px 1px rgba(50, 50, 50, 0.4);
+            z-index: 999999999999999;
+        }
+
+        ._ft_nps_score_number_ {
+            background-color: #f4f7f9;
+            text-align: center;
+            height: 2rem;
+            width: 2rem;
+            font-size: 1rem;
+            padding: 8px;
+            margin-left: 8px;
+            cursor: pointer;
+            border: #00000029 solid 1px;
+            border-radius: 5px;
+        }
+
+        ._ft_nps_question_ {
+            font-size: 1rem;
+            margin-left: 20px;
+            margin-bottom: 25px;
+        }
+
+        ._ft_nps_later_ {
+            color: royalblue;
+            font-size: 1rem;
+            float: right !important;
+            margin-top: 1rem;
+            cursor: pointer;
+        }
+
+        ._ft_nps_close_holder_ {
+            margin-top: -4rem;
+            margin-left: 4.3rem;
+        }
+        
+        ._ft_nps_close_ {
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        ._ft_nps_close_:hover {
+            color: red;
+            text-shadow: gray 0px 0px 3px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            for (var i = 0; i < 11; i++) {
+                $("#_ft_nps_score_").append("<div id='_ft_nps_score_" + i + "_' class='_ft_nps_score_number_'>" + i + "</div>");
+                if (i <= 6) {
+                    $('#_ft_nps_score_' + i + '_').hover(function () {
+                        $(this).css({
+                            'color': 'red',
+                        });
+                    }, function () {
+                        $(this).css({
+                            'color': 'black',
+                        });
+                    });
+                } else if (i > 6 && i <= 8) {
+                    $('#_ft_nps_score_' + i + '_').hover(function () {
+                        $(this).css({
+                            'color': 'blue',
+                        });
+                    }, function () {
+                        $(this).css({
+                            'color': 'black',
+                        });
+                    });
+                } else {
+                    $('#_ft_nps_score_' + i + '_').hover(function () {
+                        $(this).css({
+                            'color': 'green',
+                        });
+                    }, function () {
+                        $(this).css({
+                            'color': 'black',
+                        });
+                    });
+                }
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="_ft_nps_ask_" class="row mx-auto">
+        <p class="_ft_nps_question_">How much would you like to promote our product ?</p>
+        <div class="_ft_nps_close_holder_">
+            <i class="fas fa-times-circle _ft_nps_close_"></i>
+        </div>
+        <br>
+        <div id="_ft_nps_score_" class="container row mx-auto">
+        </div>
+        <br>
+        <div class="col-12">
+            <div class="_ft_nps_later_">Later</div>
+        </div>
+    </div>
+</body>
+
+</html>

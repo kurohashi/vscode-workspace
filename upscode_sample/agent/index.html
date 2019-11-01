@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<button onclick="getVisitor()">Click me to get the visitor</button>
+
+<p id="demo"></p>
+
+<script>
+    function getVisitor() {
+        var xhr = new XMLHttpRequest();
+        xhr.withCredentials = true;
+        var url = "https://api.upscope.io/v1.1/list.json?search=seicho";
+
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                var myArr = JSON.parse(this.responseText);
+                document.getElementById("demo").innerHTML = myArr.visitors[0].short_id;
+            }
+        };
+        xhr.open("GET", url, true);
+        xhr.setRequestHeader("x-api-key", "x65tx5bge8HqgPg8wqCrdugyUBqXT2fd2i1XmjDaxnwhU6H8F1");
+        xhr.setRequestHeader("cache-control", "no-cache");
+        xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+        xhr.send();
+    }    
+</script>
+
+</body>
+</html>
