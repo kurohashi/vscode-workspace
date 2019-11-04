@@ -14,24 +14,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
-        #_ft_nps_ask_ {
-            color:
-                #263238;
-            background-color:
-                #fff;
-            padding: 17px 0px;
-            border-radius: 6px;
+        #_ft_nps_small_ {
             width: 30rem;
-            min-width: 150px;
-            font-weight: 100;
-            font-size: 13px;
-            line-height: 15px;
-            font-family: Helvetica, Arial, sans-serif;
             bottom: 85px;
             right: 50px;
             position: fixed;
-            box-shadow: 0px 0px 10px 1px rgba(50, 50, 50, 0.4);
             z-index: 999999999999999;
+        }
+
+        @media only screen and (max-width: 530px) {
+            #_ft_nps_small_ {
+                width: 90%;
+                left: 2px;
+            }
+        }
+
+        ._ft_nps_container_ {
+            color: #263238;
+            background-color: #fff;
+            padding: 17px 0px 17px 20px;
+            border-radius: 6px;
+            line-height: 15px;
+            font-family: Helvetica, Arial, sans-serif;
+            box-shadow: 0px 0px 10px 1px rgba(50, 50, 50, 0.4);
+            margin-top: 1rem;
         }
 
         ._ft_nps_score_number_ {
@@ -47,87 +53,226 @@
             border-radius: 5px;
         }
 
-        ._ft_nps_question_ {
+        ._ft_nps_text_ {
             font-size: 1rem;
-            margin-left: 20px;
-            margin-bottom: 25px;
+            padding-right: 15px;
         }
 
         ._ft_nps_later_ {
             color: royalblue;
             font-size: 1rem;
-            float: right !important;
-            margin-top: 1rem;
+            text-align: end;
             cursor: pointer;
         }
 
-        ._ft_nps_close_holder_ {
-            margin-top: -4rem;
-            margin-left: 4.3rem;
+        ._ft_nps_submit_ {
+            color: royalblue;
+            font-size: 1rem;
+            text-align: start;
+            cursor: pointer;
         }
-        
+
         ._ft_nps_close_ {
             font-size: 2rem;
             cursor: pointer;
+            float: right;
         }
 
         ._ft_nps_close_:hover {
             color: red;
             text-shadow: gray 0px 0px 3px;
         }
+
+        #_ft_nps_msg_ {
+            margin-left: 0px;
+        }
+
+        #_ft_nps_comments_ {
+            padding-bottom: 1px;
+        }
+
+        ._ft_nps_comment_msg_ {
+            display: flex;
+        }
+
+        ._ft_nps_comment_msg_ .input-msg {
+            border: 1px solid #fff;
+            flex: 1 1 auto;
+            font-size: 16px;
+            outline: none;
+            min-width: 50px;
+            padding: 16px;
+        }
+
+        ._ft_nps_comment_msg_ .modal-msg {
+            border-radius: 25px;
+        }
+
+        #_ft_nps_send_ {
+            background: transparent;
+            border: 0;
+            cursor: pointer;
+            outline: none;
+            margin-top: 2rem;
+        }
+
+        #_ft_nps_send_ .circle {
+            background: #f2f2f2;
+            border-radius: 50%;
+            color: #f2f2f2;
+            position: relative;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: fbf7f7;
+        }
     </style>
     <script>
+        function setNPSHover (i) {
+            $('#_ft_nps_score_' + i + '_').css({
+                'background-color': 'white',
+                'color': 'black'
+            });
+            $('#_ft_nps_score_' + i + '_').hover(function () {
+                if (i <= 6) {                
+                    $(this).css('color', 'red');                    
+                } else if (i > 6 && i <= 8) {
+                        $(this).css('color', 'blue');
+                } else {
+                    $(this).css('color', 'green');
+                }
+            }, function () {
+                $(this).css('color', 'black');                    
+            });
+        }
         $(document).ready(function () {
+            // $('#_ft_nps_modal_').modal();
+            var clicked = -1;      
             for (var i = 0; i < 11; i++) {
-                $("#_ft_nps_score_").append("<div id='_ft_nps_score_" + i + "_' class='_ft_nps_score_number_'>" + i + "</div>");
-                if (i <= 6) {
-                    $('#_ft_nps_score_' + i + '_').hover(function () {
+                $("#_ft_nps_score_").append("<div id='_ft_nps_score_" + i +
+                    "_' class='_ft_nps_score_number_'>" + i + "</div>");
+                setNPSHover(i);                
+                if (i <= 6) {  
+                    $('#_ft_nps_score_' + i + '_').click(function () {
+                        $(this).unbind('mouseenter mouseleave');                         
                         $(this).css({
-                            'color': 'red',
+                            'background-color': 'red',
+                            'color': 'white'
                         });
-                    }, function () {
-                        $(this).css({
-                            'color': 'black',
-                        });
+                        if (clicked == -1) {                        
+                            $('#_ft_nps_msg_').show(200);
+                            $('#_ft_nps_comments_').show(200);
+                        } else {
+                            setNPSHover(clicked);                    
+                        }
+                        clicked = ($(this)[0].id).charAt(14);
+                        console.log('clicked = ', clicked);
                     });
                 } else if (i > 6 && i <= 8) {
-                    $('#_ft_nps_score_' + i + '_').hover(function () {
+                    $('#_ft_nps_score_' + i + '_').click(function () {
+                        $(this).unbind('mouseenter mouseleave');
                         $(this).css({
-                            'color': 'blue',
+                            'background-color': 'blue',
+                            'color': 'white'
                         });
-                    }, function () {
-                        $(this).css({
-                            'color': 'black',
-                        });
+                        if (clicked == -1) {                        
+                            $('#_ft_nps_msg_').show(200);
+                            $('#_ft_nps_comments_').show(200);
+                        } else {
+                            setNPSHover(clicked);                    
+                        }
+                        clicked = ($(this)[0].id).charAt(14);
+                        console.log('clicked = ', clicked);
                     });
                 } else {
-                    $('#_ft_nps_score_' + i + '_').hover(function () {
+                    $('#_ft_nps_score_' + i + '_').click(function () {
+                        $(this).unbind('mouseenter mouseleave');
                         $(this).css({
-                            'color': 'green',
+                            'background-color': 'green',
+                            'color': 'white'
                         });
-                    }, function () {
-                        $(this).css({
-                            'color': 'black',
-                        });
-                    });
+                        if (clicked == -1) {                        
+                            $('#_ft_nps_msg_').show(200);
+                            $('#_ft_nps_comments_').show(200);
+                        } else {
+                            setNPSHover(clicked);                    
+                        }
+                        clicked = ($(this)[0].id).charAt(14);
+                        if (clicked == 1) clicked = 10;
+                        console.log('clicked = ', clicked);
+                    });     
                 }
             }
+            $('._ft_nps_close_').click(function () {
+                $('#_ft_nps_small_').remove();
+            });
+            $('._ft_nps_later_').click(function () {
+                $('#_ft_nps_small_').remove();
+            });
         });
     </script>
 </head>
 
 <body>
-    <div id="_ft_nps_ask_" class="row mx-auto">
-        <p class="_ft_nps_question_">How much would you like to promote our product ?</p>
-        <div class="_ft_nps_close_holder_">
-            <i class="fas fa-times-circle _ft_nps_close_"></i>
-        </div>
+    <div id="_ft_nps_small_">
+        <i class="fas fa-times-circle _ft_nps_close_"></i>
         <br>
-        <div id="_ft_nps_score_" class="container row mx-auto">
+        <div class="_ft_nps_container_">
+            <p class="_ft_nps_text_">Considering your complete experience with our company, how likely would you be to recommend us to a friend or colleague?</p>
+            <br>
+            <div id="_ft_nps_score_" class="row mx-auto">
+            </div>
+            <br>
+            <div class="col-12">
+                <div class="_ft_nps_later_">Later</div>
+            </div>
         </div>
-        <br>
-        <div class="col-12">
-            <div class="_ft_nps_later_">Later</div>
+        <div id="_ft_nps_comments_" class="_ft_nps_container_" style="display: none;">
+            <p class="_ft_nps_text_">Comments</p>
+        </div>
+        <div id="_ft_nps_msg_" class="row" style="display: none;">
+            <div class="_ft_nps_container_ col-10 pl-0">
+                <div class="_ft_nps_comment_msg_">
+                    <textarea type="text" rows="1"
+                        class="input-msg" id="m" name="input" placeholder="Send Message" autocomplete="off"
+                        autofocus="">
+                    </textarea>                    
+                </div>
+            </div>
+            <div class="col-2">
+                <button id="_ft_nps_send_">
+                    <div class="circle"><img src="https://cdn.fibotalk.com/img/send_o.png"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="_ft_nps_modal_" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <i class="fa fa-times _ft_nps_close_" data-dismiss="modal" aria-hidden="true"></i>
+                    <br><br>
+                    <p class="_ft_nps_text_">Considering your complete experience with our company, how likely would you be to recommend us to a friend or colleague?</p>
+                    <div id="_ft_nps_score_" class="row ml-1">
+                    </div>
+                    <p class="_ft_nps_text_ mt-5">Comments</p>
+                    <div class="_ft_nps_comment_msg_ mt-2">
+                        <textarea type="text" rows="1"
+                            class="input-msg modal-msg" id="m1" name="input" placeholder="Send Message" autocomplete="off"
+                            autofocus="">
+                        </textarea>                    
+                    </div>
+                    <br>
+                    <span class="_ft_nps_submit_">Submit</span>
+                    <span class="_ft_nps_later_ float-right" data-dismiss="modal">Later</span>   
+                </div>
+            </div>
         </div>
     </div>
 </body>
