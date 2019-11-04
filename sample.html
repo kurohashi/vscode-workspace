@@ -58,17 +58,10 @@
             padding-right: 15px;
         }
 
-        ._ft_nps_later_ {
+        ._ft_nps_button_ {
             color: royalblue;
             font-size: 1rem;
             text-align: end;
-            cursor: pointer;
-        }
-
-        ._ft_nps_submit_ {
-            color: royalblue;
-            font-size: 1rem;
-            text-align: start;
             cursor: pointer;
         }
 
@@ -214,6 +207,15 @@
             $('._ft_nps_later_').click(function () {
                 $('#_ft_nps_small_').remove();
             });
+            $('#_ft_nps_send_').click(function () {
+                $('#_ft_nps_small_').remove();
+            });
+            $('#_ft_nps_comment_data_').keypress(function (event) {
+                var keycode = (event.keyCode ? event.keyCode : event.which);
+                if(keycode == '13') {
+                    $('#_ft_nps_small_').remove();                      
+                }
+            });
         });
     </script>
 </head>
@@ -229,17 +231,17 @@
             </div>
             <br>
             <div class="col-12">
-                <div class="_ft_nps_later_">Later</div>
+                <div class="_ft_nps_button_">Later</div>
             </div>
         </div>
-        <div id="_ft_nps_comments_" class="_ft_nps_container_" style="display: none;">
+        <!-- <div id="_ft_nps_comments_" class="_ft_nps_container_" style="display: none;">
             <p class="_ft_nps_text_">Comments</p>
-        </div>
+        </div> -->
         <div id="_ft_nps_msg_" class="row" style="display: none;">
             <div class="_ft_nps_container_ col-10 pl-0">
                 <div class="_ft_nps_comment_msg_">
                     <textarea type="text" rows="1"
-                        class="input-msg" id="m" name="input" placeholder="Send Message" autocomplete="off"
+                        class="input-msg" id="_ft_nps_comment_data_" name="input" placeholder="Comments" autocomplete="off"
                         autofocus="">
                     </textarea>                    
                 </div>
@@ -269,8 +271,8 @@
                         </textarea>                    
                     </div>
                     <br>
-                    <span class="_ft_nps_submit_">Submit</span>
-                    <span class="_ft_nps_later_ float-right" data-dismiss="modal">Later</span>   
+                    <span class="_ft_nps_button_">Submit</span>
+                    <span class="_ft_nps_button_ float-right" data-dismiss="modal">Later</span>   
                 </div>
             </div>
         </div>
