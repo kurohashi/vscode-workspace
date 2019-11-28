@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
@@ -12,109 +12,43 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
         integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1"> -->
-    <style>
-        .carousel-wrapper {
-            position: relative;
-        }
-
-        .carousel-wrapper .carousel-item {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            padding: 25px 50px;
-            opacity: 0;
-            transition: all 0.5s ease-in-out;
-            border: 1px solid #aaa;
-        }
-
-        .carousel-wrapper .carousel-item .arrow {
-            position: absolute;
-            top: 0;
-            display: block;
-            width: 50px;
-            height: 100%;
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-            background: url("http://haloxp.com/codepen/carousel-arrow-dark.png") 50% 50% / 20px no-repeat;
-        }
-
-        .carousel-wrapper .carousel-item .arrow.arrow-prev {
-            left: 0;
-        }
-
-        .carousel-wrapper .carousel-item .arrow.arrow-next {
-            right: 0;
-            -webkit-transform: rotate(180deg);
-            transform: rotate(180deg);
-        }
-
-        .carousel-wrapper .carousel-item.light {
-            color: white;
-        }
-
-        .carousel-wrapper .carousel-item.light .arrow {
-            background: url("http://haloxp.com/codepen/carousel-arrow-light.png") 50% 50% / 20px no-repeat;
-        }
-
-        @media (max-width: 480px) {
-
-            .carousel-wrapper .carousel-item .arrow,
-            .carousel-wrapper .carousel-item.light .arrow {
-                background-size: 10px;
-                background-position: 10px 50%;
-            }
-        }
-
-        .carousel-wrapper [id^="target-item"] {
-            display: none;
-        }
-
-        .carousel-wrapper .item-1 {
-            z-index: 2;
-            opacity: 1;
-        }
-
-        .carousel-wrapper *:target~.item-1 {
-            opacity: 0;
-        }
-
-        .carousel-wrapper #target-item-1:target~.item-1 {
-            opacity: 1;
-        }
-
-        .carousel-wrapper #target-item-2:target~.item-2,
-        .carousel-wrapper #target-item-3:target~.item-3 {
-            z-index: 3;
-            opacity: 1;
-        }
-    </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <style>
+    #open-notif img:hover {
+      filter: none;
+    }
+    #open-notif img {
+      filter:opacity(30%);
+    }
+  </style>
 </head>
 
 <body>
-    <div class="carousel-wrapper" style="height: 400px;">
-        <span id="target-item-1"></span>
-        <span id="target-item-2"></span>
-        <span id="target-item-3"></span>
-        <div class="carousel-item item-1" style="background-color: khaki;">
-            <h2>Item 1</h2>
-            <p>Content goes here.</p>
-            <a class="arrow arrow-prev" href="#target-item-3"></a>
-            <a class="arrow arrow-next" href="#target-item-2"></a>
+  <div style="width: 375px !important;position: fixed;bottom:90px;left: 90px;border-radius: 7px !important;height: calc(100% - 445px);box-shadow: 0px 0px 10px;">
+    <div class="media">
+      <div class="media-left">
+        <div
+          style="background-image: url(http://localhost/media/28e5de4b8043f3ad657e23e8/Doc-28e5de4b8043f3ad657e23e8-1574682067748.png);background-size: cover;background-position: center center;width: 110px;height: 106px;border-radius: 6px 0px 0px 0px;">
         </div>
-        <div class="carousel-item item-2 light" style="background-color: royalblue;">
-            <h2>Item 2</h2>
-            <p>Content goes here.</p>
-            <a class="arrow arrow-prev" href="#target-item-1"></a>
-            <a class="arrow arrow-next" href="#target-item-3"></a>
-        </div>
-        <div class="carousel-item item-3" style="background-color: aliceblue;">
-            <h2>Item 3</h2>
-            <p>Content goes here.</p>
-            <a class="arrow arrow-prev" href="#target-item-2"></a>
-            <a class="arrow arrow-next" href="#target-item-1"></a>
-        </div>
+      </div>
+      <div class="media-body" style="padding: 6px;">
+        <h4 class="media-heading">Left-aligned</h4>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</p>
+      </div>
     </div>
+    <div>
+      <div class="panel panel-primary" style="border-radius: 0px 0px 7px 7px;background-color:#337ab7;">
+        <div class="panel-heading" style="text-align: center;">Learn More</div>
+      </div>
+    </div>
+    <div id="open-notif" style="position: absolute; right: 2px; top: 40px;cursor: pointer;">
+      <img src="https://image.flaticon.com/icons/svg/60/60758.svg" style="height: 20px;">
+    </div>
+  </div>
 </body>
 
 </html>
