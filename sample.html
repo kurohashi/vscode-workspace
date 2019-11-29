@@ -17,36 +17,99 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
   <style>
-    #open-notif img:hover {
-      filter: none;
+    .ann-notif {
+      border-radius: 20px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) !important;
+      margin: 30px;
     }
-    #open-notif img {
-      filter:opacity(30%);
+
+    .ann-notif .ann-cover-img {
+      max-height: 270px;
+      border-radius: 20px 20px 0px 0px;
+      object-fit:cover;
+    }
+
+    .ann-notif .ann-text-con {
+      padding: 6px 0px;
+      flex: 1 1 auto;
+      padding: 7px 16px 13px 16px;
+    }
+
+    .ann-notif .ann-title {
+      font-size: 20px;
+      margin-bottom: 10px;
+      font-weight: 700 !important;
+    }
+
+    .ann-notif .ann-date {
+      color: #6c757d !important;
+      float: right !important;
+      font-size: 70%;
+      font-weight: 400;
+    }
+
+    .ann-notif .ann-subT {
+      font-weight: 700 !important;
+      font-size: 13px;
+      margin-bottom: 6px;
+      line-height: 1.2;
+      margin-top: 0;
+    }
+
+    .ann-notif .ann-action {
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+      cursor: pointer;
+      display: inline-block;
+      font-weight: 400;
+      text-align: center;
+      vertical-align: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      border: 1px solid transparent;
+      padding: 6px 10px;
+      font-size: 12px;
+      line-height: 1.5;
+      border-radius: 3px;
+      transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+      -webkit-appearance: button;
+      -webkit-appearance: button;
+      overflow: visible;
+      margin: 0;
+      outline: auto;
+      text-decoration: none;
     }
   </style>
+
 </head>
 
 <body>
-  <div style="width: 375px !important;position: fixed;bottom:90px;left: 90px;border-radius: 7px !important;height: calc(100% - 445px);box-shadow: 0px 0px 10px;">
-    <div class="media">
-      <div class="media-left">
-        <div
-          style="background-image: url(http://localhost/media/28e5de4b8043f3ad657e23e8/Doc-28e5de4b8043f3ad657e23e8-1574682067748.png);background-size: cover;background-position: center center;width: 110px;height: 106px;border-radius: 6px 0px 0px 0px;">
-        </div>
+  <div class="ann-notif">
+    <img src="https://dummyimage.com/420x320/ff7f7f/333333.png&text=Sample" class="ann-cover-img" />
+    <div class="ann-text-con">
+      <div class="ann-title">
+        Sample Title
+        <span class="ann-date">01/01/01</span>
       </div>
-      <div class="media-body" style="padding: 6px;">
-        <h4 class="media-heading">Left-aligned</h4>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor...</p>
+      <h6 class="ann-subT">Sample Sub</h6>
+      <div style="text-align: end !important;">
+        <a href="" target="_blank">
+          <button class="ann-action">Learn More</button>
+        </a>
       </div>
-    </div>
-    <div>
-      <div class="panel panel-primary" style="border-radius: 0px 0px 7px 7px;background-color:#337ab7;">
-        <div class="panel-heading" style="text-align: center;">Learn More</div>
-      </div>
-    </div>
-    <div id="open-notif" style="position: absolute; right: 2px; top: 40px;cursor: pointer;">
-      <img src="https://image.flaticon.com/icons/svg/60/60758.svg" style="height: 20px;">
     </div>
   </div>
 </body>
