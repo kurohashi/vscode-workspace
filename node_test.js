@@ -12,7 +12,9 @@
 // //    res.end(txt);
 // //  });  
 // }).listen(8080);
-setTimeout(function () {
-    console.log("timeout function");
-}, 5000);
-console.log("yeeeeeeeeee");
+// setTimeout(function () {
+//     console.log("timeout function");
+// }, 5000);
+// console.log("yeeeeeeeeee");
+const nodeCmd = require('node-cmd');
+nodeCmd.get('resize.cmd', (err, data, stderr) => console.log(data));
