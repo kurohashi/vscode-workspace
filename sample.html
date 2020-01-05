@@ -116,6 +116,24 @@
       text-transform: none;
       transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     }
+    .form-check-inline {
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      -ms-flex-align: center;
+      align-items: center;
+      width: 30%;
+      padding-left: 0;
+      margin-right: .75rem;
+    }
+    .form-check-label {
+      margin-bottom: 0;
+    }
+    .form-check-inline .form-check-input {
+      position: static;
+      margin-top: 0;
+      margin-right: .3125rem;
+      margin-left: 0;
+    }
   </style>
 </head>
 
@@ -156,6 +174,59 @@
                 <div class="form-group">
                   <label for="phone">Phone Number:</label>
                   <input type="number" class="form-control" id="phone" name="number">
+                </div>
+                <div class="form-group">
+                  <label>What days work best for you?</label>
+                  <br>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="monday">
+                      <input type="checkbox" class="form-check-input" id="monday" name="day" value="Monday">Monday
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="tuesday">
+                      <input type="checkbox" class="form-check-input" id="tuesday" name="day" value="Tuesday">Tuesday
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="wednesday">
+                      <input type="checkbox" class="form-check-input" id="wednesday" name="day" value="Wednesday">Wednesday
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="thursday">
+                      <input type="checkbox" class="form-check-input" id="thursday" name="day" value="Thursday">Thursday
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="friday">
+                      <input type="checkbox" class="form-check-input" id="friday" name="day" value="Friday">Friday
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="saturday">
+                      <input type="checkbox" class="form-check-input" id="saturday" name="day" value="Saturday">Saturday
+                    </label>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>What time works best for you?</label>
+                  <br>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="morning">
+                      <input type="radio" class="form-check-input" id="morning" name="period" value="Morning">Morning
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="afternoon">
+                      <input type="radio" class="form-check-input" id="afternoon" name="period" value="Afternoon">Afternoon
+                    </label>
+                  </div>
+                  <div class="form-check-inline">
+                    <label class="form-check-label" for="evening">
+                      <input type="radio" class="form-check-input" id="evening" name="period" value="Evening">Evening
+                    </label>
+                  </div>
                 </div>
                 <label style="font-weight: 400; font-size: 14px;">Your information will be shared with <span style="font-weight: bold;">Fibotalk</span>. We may reach out with relevant content, product and service updates.</label>
                 <!-- <p class="mini">We protect your privacy</p> -->
