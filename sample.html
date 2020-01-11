@@ -17,10 +17,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+  <script src="https://d3js.org/d3.v5.js"></script>
   <style>
     .bootstrapBody {
       margin: 0;
-      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
       font-size: 1rem;
       font-weight: 400;
       line-height: 1.5;
@@ -28,17 +29,20 @@
       text-align: left;
       background-color: #fff;
     }
+
     .modal-title {
       /* margin-bottom: 0; */
       line-height: 1.5;
       font-weight: 500;
       font-size: 1.25rem;
     }
+
     @media (min-width: 576px) {
       .container {
         max-width: 540px;
       }
     }
+
     .container {
       width: 100%;
       padding-right: 15px;
@@ -46,13 +50,16 @@
       margin-right: auto;
       margin-left: auto;
     }
+
     .form-group {
       margin-bottom: 1rem;
     }
+
     label {
       display: inline-block;
       margin-bottom: .5rem;
     }
+
     .form-control {
       display: block;
       width: 100%;
@@ -66,34 +73,45 @@
       background-clip: padding-box;
       border: 1px solid #ced4da;
       border-radius: .25rem;
-      transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
+
     .form-control:focus {
       color: #495057;
       background-color: #fff;
       border-color: #80bdff;
       outline: 0;
-      box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, .25);
     }
-    .btn, input {
+
+    .btn,
+    input {
       overflow: visible;
       margin: 0;
       font-family: inherit;
     }
-    .btn:not(:disabled):not(.disabled).active:focus, .btn:not(:disabled):not(.disabled):active:focus, .show>.btn.dropdown-toggle:focus {
-      box-shadow: 0 0 0 0.2rem rgba(38,143,255,.5);
+
+    .btn:not(:disabled):not(.disabled).active:focus,
+    .btn:not(:disabled):not(.disabled):active:focus,
+    .show>.btn.dropdown-toggle:focus {
+      box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, .5);
     }
-    .btn:not(:disabled):not(.disabled).active, .btn:not(:disabled):not(.disabled):active, .show>.btn.dropdown-toggle {
+
+    .btn:not(:disabled):not(.disabled).active,
+    .btn:not(:disabled):not(.disabled):active,
+    .show>.btn.dropdown-toggle {
       color: #fff;
       background-color: #0062cc;
       border-color: #005cbf;
     }
+
     .btn:hover {
       color: #fff;
       background-color: #0069d9;
       text-decoration: none;
       border-color: #0062cc;
     }
+
     .btn {
       cursor: pointer;
       color: #fff;
@@ -114,8 +132,9 @@
       line-height: 1.5;
       border-radius: .25rem;
       text-transform: none;
-      transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
+
     .form-check-inline {
       display: -ms-inline-flexbox;
       display: inline-flex;
@@ -125,9 +144,11 @@
       padding-left: 0;
       margin-right: .75rem;
     }
+
     .form-check-label {
       margin-bottom: 0;
     }
+
     .form-check-inline .form-check-input {
       position: static;
       margin-top: 0;
@@ -138,114 +159,86 @@
 </head>
 
 <body>
-  <!-- <div class="container">
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-      Open modal
-    </button> -->
-  
-    <!-- The Modal -->
-    <!-- <div class="modal fade" id="myModal">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content"> -->
-        
-          <!-- Modal Header -->
-          <!-- <div class="modal-header"> --><div class="bootstrapBody">
-            
-            <!-- <button type="button" class="close" data-dismiss="modal">&times;</button> -->
-          <!-- </div> -->
-          
-          <!-- Modal body -->
-          <!-- <div class="modal-body"> -->
-            <div class="container">
-              <form>
-                <p class="modal-title">Fill out the below form to know what we can do for your buisiness</p>
-                <div class="form-group">
-                  <label for="name">Name:</label>
-                  <input type="text" class="form-control" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                  <label for="email">Email:</label>
-                  <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                  <label for="company">Company Name:</label>
-                  <input type="text" class="form-control" id="company" name="company" required>
-                </div>
-                <div class="form-group">
-                  <label for="phone">Phone Number:</label>
-                  <input type="number" class="form-control" id="phone" name="number">
-                </div>
-                <div class="form-group">
-                  <label>What days work best for you?</label>
-                  <br>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="monday">
-                      <input type="checkbox" class="form-check-input" id="monday" name="day" value="Monday">Monday
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="tuesday">
-                      <input type="checkbox" class="form-check-input" id="tuesday" name="day" value="Tuesday">Tuesday
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="wednesday">
-                      <input type="checkbox" class="form-check-input" id="wednesday" name="day" value="Wednesday">Wednesday
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="thursday">
-                      <input type="checkbox" class="form-check-input" id="thursday" name="day" value="Thursday">Thursday
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="friday">
-                      <input type="checkbox" class="form-check-input" id="friday" name="day" value="Friday">Friday
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="saturday">
-                      <input type="checkbox" class="form-check-input" id="saturday" name="day" value="Saturday">Saturday
-                    </label>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>What time works best for you?</label>
-                  <br>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="morning">
-                      <input type="radio" class="form-check-input" id="morning" name="period" value="Morning">Morning
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="afternoon">
-                      <input type="radio" class="form-check-input" id="afternoon" name="period" value="Afternoon">Afternoon
-                    </label>
-                  </div>
-                  <div class="form-check-inline">
-                    <label class="form-check-label" for="evening">
-                      <input type="radio" class="form-check-input" id="evening" name="period" value="Evening">Evening
-                    </label>
-                  </div>
-                </div>
-                <label style="font-weight: 400; font-size: 14px;">Your information will be shared with <span style="font-weight: bold;">Fibotalk</span>. We may reach out with relevant content, product and service updates.</label>
-                <!-- <p class="mini">We protect your privacy</p> -->
-                <button type="submit" class="btn" style="width: 100%;">Schedule a demo</button>
-              </form>
-            </div></div>
-            <!-- preferred time, time zone -->
-          <!-- </div> -->
-          
-          <!-- Modal footer -->
-          <!-- <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          </div> -->
-          
-        <!-- </div>
-      </div>
+  <div class="bootstrapBody">
+    <div class="container">
+      <form>
+        <p class="modal-title">Fill out the below form to know what we can do for your buisiness</p>
+        <div class="form-group">
+          <label for="name">Name:</label>
+          <input type="text" class="form-control" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" class="form-control" id="email" name="email" required>
+        </div>
+        <div class="form-group">
+          <label for="company">Company Name:</label>
+          <input type="text" class="form-control" id="company" name="company" required>
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone Number:</label>
+          <input type="number" class="form-control" id="phone" name="number">
+        </div>
+        <div class="form-group">
+          <label>What days work best for you?</label>
+          <br>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="monday">
+              <input type="checkbox" class="form-check-input" id="monday" name="day" value="Monday">Monday
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="tuesday">
+              <input type="checkbox" class="form-check-input" id="tuesday" name="day" value="Tuesday">Tuesday
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="wednesday">
+              <input type="checkbox" class="form-check-input" id="wednesday" name="day" value="Wednesday">Wednesday
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="thursday">
+              <input type="checkbox" class="form-check-input" id="thursday" name="day" value="Thursday">Thursday
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="friday">
+              <input type="checkbox" class="form-check-input" id="friday" name="day" value="Friday">Friday
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="saturday">
+              <input type="checkbox" class="form-check-input" id="saturday" name="day" value="Saturday">Saturday
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>What time works best for you?</label>
+          <br>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="morning">
+              <input type="radio" class="form-check-input" id="morning" name="period" value="Morning">Morning
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="afternoon">
+              <input type="radio" class="form-check-input" id="afternoon" name="period" value="Afternoon">Afternoon
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label" for="evening">
+              <input type="radio" class="form-check-input" id="evening" name="period" value="Evening">Evening
+            </label>
+          </div>
+        </div>
+        <label style="font-weight: 400; font-size: 14px;">Your information will be shared with <span
+            style="font-weight: bold;">Fibotalk</span>. We may reach out with relevant content, product and service
+          updates.</label>
+        <button type="submit" class="btn" style="width: 100%;">Schedule a demo</button>
+      </form>
     </div>
-    
-  </div> -->
+  </div>
 </body>
 
 </html>
