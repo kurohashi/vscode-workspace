@@ -1,6 +1,22 @@
 <html>
 
 <head>
+  <script type='text/javascript'>
+      !function (t, e, a, c, r, n) {
+          t._ft_ = t._ft_ || {}, t._ft_.rcl = '0fb5ed30bfbe1f0d919e6907';
+          var s = e.createElement('script');
+          s.src = 'http://localhost/cdn/widget.js', s.async = 1, s.type = 'text/javascript';
+          var f = e.getElementsByTagName('script')[0];
+          f.parentNode.insertBefore(s, f)
+      } (window, document);
+
+      window.fibotalkSettings = {
+          name: "Shubham Srivastava",
+          phone: 9953817970,
+          email: "test@rytangle.com",
+      }
+  </script>
+  <!-- Fibotalk Script ends -->
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
         integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
@@ -134,6 +150,13 @@
       text-transform: none;
       transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
     }
+    
+    .btn.disabled, .btn:disabled {
+      opacity: .65;
+      color: #fff;
+      background-color: #007bff;
+      border-color: #007bff;
+    }
 
     .form-check-inline {
       display: -ms-inline-flexbox;
@@ -159,12 +182,15 @@
 </head>
 
 <body>
+  <h1 onclick="fibo.open({'name': 'demo', 'type': 'modal', 'id': '000'})" fibotrack>
+    Hello from messenger
+  </h1>
   <div class="bootstrapBody">
     <div class="container">
       <form>
         <p class="modal-title">Fill out the below form to know what we can do for your buisiness</p>
         <div class="form-group">
-          <label for="name">Name:</label>
+          <label for="name">Name:</label>&nbsp;<span style="color: red;">*</span>
           <input type="text" class="form-control" id="name" name="name" required>
         </div>
         <div class="form-group">
@@ -235,7 +261,7 @@
         <label style="font-weight: 400; font-size: 14px;">Your information will be shared with <span
             style="font-weight: bold;">Fibotalk</span>. We may reach out with relevant content, product and service
           updates.</label>
-        <button type="submit" class="btn" style="width: 100%;">Schedule a demo</button>
+        <button type="submit" class="btn" style="width: 100%;" disabled>Schedule a demo</button>
       </form>
     </div>
   </div>
