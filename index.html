@@ -1,42 +1,45 @@
 <html>
 
 <head>
-  <script type='text/javascript'>
-      !function (t, e, a, c, r, n) {
-          t._ft_ = t._ft_ || {}, t._ft_.rcl = '123329a1fc798fa3ecdbcf9123637e';
-          var s = e.createElement('script');
-          s.src = 'http://unireply.com/cdn/widget.js', s.async = 1, s.type = 'text/javascript';
-          var f = e.getElementsByTagName('script')[0];
-          f.parentNode.insertBefore(s, f)
-      } (window, document);
+    <script type='text/javascript'>
+        !function (t, e, a, c, r, n) {
+            t._ft_ = t._ft_ || {}, t._ft_.rcl = '123329a1fc798fa3ecdbcf9123637e';
+            var s = e.createElement('script');
+            s.src = 'http://unireply.com/cdn/widget.js', s.async = 1, s.type = 'text/javascript';
+            var f = e.getElementsByTagName('script')[0];
+            f.parentNode.insertBefore(s, f)
+        } (window, document);
 
-      window.fibotalkSettings = {
-          name: "Shubham Srivastava",
-          phone: 9953817970,
-          email: "test@rytangle.com",
-      }
-  </script>
-  <!-- Fibotalk Script ends -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
-  <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
+        window.fibotalkSettings = {
+            name: "Shubham Srivastava",
+            phone: 9953817970,
+            email: "test@rytangle.com",
+        }
+    </script>
+    <!-- Fibotalk Script ends -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
+    <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
 </head>
 
 <body>
     <h1 fibotrack>Sample page for sampling tests.............</h1>
     <button id="clickstop" class="btn btn-primary">Press me!!!!</button>
     <script type = 'text/javascript'>
-        $("clickstop").click(function(e) {
-            e.stopPropagation();
+        $(document).ready(function() {
+            $("#clickstop").click(function(e) {
+                alert("button clicked");
+                e.stopPropagation();
+            });
         });
     </script>
 </body>
