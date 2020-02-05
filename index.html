@@ -37,7 +37,13 @@
 </head>
 
 <body>
-    <h1>Sample page for sampling tests.............</h1>
+    <h1 fibotrack>Sample page for sampling tests.............</h1>
+    <button class="btn btn-primary" onclick="clicked()">Press me!!!!</button>
+    <script type = 'text/javascript'>
+        function clicked(e) {
+            e.stopPropagation();
+        }
+    </script>
 </body>
 
 </html>
