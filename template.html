@@ -1,0 +1,572 @@
+<script>
+(function (window, document) {
+
+	var bar = location.host.indexOf("www.");
+	var domain = "";
+	//domain independent information save. Not used at present
+	if (bar > -1)
+		domain = "." + location.host.substring(bar + 4);
+	else
+		domain = "." + location.host;
+	var foo = {
+		domain: domain,
+		gid: window._ft_.rcl,
+		icons: {
+			chat: "/img/icon-02.png",
+			close: "/img/close.png",
+			send: "/img/send_o.png",
+			upload: "/img/attach.png",
+            logo: "/img/fibotalk/FIBO_LOGO_final-03.png",
+			back: "/img/back.png",
+			schat: "/img/send.png",
+			bClose: "/img/close_black.png",
+			agIcon: "/img/usericon_thumb.jpg"
+		},
+		static: "",
+			/*	For Local
+			com: "", // socket. for unireply chat for fibotalk.com
+			protocol: "http://",
+			server: "localhost/cdn",
+			appserver: "localhost:12100", // unireply fibotalk.com
+		//	*/
+
+		//	/*	For stagings
+			com: "socket.", // socket. for unireply chat for fibotalk.com
+			protocol :"http://",
+			server :"unireply.com/cdn",
+			appserver : "unireply.com", // unireply fibotalk.com
+			fgid: "123329a1fc798fa3ecdbcf9123637e",
+		//	*/
+
+			/*	For testing
+			com: "",
+			protocol: "http://",
+			server: "192.168.1.100/cdn",
+			appserver: "192.168.1.100:12100",
+		//	*/
+
+			/*	For fibotalk
+			com: "chat.", // socket. for unireply chat for fibotalk.com
+			protocol: "https://",
+			server: "cdn.fibotalk.com",
+			appserver: "fibotalk.com", // unireply fibotalk.com
+			fgid: "b46654bda14d03cfa39562de623c89",
+		//	*/
+		max: 10000000,
+		title: document.title,
+		css: {
+			btn: "btn",
+			chat: "widget"
+		},
+		frames: {
+			main: {
+				id: "__ft__chatwindow__",
+				style: "border:0px",
+				js: ["template"],
+			},
+			chat: {
+				id: "__ft__chatbtn__",
+				style: "border:0px",
+				js: ["btn"],
+            },
+            billboard: {
+                id: "__ft_iframe_div__",
+                style: "display:none",
+                scrolling: "no",
+                css: ["bootstrap4.min", "billboard"],
+                js: ["billboard"],
+            },
+            modal: {
+                id: "__ft_modal_div__",
+                style: "display:none",
+                scrolling: "no",
+                css: ["bootstrap4.min", "billboard"],
+                js: ["billboard"],
+			},
+			snack: {
+				id: "__ft_snack_div__",
+                style: "display:none",
+				scrolling: "no",
+                css: ["bootstrap4.min", "billboard"],
+                js: ["billboard"],
+			}
+		}
+	}
+	var mobile = [];
+
+	// set asset base
+	foo.base = foo.protocol + foo.static + foo.server;
+
+	// constants
+	template = [
+		{
+			tag: "div",
+			attr: {
+				id: "fibotalk-welcome-page"
+			},
+			body: [
+				{
+					tag: "div",
+					attr: { 
+						id: "fibotalk-home"
+					},
+					body: [
+						{
+							tag: "div",
+							attr: {
+								class: "theme fibotalk-header"
+							},
+							body: [
+								{
+									tag: "div",
+									attr: {
+										id: "home-header-text",
+										class: "header-text"
+									}
+								},
+								{
+									tag: "div",
+									attr: {
+										id: "home-agent-images",
+										class: "header-agent-images"
+									}
+								}
+							]
+						},
+						{
+							tag: "div",
+							attr: {
+								id: "fibotalk-welcome-board"
+							},
+							body: [
+								{
+									tag: "div",
+									attr: {
+										id: "fibo-welcome-msg",
+										class: "fibo-welcome-msg"
+									},
+								},
+								{
+									tag: "div",
+									attr: {
+										id: "fibo-announce-holder"
+									}
+								},
+								{
+									tag: "div",
+									attr: {
+										id: "fibo-demo-holder"
+									}
+								}
+							]
+						}
+					],
+				},
+				{
+					tag: "div",
+					attr: {
+						id: "fibotalk-details"
+					}
+				},
+				{
+					tag: "div",
+					attr: {
+						id: "fibotalk-offline"
+					},
+					body: [
+						{
+							tag: "div",
+							attr: {
+								class: "theme fibotalk-header"
+							},
+							body: [
+								{
+									tag: "div",
+									attr: {
+										id: "off-header-text",
+										class: "header-text"
+									}
+								}
+							]
+						},
+						{
+							tag: "div",
+							attr: {
+								id: "fibotalk-off-board"
+							}
+						},
+						{
+							// submit button
+							tag: "button",
+							attr: {
+								id: "_ft_offline_form_submit_",
+								style: "width:100%",
+								class: "btn btn-small theme",
+								onClick: "submitUser()"
+							},
+							innerHTML: "Submit"
+						}
+					]
+				}
+			]
+		},
+		{
+			tag: "div",
+			attr: {
+				id: "fibotalk-footer"
+			},
+			body: [
+				{
+					tag: "a",
+					attr: {
+						href: "https://fibotalk.com/",
+						target: "_blank"
+					},
+					innerHTML: "Running On ",
+					body: [
+						{
+							tag: "img",
+							attr: {
+								src: foo.base + foo.icons.logo,
+								style: "width:42px; margin-top:-2px;"
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			tag: "img",
+			attr: {
+				id: "close-chat",
+				src: foo.base + foo.icons.close
+			}
+		},								
+		{
+			tag: "img",
+			attr: {
+				id :"_ft_go_home_",
+				src: foo.base + foo.icons.back,
+			}
+		}
+	]
+
+	servicesTemplate = {
+		chat: {
+			tag: "div",
+			attr: {
+				id: "fibotalk-chat"
+			},
+			body: [
+				{
+					tag: "div",
+					attr: {
+						class: "theme fibotalk-header"
+					},
+					body: [
+						{
+							tag: "div",
+							attr: {
+								id: "chat-header-text",
+								class: "header-text"
+							}
+						},
+						{
+							tag: "div",
+							attr: {
+								id: "agent-typing",
+							},
+							innerHTML: "typing..."
+						}
+					]
+				},
+				{
+					tag: "div",
+					attr: {
+						id: "fibotalk-chat-board"
+					}
+				},
+				{
+					tag: "div",
+					attr: {
+						class: "fibotalk-action-board"
+					},
+					body: [
+						{
+							tag: "form",
+							attr: {
+								id: "_ft_chat_form_",
+								class: "_ft_form",
+								style: "overflow:visible;",
+								action: ""
+							},
+							body: [
+								{
+									tag: "div",
+									attr: {
+										id: "_ft_send_form_",
+										class: "_ft_conversation_compose_"
+									},
+									body: [
+										{
+											tag: "textarea",
+											attr: {
+												type: 'text',
+												rows: 1,
+												class: "input-msg",
+												id: "m",
+												name: "input",
+												placeholder: "Send Message",
+												autocomplete: "off",
+												autofocus: ""
+											}
+										},
+										{
+											tag: "input",
+											attr: {
+												type: "file",
+												id: "upload_file",
+												style: "display:none"
+											}
+										},
+										{
+											tag: "div",
+											attr: {
+												id: "upload_button",
+											},
+											body: [{
+												tag: "img",
+												attr: {
+													src: foo.base + foo.icons.upload
+												}
+											}]
+										},
+										{
+											tag: "button",
+											attr: {
+												id: "_ft_chat_send_btn_",
+												class: "send"
+											},
+											body: [{
+												tag: "div",
+												attr: {
+													class: "circle"
+												},
+												body: [{
+													tag: "img",
+													attr: {
+														src: foo.base + foo.icons.send
+													}
+												}]
+											}]
+										}
+									]
+								}
+							]
+						},
+						{
+							tag: "div",
+							attr: {
+								id: "_ft_file_selected_",
+								class: "_ft_conversation_compose_"
+							},
+							body: [{
+									tag: "span",
+									attr: {
+										id: "_ft_file_selected_error_"
+									}
+								},
+								{
+									tag: "div",
+									attr: {
+										class: "row",
+										id: "_ft_file_selected_details_",
+										style: "padding:15px;"
+									},
+									body: [{
+											tag: "div",
+											attr: {
+												class: "col-xs-3"
+											},
+											body: [{
+												tag: "img",
+												attr: {
+													id: "selected_file_image"
+												}
+											}]
+										},
+										{
+											tag: "div",
+											attr: {
+												class: "col-xs-9"
+											},
+											body: [{
+													tag: "label",
+													attr: {
+														id: "selected_file_name"
+													}
+												},
+												{
+													tag: "br"
+												},
+												{
+													tag: "span",
+													attr: {
+														id: "selected_file_size"
+													}
+												},
+												{
+													tag: "div",
+													attr: {
+														class: "upload_status"
+													},
+													body: [{
+														tag: "div",
+														attr: {
+															id: "upload_progress"
+														}
+													}]
+												},
+						
+											]
+										},
+										{
+											tag: "button",
+											attr: {
+												id: "_ft_send_file_"
+											},
+											body: [{
+												tag: "div",
+												attr: {
+													class: "circle"
+												},
+												body: [{
+													tag: "img",
+													attr: {
+														src: foo.base + foo.icons.send
+													}
+												}]
+											}]
+										}
+									]
+								},
+								{
+									tag: "a",
+									attr: {
+										id: "close_upload_file",
+										class: "close",
+										title: "close"
+									},
+									innerHTML: "&times;"
+								}
+							]
+						}
+					]
+				}				
+			]
+		}
+	};
+
+	foo.chat = foo.protocol + foo.com + foo.appserver;
+	window.foo = foo;
+
+	var scripts = [
+		{ path: foo.chat + '/socket.io', f: "socket.io" },
+		{ path: foo.chat + '/siofu', f: "client" },
+		{ path: foo.base + '/js', f: "main" },
+	];
+
+	function addCSS() {
+		var s = document.createElement("link");
+		s.href = foo.base + '/css/bootstrap.min.css',
+			s.async = 1,
+			s.rel = "stylesheet";
+		document.head.appendChild(s);
+
+		var s = document.createElement("link");
+		s.href = foo.base + '/css/' + foo.css.chat + '.css',
+			s.async = 1,
+			s.rel = "stylesheet";
+		document.head.appendChild(s);
+	}
+
+	// add scripts
+	function addScripts(obj) {
+		var s = document.createElement("script");
+		s.src = obj.path + '/' + obj.f + '.js';
+		s.async = false;
+		var ref = document.getElementsByTagName("script");
+		var refnode = ref[ref.length - 1]
+		refnode.parentNode.appendChild(s, refnode.nextSibling);
+
+	}
+
+	// initialize template
+	window.initTemplate = function() {
+		parseTemplate(template, "body");
+	};
+
+	// load appropriate template in second widget screen
+	window.loadDetails = function(type) {
+		if (servicesTemplate.active && servicesTemplate.active == type)
+			return;
+		servicesTemplate.active = type;
+		var elBody = document.getElementById("fibotalk-details");
+		if (servicesTemplate[type])
+			parseTemplate([servicesTemplate[type]], elBody);
+	};
+
+	// unload the second widget screen
+	window.unloadDetails = function(type) {
+		if (servicesTemplate.active && servicesTemplate.active == type)
+			document.getElementById("fibotalk-details").innerHTML = "";
+		servicesTemplate.active = "";
+		goHome();
+	};
+
+	// function parse template
+	function parseTemplate(template, insertIn) {
+		for (var i in template) {
+			createElement(template[i], insertIn);
+		}
+	}
+
+	// function create element
+	function createElement(element, parent) {
+		var el = document.createElement(element.tag);
+		for (var i in element.attr)
+			el.setAttribute(i, element.attr[i]);
+		if (element.innerHTML)
+			el.innerHTML = element.innerHTML;
+		if (parent == "body")
+			document.body.appendChild(el);
+		else {
+			parent.appendChild(el);
+		}
+		if (element.body) {
+			parseTemplate(element.body, el)
+		}
+	}
+
+	addCSS();
+	for (var i in scripts)
+		addScripts(scripts[i]);
+	console.log("sequence 1");
+
+	function preload(arrayOfImages) {
+        for (var i in arrayOfImages) {
+            (new Image()).src = arrayOfImages[i];
+        }
+	}
+
+	// Usage:
+
+	// preload([
+	// 	foo.base + '/img/star.png',
+	// 	foo.base + '/img/star-sel.png',
+	// 	foo.base + '/img/star-sel-small.png',
+	// 	foo.base + '/img/star-non-sel-small.png'
+	// ]);
+
+})(window, document)
+</script>
