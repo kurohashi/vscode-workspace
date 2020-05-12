@@ -1,572 +1,4435 @@
-<script>
-(function (window, document) {
+<html>
 
-	var bar = location.host.indexOf("www.");
-	var domain = "";
-	//domain independent information save. Not used at present
-	if (bar > -1)
-		domain = "." + location.host.substring(bar + 4);
-	else
-		domain = "." + location.host;
-	var foo = {
-		domain: domain,
-		gid: '123329a1fc798fa3ecdbcf9123637e',
-		icons: {
-			chat: "/img/icon-02.png",
-			close: "/img/close.png",
-			send: "/img/send_o.png",
-			upload: "/img/attach.png",
-            logo: "/img/fibotalk/FIBO_LOGO_final-03.png",
-			back: "/img/back.png",
-			schat: "/img/send.png",
-			bClose: "/img/close_black.png",
-			agIcon: "/img/usericon_thumb.jpg"
-		},
-		static: "",
-			/*	For Local
-			com: "", // socket. for unireply chat for fibotalk.com
-			protocol: "http://",
-			server: "localhost/cdn",
-			appserver: "localhost:12100", // unireply fibotalk.com
-		//	*/
+<head>
+    <script>
+        (function(window, document) {
 
-			/*	For stagings
-			com: "socket.", // socket. for unireply chat for fibotalk.com
-			protocol :"http://",
-			server :"unireply.com/cdn",
-			appserver : "unireply.com", // unireply fibotalk.com
-			fgid: "123329a1fc798fa3ecdbcf9123637e",
-		//	*/
+            var bar = location.host.indexOf("www.");
+            var domain = "";
+            //domain independent information save. Not used at present
+            if (bar > -1)
+                domain = "." + location.host.substring(bar + 4);
+            else
+                domain = "." + location.host;
+            var foo = {
+                domain: domain,
+                gid: '123329a1fc798fa3ecdbcf9123637e',
+                icons: {
+                    chat: "/img/icon-02.png",
+                    close: "/img/close.png",
+                    send: "/img/send_o.png",
+                    upload: "/img/attach.png",
+                    logo: "/img/fibotalk/FIBO_LOGO_final-03.png",
+                    back: "/img/back.png",
+                    schat: "/img/send.png",
+                    bClose: "/img/close_black.png",
+                    agIcon: "/img/usericon_thumb.jpg"
+                },
+                static: "",
+				/*	For Local
+                com: "", // socket. for unireply chat for fibotalk.com
+                protocol: "http://",
+                server: "localhost/cdn",
+                appserver: "localhost:12100", // unireply fibotalk.com
+			//	*/
 
-		//	/*	For testing
-			com: "",
-			protocol: "http://",
-			server: "192.168.1.100/cdn",
-			appserver: "192.168.1.100:12100",
-		//	*/
+                /*	For stagings
+				com: "socket.", // socket. for unireply chat for fibotalk.com
+				protocol :"http://",
+				server :"unireply.com/cdn",
+				appserver : "unireply.com", // unireply fibotalk.com
+				fgid: "123329a1fc798fa3ecdbcf9123637e",
+			//	*/
 
-			/*	For fibotalk
-			com: "chat.", // socket. for unireply chat for fibotalk.com
-			protocol: "https://",
-			server: "cdn.fibotalk.com",
-			appserver: "fibotalk.com", // unireply fibotalk.com
-			fgid: "b46654bda14d03cfa39562de623c89",
-		//	*/
-		max: 10000000,
-		title: document.title,
-		css: {
-			btn: "btn",
-			chat: "widget"
-		},
-		frames: {
-			main: {
-				id: "__ft__chatwindow__",
-				style: "border:0px",
-				js: ["template"],
-			},
-			chat: {
-				id: "__ft__chatbtn__",
-				style: "border:0px",
-				js: ["btn"],
-            },
-            billboard: {
-                id: "__ft_iframe_div__",
-                style: "display:none",
-                scrolling: "no",
-                css: ["bootstrap4.min", "billboard"],
-                js: ["billboard"],
-            },
-            modal: {
-                id: "__ft_modal_div__",
-                style: "display:none",
-                scrolling: "no",
-                css: ["bootstrap4.min", "billboard"],
-                js: ["billboard"],
-			},
-			snack: {
-				id: "__ft_snack_div__",
-                style: "display:none",
-				scrolling: "no",
-                css: ["bootstrap4.min", "billboard"],
-                js: ["billboard"],
-			}
+			//	/*	For testing
+				com: "",
+				protocol: "http://",
+				server: "192.168.1.100/cdn",
+				appserver: "192.168.1.100:12100",
+			//	*/
+
+				/*	For fibotalk
+				com: "chat.", // socket. for unireply chat for fibotalk.com
+				protocol: "https://",
+				server: "cdn.fibotalk.com",
+				appserver: "fibotalk.com", // unireply fibotalk.com
+				fgid: "b46654bda14d03cfa39562de623c89",
+			//	*/
+                max: 10000000,
+                title: document.title,
+                css: {
+                    btn: "btn",
+                    chat: "widget"
+                }
+            }
+
+            // set asset base
+            foo.base = foo.protocol + foo.static + foo.server;
+
+            foo.chat = foo.protocol + foo.com + foo.appserver;
+            window.foo = foo;
+
+        })(window, document)
+    </script>
+    <link href="http://localhost/cdn/css/bootstrap.min.css" rel="stylesheet">
+    <script src="http://localhost:12100/socket.io/socket.io.js"></script>
+	<script src="http://localhost:12100/siofu/client.js"></script>
+	
+	<!-- Main window style and js -->
+    <style type="text/css">
+        .theme {
+            background-color: #000baa;
+            color: #eee;
 		}
-	}
-	var mobile = [];
+		input, input:before, input:after {
+			-webkit-user-select: initial;
+			-khtml-user-select: initial;
+			-moz-user-select: initial;
+			-ms-user-select: initial;
+			user-select: initial;
+		} 
 
-	// set asset base
-	foo.base = foo.protocol + foo.static + foo.server;
+		._ft_qr_{
+		border-radius: 25px;
+		border: 1px solid #ccc;
+		background-color: #f4f7f9;
+		margin-right: 5px;
+		margin-bottom: 5px;
+		color:#555;
+		}
 
-	// constants
-	template = [
-		{
-			tag: "div",
-			attr: {
-				id: "fibotalk-welcome-page"
-			},
-			body: [
-				{
-					tag: "div",
-					attr: { 
-						id: "fibotalk-home"
-					},
-					body: [
-						{
-							tag: "div",
-							attr: {
-								class: "theme fibotalk-header"
-							},
-							body: [
-								{
-									tag: "div",
-									attr: {
-										id: "home-header-text",
-										class: "header-text"
-									}
-								},
-								{
-									tag: "div",
-									attr: {
-										id: "home-agent-images",
-										class: "header-agent-images"
-									}
-								}
-							]
-						},
-						{
-							tag: "div",
-							attr: {
-								id: "fibotalk-welcome-board"
-							},
-							body: [
-								{
-									tag: "div",
-									attr: {
-										id: "fibo-welcome-msg",
-										class: "fibo-welcome-msg"
-									},
-								},
-								{
-									tag: "div",
-									attr: {
-										id: "fibo-announce-holder"
-									}
-								},
-								{
-									tag: "div",
-									attr: {
-										id: "fibo-demo-holder"
-									}
-								}
-							]
-						}
-					],
-				},
-				{
-					tag: "div",
-					attr: {
-						id: "fibotalk-details"
-					}
-				},
-				{
-					tag: "div",
-					attr: {
-						id: "fibotalk-offline"
-					},
-					body: [
-						{
-							tag: "div",
-							attr: {
-								class: "theme fibotalk-header"
-							},
-							body: [
-								{
-									tag: "div",
-									attr: {
-										id: "off-header-text",
-										class: "header-text"
-									}
-								}
-							]
-						},
-						{
-							tag: "div",
-							attr: {
-								id: "fibotalk-off-board"
-							}
-						},
-						{
-							// submit button
-							tag: "button",
-							attr: {
-								id: "_ft_offline_form_submit_",
-								style: "width:100%",
-								class: "btn btn-small theme",
-								onClick: "submitUser()"
-							},
-							innerHTML: "Submit"
-						}
-					]
+		#_ft_offline_form_submit_ {
+		position: absolute;
+		bottom: 0px;
+		}
+
+		.newline{
+			white-space: pre-wrap !important;
+			word-break: break-word;
+			overflow: -webkit-paged-x;
+			font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;font-size: 14px !important;
+			text-align: initial;
+			margin-bottom: 0 !important;
+			border: 0px !important;
+		}
+
+		#fibotalk-details {
+		display: none;
+		}
+
+		#fibotalk-footer {
+		color:#9f9e9e;
+		text-align:center;
+		font-size: 8px;
+		bottom:0;
+		position: absolute;
+		width: 100%;
+		background-color: #f3f7f9;
+		}
+
+		/* ._ft_btn_:hover {
+		box-shadow: 0 3px 8px rgba(0, 0, 0, .8); 
+		} */
+
+		#fibotalk-chat {
+		height: 100%;
+		}
+
+		#upload_button{
+		background-color: transparent;
+		padding:4px;
+		cursor:pointer;
+		align-self: center;
+		}
+
+		#upload_button img{
+		height:28px;
+		}
+
+
+		#_ft_file_selected_{
+		display: none;
+		min-height:50px; 
+		margin-top:5px; 
+		padding:0px;    
+		}
+
+		#_ft_file_selected_error_{
+		color: red;
+		font-size:13px;
+		}
+
+		#selected_file_image{
+		max-width:85%;
+		max-height:50px;
+		}
+
+
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+		body { font: 13px Helvetica, Arial; }
+
+		._ft_form_ { 
+		width: 100%; }
+		#messages { list-style-type: none; margin: 60px 0px 0px 0px;}
+		#botmsg { background:#2E86C1 !important; text-align: left !important; border:1px solid #2E86C1 !important; color:#fff !important;}
+
+
+		.agent-chat-img{
+			float:left;
+			padding:5px; 
+		}
+		.agent-chat-img .agentimg{
+			height:28px !important;
+			width:28px !important;  
+		}
+
+		.fibotalk-time{
+		font-size:11px;
+		font-style:italic;
+		padding-top:5px;
+		color:#888;
+		}
+
+		.fibo-welcome-button {
+		padding: 5px 10px;
+		border-radius: 20px;
+		float: right;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		border: 1px solid transparent;
+		}
+
+		#fibo-welcome-msg img {
+		height: 20px;
+		}
+
+		#fibotalk_notif_page{
+			color: #263238;
+			background-color: #f4f7f9;
+			padding: 17px 20px;
+			border-radius: 6px;
+			max-width:270px;
+			font-weight: 100;
+			font-size:13px;
+			line-height:15px;
+			font-family: Helvetica, Arial, sans-serif;
+			display: none;
+		}
+
+		.msg{
+			padding: 17px 20px;
+			border-radius: 6px;
+			max-width:270px;
+			font-size:14px;
+			line-height:18px;
+			font-family: Helvetica, Arial, sans-serif;
+		}
+
+		.agent{
+			color: #263238;
+			background-color: #f4f7f9;
+		}
+
+		.fibotalk-agent-msg{
+			float:left;
+			padding:5px;
+		}
+
+		.fibotalk-user-msg{
+			float:right;
+			padding:5px;
+		}
+
+		.inchat .multimedia{
+		background-color:#fff;box-shadow: 0 0 0 1px #e7eaec; height:60px; padding:0px; border-radius: 0px;
+		}
+		.inchat .fileicon{
+		background-color:#ccc; height:60px;padding:0px;
+		}
+		.inchat .fileicon i{
+		padding-top:20px;
+		}
+
+		.inchat .fileicon img{
+		/* max-width:75%; */
+		margin-top:5%;
+		width: 50px;
+		height: 50px;
+		border-radius: 50%;
+		object-fit: cover;
+		}
+
+		.nopad{
+		padding:0px;
+		}
+		.inchat .multimedia h5{
+		color:#333; margin-bottom:10px;
+		}
+
+		#_ft_mother_ship_{
+		display:none;
+		}
+
+		.theme{
+			background-color : #555555;
+			color:#eee;
+		}
+
+		.fibotalk-header{
+			width:100%; 
+			border-bottom: 1px solid #aaa;
+			height: 75px;
+		}
+
+		.fibotalk-header .filler{
+			height:50px;
+			width:100%;
+		}
+
+		#fibotalk-chat-board{
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding:0px 15px;
+		height: calc(100% - 137px);
+		}
+
+		#fibotalk-offline {
+		display: none;
+		}
+
+		#fibotalk-off-board{
+		overflow-y: auto;
+		overflow-x: hidden;
+		padding:0px 15px;
+		height: calc(100% - 110px);
+		}
+
+		.header-text{
+		font-weight: 100;
+		font-family: Helvetica, Arial, sans-serif;
+		padding: 25px 0px 0px 0px;
+		text-align: center;
+		color: #fefefe;
+		font-size: 18px;
+		}
+
+		.chat-head-img {
+		padding: 18px 0px 0px 0px;
+		}
+
+		.header-agent-images{
+		margin-top: 10px;
+		display: none;
+		}
+
+		.fibotalk-description{
+			font-size:14px;
+			line-height:18px;
+			font-weight:200 ;
+			font-family : Helvetica, Arial, sans-serif;
+			text-align: center;
+			color:#eee;
+			padding:15px 75px;
+			word-spacing: 2px;
+		}
+
+		.fibotalk-description:before{
+			position: absolute;
+			display: block;
+			top: 0;
+			left: 20px;
+			right: 20px;
+			height: 1px;
+			margin-top:60px;
+			content: " ";
+			background: -webkit-gradient(linear,left top,right top,from(transparent),color-stop(25%,hsla(0,0%,100%,.1)),color-stop(75%,hsla(0,0%,100%,.1)),to(transparent));
+			background: linear-gradient(90deg,transparent 0,hsla(0,0%,100%,.1) 25%,hsla(0,0%,100%,.1) 75%,transparent);
+		}
+
+
+		#fibotalk-get-started{
+		bottom: 0;
+		position: absolute;
+		background: #e3e7e9 !important;
+		width: 100%;
+		height: 50px;
+		z-index: 9999;
+		padding:15px;
+		text-align: center;
+		font-size:15px;
+		font-weight: 400;
+		cursor:pointer;
+		}
+
+		.fibotalk-action-board{
+		bottom: 0;
+		position: absolute;
+		background: #f3f7f9 !important;
+		width: 100%;
+		z-index: 9999;
+		padding:5px;
+		font-size:15px;
+		font-weight: 200;
+		}
+
+		#fibotalk-msg-space{
+			overflow-y : auto;
+			overflow-x: hidden;
+		}
+		.fibotalk-status{
+			height: 40px;
+			font-size:12px;
+			font-weight:400;
+			font-family : Helvetica, sans-serif;
+			padding:10px;
+			text-align: center;
+			color:#333333;
+			background:#f3f7f9!important;
+		}
+
+
+		.agentimg {
+			width: 40px;
+			height: 40px;
+			border-radius: 50%;
+			background-color: white;
+		}
+
+		.ftNegMargin {
+		margin-left: -10px;
+		}
+
+		/* #fibotalk-chat-header .agentimg{
+			width : 40px;
+			height:40px;
+			border-radius: 50%;
+		}
+
+		#fibotalk-chat-header{
+			padding:15px 0px 15px 40px;
+			width:100%;
+			line-height:18px;
+			display:none;
+			border-bottom: 1px solid #aaa;
+			position:fixed;
+			top:0;
+			left:0;
+			font-size:18px;
+			height: 65px;
+		}
+
+		#fibotalk-chat-header p {
+		margin-top: 10px;
+		} */
+
+		#fibotalk-welcome-page{
+		width:100%;
+		min-height: 250px;
+		background: #fff;  
+			border-radius : 7px;
+		overflow: hidden;
+		position:fixed;
+		top:0;
+		left:0;
+		height: calc(100% - 9px);
+		}
+
+		.fibo-welcome-msg {
+		margin: 30px;
+		padding: 10px;
+		font-size: 14px;
+		line-height: 22px;
+		color: rgb(99, 99, 99);
+		border-radius: 10px;
+		background-color: ghostwhite;
+		box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 20px !important;
+		overflow: hidden;
+		}
+
+
+
+		/*------THE TRICK------*/
+
+		html {
+			overflow-y: auto;
+			overflow-x: hidden;
+
+		}
+
+
+		/*---------------------*/
+
+		/* Compose */
+
+		._ft_conversation_compose_ {
+		display: flex;
+		}
+
+		._ft_conversation_compose_ input {
+		background: #fff;
+		
+		}
+
+		._ft_conversation_compose_ .emoji {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: white;
+		border-radius: 5px 0 0 5px;
+		flex: 0 0 auto;
+		margin-left: 8px;
+		width: 48px;
+		}
+
+		._ft_conversation_compose_ .input-msg {
+		border: 1px solid #eee;
+			/*flex: 1 1 auto;*/
+			width:100%;
+			border-radius: 25px;
+			font-size: 16px;
+			margin: 0px 0px 0px 5px;
+			outline: none;
+			min-width: 50px;
+			padding: 16px;
+		}
+
+		._ft_conversation_compose_ .photo {
+		flex: 0 0 auto;
+		border-radius: 0 0 5px 0;
+		text-align: center;
+		position: relative;
+		width: 48px;
+		}
+
+		._ft_conversation_compose_ .photo:after {
+		border-width: 0px 0 10px 10px;
+		border-color: transparent transparent transparent #fff;
+		border-style: solid;
+		position: absolute;
+		width: 0;
+		height: 0;
+		content: "";
+		top: 0;
+		right: -10px;
+		}
+
+		._ft_conversation_compose_ .photo i {
+		display: block;
+		color: #7d8488;
+		font-size: 20px;
+		transform: translate(-50%, -50%);
+		position: relative;
+		top: 50%;
+		left: 50%;
+		}
+
+		._ft_conversation_compose_ .send {
+		background: transparent;
+		border: 0;
+		cursor: pointer;
+		flex: 0 0 auto;
+		margin-left: 8px;
+		margin-right: 8px;
+		padding: 0;
+		position: relative;
+		outline: none;
+		}
+
+		._ft_conversation_compose_ .send .circle {
+		background: #fff;
+		border-radius: 50%;
+		color: #fff;
+		position: relative;
+		width: 42px;
+		height: 42px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		}
+
+		._ft_conversation_compose_ .send .circle i {
+		font-size: 24px;
+		margin-left: -2px;
+		}
+
+		.fibotalk-inline-submit{
+		cursor : pointer;
+		}
+
+		.fibotalk-inline-submit img{
+		height:35px;
+		width:35px;
+		}
+
+		.fibotalk-form-element{
+		height:35px;
+		font-size: 16px;
+		color: #444;
+		width: 230px;
+		}
+
+		.ft_material{
+		background: none;
+		border:none;
+		color: #00aaaa;
+		font-size:15px;
+		text-transform: uppercase;
+		font-size:13px;
+		cursor:pointer;
+		}
+
+		#agent-typing {
+		text-align: center;
+		font-style: italic;
+		display: none;
+		}
+		
+
+		._ft_active_{
+			display:block !important;
+			border:0px none transparent;
+			position:fixed;
+			box-shadow: 0 4px 20px 4px rgba(50,50,50,0.4);
+		}
+		
+		#_ft_go_home_ {
+			position: absolute;
+			left: 10px;
+			top: 25px;
+			height: 20px;
+			cursor: pointer;
+			display: none;
+			/* border-radius: 50%; */
+		}
+
+		#close-chat{
+			position: absolute;
+			right: 15px;
+			top: 25px;
+			height: 20px;
+			display:block;
+			cursor: pointer;
+			/* border-radius: 50%; */
+		}
+		#_ft_send_file_{
+			float:right;
+			border-radius: 50%;
+			border: none;
+			width: 30px;
+			height: 30px;
+		}
+
+		#selected_file_name{
+			font-size: 12px;
+			font-weight:400;
+		}
+
+		#selected_file_size{
+			font-weight:200;
+			font-size:12px;
+		}
+
+		.upload_status{
+			width:80%;
+			margin-left:10%;
+			height: 4px;
+			background:#fff;
+		}
+
+		#upload_progress{
+			background: #00aaaa;
+			width:0px;
+			height:4px;
+		}
+		.close{
+			font-size: 20px !important;
+			line-height: 1.2;
+			font-weight: 700;
+			color: #000;
+			text-shadow: 0 1px 0 #fff;
+			position : absolute;
+			right: 10px;
+			top:5px;
+		}
+
+		.upload_temp_img {
+			height: 10px;
+		}
+
+		.left-adjust{
+			margin-left: 17px;
+		}
+		.left-adjust-alt{
+			margin-left: -16px !important;
+		}
+
+		::-webkit-scrollbar-thumb {
+			background-color: rgba(0,0,0,0.2);
+		}
+		::-webkit-scrollbar {
+			width: 3px !important;
+			height: 3px !important;
+		}
+		/*Media queries mobile*/
+		@media only screen and (max-device-width: 540px){
+		::-webkit-scrollbar {
+			width: 0px !important;
+			height: 0px !important;
+		}
+		::-webkit-scrollbar-thumb {
+		background-color: rgba(0,0,0,0.2);
+		} 
+
+
+		.msg{
+		font-weight: 400;
+		font-size:15px;
+		line-height:18px;
+		font-family: Helvetica, Arial, sans-serif;
+		}
+
+		.header-text{
+		font-weight: 100;
+		font-family: Helvetica, Arial, sans-serif;
+		padding: 25px 15px;
+		text-align: center;
+		color: #fefefe;
+		font-size: 24px;
+		border-radius: 0px;
+		}
+
+		/* .fibotalk-description{
+		font-size:15px;
+		line-height:18px;
+		font-weight:400 ;
+		font-family : Helvetica, Arial, sans-serif;
+		text-align: center;
+		color:#eee;
+		padding:15px 75px;
+		} */
+
+		#fibotalk-welcome-page{
+			border-radius : 0px;
+		}
+
+		}
+
+		#_ft_rating_div_{
+		width: 100%;
+		margin: 30px 0px;
+		padding: 20px 15px;
+		color: #263238;
+		font-size: 14px;
+		line-height: 18px;
+		border-radius: 20px;
+		box-shadow: 0 3px 8px 0 rgba(5, 73, 209, 0.1);
+		}
+
+		#_ft_rating_div_ i{
+		font-size: 25px;
+		}
+
+		#_ft_rating_div_ .fa-star-o{
+		color: #24607d;
+		}
+
+		#_ft_rating_div_ table{
+		margin: 15px 0px;
+		}
+
+		#_ft_rating_div_ td{
+		border: none;
+		}
+
+		._ft_star_checked_{
+		color: orange;
+		}
+
+		._ft_sys_msg_div_{
+		padding:15px;
+		}
+		.badge{
+		color: rgba(69,90,100,.95);
+		font-size: 12.5px;
+		line-height: 21px;
+		font-weight: 200;
+		box-shadow: 0 1px 0.5px rgba(0,0,0,.13);
+		padding: 2px 20px;
+		border-radius: 15px;
+		margin: 15px;
+		}
+		.badge-default{
+		background-color:#f8f9fa;
+		}
+		.badge-success{
+		background-color:#dcf8c6;
+		}
+		.badge-info{
+		background-color:rgba(225,245,254,.92);
+		}
+		.badge-warning{
+		background-color:rgba(255,245,196,.95)
+		}
+		.fibo_fake_link{
+		color: #007bff !important;
+		text-decoration: none !important;
+		cursor: pointer !important;
+		}
+		._ft_no_float_{
+		float: none;
+		}
+		._ft_rating_star_{
+		width: 30px;
+		}
+		._ft_rating_star_small_{
+		width: 13px;
+		padding-bottom: 2px;
+		}
+		.carousel-control.right {
+		background: none;
+		}
+		.carousel-control.left {
+		background: none;
+		text-align: unset;
+		}
+
+		.carousel-indicators li {
+		border: 2px solid #333;
+		}
+
+		.carousel-indicators .active {
+		background-color: #333;
+		}
+
+		.open-notif {
+		display: table-cell;
+		vertical-align: middle;
+		cursor: pointer;
+		}
+
+		#fibotalk-welcome-board {
+		overflow-y: auto;
+		overflow-x: hidden;
+		max-height: calc(100% - 75px);
+		}
+
+		.open-notif img:hover {
+		filter: none;
+		}
+		.open-notif img {
+		filter:opacity(30%);
+		height: 20px;
+		}
+
+		.panel-primary {
+		border-radius: 0px 0px 7px 7px;
+		background-color:#337ab7;
+		}
+
+		.panel-heading {
+		color: white;
+		text-decoration: none;
+		}
+
+		.ann-notif-img {
+		background-size: cover;
+		background-position: center center;
+		width: 90px;
+		height: 90px;
+		border-radius: 20%;
+		margin: 5px;
+		}
+
+		.ann-notif {
+		border-radius: 5px;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+		word-wrap: break-word;
+		background-color: #fff;
+		background-clip: border-box;
+		border: 1px solid rgba(0, 0, 0, 0.125);
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.15) !important;
+		margin: 10px 30px;
+		}
+
+		.ann-notif .ann-action-holder {
+		text-align: end !important;
+		margin-top: 15px;
+		}
+
+		.ann-notif .ann-cover-img {
+		max-height: 85px;
+		border-radius: 5px;
+		margin: 10px;
+		object-fit:cover;
+		}
+
+		.ann-notif .ann-text-con {
+		padding: 6px 0px;
+		flex: 1 1 auto;
+		padding: 7px 16px 13px 16px;
+		}
+
+		.ann-notif .ann-title {
+		font-size: 14px;
+		margin-bottom: 10px;
+		font-weight: 800 !important;
+		color: #428bca;
+		line-height: 1;
+		font-family: Helvetica, Arial, sans-serif;
+		}
+
+		.ann-notif .ann-date {
+		color: #6c757d !important;
+		font-size: 70%;
+		font-weight: 400;
+		}
+
+		.ann-notif .ann-subT {
+		font-weight: 400 !important;
+		font-size: 13px;
+		margin-bottom: 6px;
+		line-height: 0.1;
+		/* margin-top: -5px; */
+		}
+
+		.ann-notif .ann-action {
+		width: 100%;
+		color: #fff;
+		background-color: #007bff;
+		border-color: #007bff;
+		cursor: pointer;
+		display: inline-block;
+		font-weight: 400;
+		font-size: 13px !important;
+		text-align: center;
+		vertical-align: middle;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		border: 1px solid transparent;
+		padding: 5px;
+		font-size: 12px;
+		line-height: 1.5;
+		border-radius: 3px;
+		transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+		-webkit-appearance: button;
+		-webkit-appearance: button;
+		overflow: visible;
+		margin: 0;
+		outline: auto;
+		text-decoration: none;
+		}
+
+		.media-left {
+		display: table-cell;
+		vertical-align: top;
+		padding-right: 10px;
+		}
+
+		.media-body {
+		display: table-cell;
+		vertical-align: top;
+		width: 10000px;
+		}
+
+		.chatimg-hol {
+		position: relative;
+		left: 245px;
+		background-color: white;
+		height: 35px;
+		width: 40px;
+		border-radius: 50%;
+		padding: 8px;
+		display: table-cell;
+		cursor: pointer;
+		}
+
+		.chatimg {
+		height: 25px;
+		width: 25px;
+		}
+
+		.float-right {
+		float: right;
+		}
+	</style>
+	<script>
+		var channel = "web",
+		sender = "guest";
+		var settings = [];
+		var openbtn = "#_ft_chatopen_btn_", closebtn = "#_ft_chatclose_btn_";
+		var sending = false;
+		var msg = { h: {}, d: {} };
+		var activepg = "fibotalk-welcome-page";
+		var motherShip = "#_ft_mother_ship_";
+		var chat = {};
+		var maxFileSize = 10000000;
+		var timeInterval = 5000;
+		var sessionAliveTime = 90000;
+		var upscope_short_id = null;
+		var onlAgent = "";
+		var guestName = "";
+
+		//var activepg = "_ft_reg_page_";
+		var activeBtn = openbtn, sending = false;
+		var pages = {
+			"chat": "#fibotalk-welcome-page",
+			"notif": "#fibotalk_notif_page"
+		};
+		var msgId = 0;
+		var gid = getCookie("_ft_gid_"), senderId = getCookie("_ft_cid_"), chatId = getCookie("_ft_cid_");
+		var regSt = getCookie("_ft_st_") || "noreg";
+		var org = "", title = "";
+		var fta = {}, sess = "";
+		var rating = 0;
+		var popup = "";
+		/**
+		* Util functions
+		*/
+		function getCookie(name) {
+			name = name + "=";
+			var decodedCookie = decodeURIComponent(window.parent.document.cookie);
+			var ca = decodedCookie.split(';');
+			for (var i = 0; i < ca.length; i++) {
+				var c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1);
 				}
-			]
-		},
-		{
-			tag: "div",
-			attr: {
-				id: "fibotalk-footer"
-			},
-			body: [
-				{
-					tag: "a",
-					attr: {
-						href: "https://fibotalk.com/",
-						target: "_blank"
-					},
-					innerHTML: "Running On ",
-					body: [
-						{
-							tag: "img",
-							attr: {
-								src: foo.base + foo.icons.logo,
-								style: "width:42px; margin-top:-2px;"
-							}
-						}
-					]
+
+				if (c.indexOf(name) == 0) {
+					return c.substring(name.length, c.length);
 				}
-			]
-		},
-		{
-			tag: "img",
-			attr: {
-				id: "close-chat",
-				src: foo.base + foo.icons.close
 			}
-		},								
-		{
-			tag: "img",
-			attr: {
-				id :"_ft_go_home_",
-				src: foo.base + foo.icons.back,
-			}
+			return "";
 		}
-	]
 
-	servicesTemplate = {
-		chat: {
-			tag: "div",
-			attr: {
-				id: "fibotalk-chat"
-			},
-			body: [
-				{
-					tag: "div",
-					attr: {
-						class: "theme fibotalk-header"
-					},
-					body: [
-						{
-							tag: "div",
-							attr: {
-								id: "chat-header-text",
-								class: "header-text"
+		function setCookie(name, value, days) {
+			var dt = new Date(), expires = "expires=";
+			if (days) {
+				dt.setTime(dt.getTime() + (days * 24 * 60 * 60 * 1000));
+				expires = expires + dt.toUTCString();
+			}
+			else {
+				expires = expires + "Session";
+			}
+
+			if (consts.domain != ".localhost")
+				window.parent.document.cookie = name + "=" + value + ";" + expires + ";path=/;domain=" + consts.domain + ";";
+			else
+				window.parent.document.cookie = name + "=" + value + ";" + expires + ";path=/;";
+
+		}
+
+		function delCookie(name) {
+			var val = "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+			if (consts.domain != ".localhost")
+				val += "domain=" + consts.domain + ";";
+			window.parent.document.cookie = name + val;
+		}
+
+		var consts = window.foo;
+		var cdn = window.foo.protocol + window.foo.server;
+		var socket = io(window.foo.chat);
+
+		// main function
+		(function (window, document) {
+
+			var siofu = new SocketIOFileUpload(socket);
+			if (!getCookie("_ft_gid_"))
+				return;
+			title = window.parent.document.title;
+			
+			/**
+			 *	Chat Workflow opening and closing of chat boxes and buttons 
+			*/
+
+			window.onmessage = function (e) {
+
+				console.log("here", e);
+				try {
+					switch (e.data.event) {
+						case "chatopen":
+							openChatPage(e.data.type);
+							break;
+						case "chatclose":
+							closePage();
+							break;
+
+						case "onFocus":
+							console.log("setting widget analytis");
+							widgetAnalytics();
+							break;
+						case "onBlur":
+							console.log("close page for onblur & stoping time interval");
+							try {
+								if (sess) {
+									var bar_cookie = JSON.parse(window.parent.window.localStorage.getItem("__ft__sess__"));
+									if (sess == bar_cookie.id)
+										setClose(null, "on Blur");
+								}
+							} catch (e) {}
+							break;
+						case "open":
+							if (e.data.data)
+								openFeature(e.data.data);
+							break;
+						case "userInfo":
+							runEventLogger();
+							executeAddons();
+							break;
+						case "newSess":
+							ftCon(socket, true);
+							break;
+						case "uiChange":
+							if (e.data.ftSettings && e.data.ftSettings.email) {
+								document.getElementById("fibo-start-email").style.display = "none";
 							}
-						},
-						{
-							tag: "div",
-							attr: {
-								id: "agent-typing",
-							},
-							innerHTML: "typing..."
-						}
-					]
-				},
-				{
-					tag: "div",
-					attr: {
-						id: "fibotalk-chat-board"
+							break;
+						case "closeFeature":
+							popup = e.data.screen;
+							if (e.data.data) {
+								openFeature(e.data.data);
+							}
+						case "popupRes":
+							if (e.data.data)
+								popup = e.data.data.screen;
 					}
-				},
-				{
-					tag: "div",
-					attr: {
-						class: "fibotalk-action-board"
-					},
-					body: [
-						{
-							tag: "form",
-							attr: {
-								id: "_ft_chat_form_",
-								class: "_ft_form",
-								style: "overflow:visible;",
-								action: ""
-							},
-							body: [
-								{
-									tag: "div",
-									attr: {
-										id: "_ft_send_form_",
-										class: "_ft_conversation_compose_"
-									},
-									body: [
-										{
-											tag: "textarea",
-											attr: {
-												type: 'text',
-												rows: 1,
-												class: "input-msg",
-												id: "m",
-												name: "input",
-												placeholder: "Send Message",
-												autocomplete: "off",
-												autofocus: ""
-											}
-										},
-										{
-											tag: "input",
-											attr: {
-												type: "file",
-												id: "upload_file",
-												style: "display:none"
-											}
-										},
-										{
-											tag: "div",
-											attr: {
-												id: "upload_button",
-											},
-											body: [{
-												tag: "img",
-												attr: {
-													src: foo.base + foo.icons.upload
-												}
-											}]
-										},
-										{
-											tag: "button",
-											attr: {
-												id: "_ft_chat_send_btn_",
-												class: "send"
-											},
-											body: [{
-												tag: "div",
-												attr: {
-													class: "circle"
-												},
-												body: [{
-													tag: "img",
-													attr: {
-														src: foo.base + foo.icons.send
-													}
-												}]
-											}]
-										}
-									]
-								}
-							]
-						},
-						{
-							tag: "div",
-							attr: {
-								id: "_ft_file_selected_",
-								class: "_ft_conversation_compose_"
-							},
-							body: [{
-									tag: "span",
-									attr: {
-										id: "_ft_file_selected_error_"
-									}
-								},
-								{
-									tag: "div",
-									attr: {
-										class: "row",
-										id: "_ft_file_selected_details_",
-										style: "padding:15px;"
-									},
-									body: [{
-											tag: "div",
-											attr: {
-												class: "col-xs-3"
-											},
-											body: [{
-												tag: "img",
-												attr: {
-													id: "selected_file_image"
-												}
-											}]
-										},
-										{
-											tag: "div",
-											attr: {
-												class: "col-xs-9"
-											},
-											body: [{
-													tag: "label",
-													attr: {
-														id: "selected_file_name"
-													}
-												},
-												{
-													tag: "br"
-												},
-												{
-													tag: "span",
-													attr: {
-														id: "selected_file_size"
-													}
-												},
-												{
-													tag: "div",
-													attr: {
-														class: "upload_status"
-													},
-													body: [{
-														tag: "div",
-														attr: {
-															id: "upload_progress"
-														}
-													}]
-												},
-						
-											]
-										},
-										{
-											tag: "button",
-											attr: {
-												id: "_ft_send_file_"
-											},
-											body: [{
-												tag: "div",
-												attr: {
-													class: "circle"
-												},
-												body: [{
-													tag: "img",
-													attr: {
-														src: foo.base + foo.icons.send
-													}
-												}]
-											}]
-										}
-									]
-								},
-								{
-									tag: "a",
-									attr: {
-										id: "close_upload_file",
-										class: "close",
-										title: "close"
-									},
-									innerHTML: "&times;"
-								}
-							]
+				} catch(e) {console.log(e)}
+			};// windw.onmessage
+
+			setInterval(runEventLogger, timeInterval);
+
+			function runEventLogger() {
+				var bar = window.parent.window.localStorage.getItem("__ft__events");
+
+				if (!bar)
+					return;
+				bar = JSON.parse(bar);
+				if (bar.length > 25) {
+					window.parent.window.localStorage.removeItem("__ft__events");
+					return;
+				}
+				var response = [];
+				for (var i in bar) {
+					response.push(handleLogEvent(bar[i]));
+				}
+				try {
+					socket.emit("logEvent", { data: response, gid: gid });
+				} catch (e) {}
+				window.parent.window.localStorage.removeItem("__ft__events");
+				pauseSession();
+				resumeSession();
+			}
+
+			function handleLogEvent(data) {
+				try {
+					var bar = data;
+					if(!bar.gid)
+						bar.gid = gid;
+					bar.uid = senderId;
+					var ua = fta;
+					var arr = [{ key: "_ft_visits", type: "num" }];
+					arr.map(function (fld) {
+						try {
+							var key = fld.key.replace('_ft_', '');
+							bar[key] = window.parent.window.localStorage.getItem(fld.key);
+							switch (fld.type) {
+								case "num":
+									bar[key] = parseInt(bar[key]);
+									break;
+								case "obj":
+									bar[key] = JSON.parse(bar[key]);
+									break;
+							}
+						} catch (e) { }
+					});
+					var loc = ua.loc || {};
+					for (var i in ua) {
+						if (i != "loc" && i != "ip")
+							bar[i] = ua[i];
+					}
+					for (var i in loc) {
+						if (i != "ip")
+							bar[i] = loc[i];
+					}
+					var foo_page = window.parent.location.pathname;
+					//console.log(foo_page);
+					if (foo_page.indexOf("?") > -1)
+						foo_page = foo_page.substring(0, foo_page.indexOf("?"));
+					try {
+						bar.page = bar.modify.page || foo_page;
+						if (bar.modify.duration)
+							bar.duration = bar.modify.duration;
+					} catch (e) {
+						bar.page = foo_page;
+					}
+					bar.sess = sess;
+					delete bar.modify;
+					//console.log(bar);
+					if (bar.ui) {
+						if (guestName && bar.ui.name != guestName) {
+							sendUpdateUi({
+								name: bar.ui.name,
+								pic: bar.ui.pic
+							});
+							guestName =  bar.ui.name;
 						}
-					]
-				}				
-			]
+						var updateUiFlag = false;
+						updateUiFlag = ifFeatureUsed(bar);
+						if (updateUiFlag)
+							bar.updui = true;
+						var settings = getStorageItem("_ft_w_settings_", "session");
+						if (settings.identifier)
+							bar.ui.identifier = settings.identifier;
+					}
+					var sessStart = getStorageItem("__ft__sess__", "local");
+					if (sessStart.startTime)
+						bar.sessDur = (new Date().getTime() - Number(sessStart.startTime)) / 1000;   // duration in seconds
+					return bar;
+				} catch (e) {
+					// all exceptions in sending events.
+				}
+			}
+
+			function ifFeatureUsed (bar) {
+				var features = getFtData("features");
+				var flag = false;
+				var ftData = getFtData("settings");
+				if (!ftData.features_used)
+					ftData.features_used = {};
+				try {
+					if (Array.isArray(features)) {
+						if (!bar.ui.features_used)
+							bar.ui.features_used = {};
+						for (var i in features) {
+							if (features[i].goals) {
+								for (var j in features[i].goals) {
+									if (features[i].goals[j].key == "event" && bar.event == features[i].goals[j].val) {
+										bar.ui.features_used[features[i].id] = true;
+										ftData.features_used[features[i].id] = true;
+										flag = true;
+									} else if (bar.event == features[i].goals[j].key && bar.val == features[i].goals[j].val) {
+										bar.ui.features_used[features[i].id] = true;
+										ftData.features_used[features[i].id] = true;
+										flag = true;
+									}
+								}
+							}
+						}
+					}
+				} catch (e) {}
+				setFtData("settings", ftData);
+				if (flag)
+					ftFlows();
+				return flag;
+			}
+
+			function sendUpdateUi(info) {
+				var msg = {
+					h: {
+						sender: sender,
+						senderId: senderId,
+						chatId: chatId,
+						gid: gid,
+						recepient: "agent_group",
+						type: "guestdata_update"
+					},
+					ph: info,
+					d: info
+				};
+				msg.ph.gid = gid;
+				msg.ph.chatId = chatId;
+				sendNotif(msg);
+			}
+
+			/**
+			 * Perpetual event to send "session is alive" to backend
+			 */
+			var sessStat;
+
+			function pauseSession() {
+				clearInterval(sessStat);
+			}
+
+			function resumeSession() {
+				sessStat = setInterval(function() {
+					try {
+						window.parent.window.fibo.logEvent("session_alive");
+					} catch(e) {}
+				}, sessionAliveTime);
+			}
+
+			function initWidget() {
+				var email = document.querySelector("#email-submit");
+				if (email)
+					email.addEventListener("click", function () {
+						var foo = document.getElementById("user-email").value;
+						if (foo.indexOf("@") > -1) {
+							email.innerHTML = "working...";
+							regSubmit("email", foo);
+						}
+					});
+			
+				var phone = document.querySelector("#phone-submit");
+				if (phone)
+					phone.addEventListener("click", function () {
+						var foo = document.getElementById("user-phone").value;
+						foo = foo.toString();
+						console.log(foo);
+						if (foo.length > 7) {
+							phone.innerHTML = "working...";
+							regSubmit("phone", foo);
+						}
+					});
+			
+				var name = document.querySelector("#name-submit");
+				if (name)
+					name.addEventListener("click", function () {    
+						var foo = document.getElementById("user-name").value;
+						if (!foo.length)
+							return;    
+						if (foo.trim(" ").length) {
+							name.innerHTML = "working...";
+							regSubmit("name", foo);
+						}
+						else
+							console.log("No data");
+					});
+			
+				document.getElementById("close-chat").onclick = function () { closeChat(); };
+				document.getElementById("_ft_go_home_").onclick = function () { goHome(); };
+			
+				if (document.querySelector("email-update"))
+					document.querySelector("email-update").addEventListener("click", function () {
+						email.innerHTML = setForm("email");
+					});
+
+				if (document.querySelector("phone-update"))
+					document.querySelector("phone-update").addEventListener("click", function () {
+						phone.innerHTML = setForm("phone");
+					});
+
+				if (document.querySelector("name-update"))
+					document.querySelector("name-update").addEventListener("click", function () {
+						name.innerHTML = setForm("name");
+					});
+			}
+
+			function sendFTNotif(data) {
+				window.parent.window.postMessage(data, "*");
+			}
+
+
+
+			// show open or close btn
+			function showBtn(btn) {
+				// $(closebtn).css({ "display": "none" });
+				// $(openbtn).css({ "display": "none" });
+				// $(btn).css({ "display": "block" });
+			}// showBtn
+
+			function openChatPage(type) {
+				console.log("here");
+				ftCheck(socket);
+				// if ($("#fibotalk-details").is(":visible")) {
+				//     var newMsg = getFtData("newMsg");
+				//     if (typeof newMsg !== 'object' && newMsg) {
+				//         startChat();
+				//     }
+				// }
+				switch (type) {
+					case "msg":
+						startChat();
+				}
+				// $("#fibo-welcome-msg").show(300);
+				// $("#fibo-announce-holder").show(600);
+			}
+
+			function openPage(pg, fadeout) {
+				// $.doTimeout("notifPage");
+				// for (var i in pages) {
+				//     console.log(pages[i]);
+				//     try {
+				//         $(pages[i]).removeClass("_ft_active_");
+				//     } catch (e) { }
+				// }
+				// $(pg).addClass("_ft_active_");
+				// if (fadeout) {
+				//     $(motherShip).show();
+
+				//     $.doTimeout('notifPage', 5000, function () {
+				//         $(motherShip).fadeOut();
+				//     });
+				// }
+				// else
+				//     $(motherShip).show();
+				// ftCon(socket);
+			}
+
+			function eventFire(el, etype){
+				if (el.fireEvent) {
+				el.fireEvent('on' + etype);
+				} else {
+				var evObj = document.createEvent('Events');
+				evObj.initEvent(etype, true, false);
+				el.dispatchEvent(evObj);
+				}
+			}
+
+			//---- chat UI functionality
+
+			// === send chat message ====
+
+			var chatInitiated = false;
+			function initChat() {
+				if (chatInitiated)
+					return;
+				chatInitiated = true;
+				var chatSendBtn = document.getElementById("_ft_chat_send_btn_");
+				if (chatSendBtn)
+					chatSendBtn.addEventListener("click", chatSubmit);
+
+				var submitBtn = document.getElementById(activepg);
+				if (submitBtn)
+					submitBtn.addEventListener("submit", chatSubmit);
+
+				var m = document.getElementById("m");
+				if (m)
+					m.addEventListener("keypress", keyPressed);
+				// file upload events handling
+				siofu.addEventListener("start", function (event) { fileUploadStart(event) });
+				siofu.addEventListener("progress", function (event) { fileUploading(event); });
+				// siofu.addEventListener("complete", function(event){ fileUploadComplete(event)});
+				siofu.addEventListener("siofu_error", function (event) {
+					console.log("here.....", event);
+				});
+			
+			
+				// document.getElementById("upload_button").addEventListener("click", siofu.prompt, false);
+				var uploadBtn = document.getElementById("upload_button");
+				var upFile = document.getElementById('upload_file');
+				if (uploadBtn)
+					uploadBtn.addEventListener("click", function () {
+						clickAction(upFile);
+					});
+			
+				if (upFile)
+					upFile.onchange = function (e) {
+						console.log("file selected", e.target.files);
+						try {
+							var error = document.getElementById("_ft_file_selected_error_");
+							if (e.target.files[0].size > maxFileSize) {
+								if (error)
+									error.innerHTML = ("File Too Big. Maximum size is 10 MB");
+							}
+							else {
+								var reader = new FileReader();
+				
+								reader.onload = function (ev) {
+									// get loaded data and render thumbnail.
+									if (e.target.files[0].type.indexOf("image") > -1)
+										document.getElementById("selected_file_image").src = ev.target.result;
+									else
+										document.getElementById("selected_file_image").src = cdn + "/img/filelogo.png";
+								};
+				
+								// read the image file as a data URL.
+								reader.readAsDataURL(e.target.files[0]);
+								var selFName = document.getElementById("selected_file_name");
+								var selFSize = document.getElementById("selected_file_size");
+
+								if (selFName)
+									selFName.innerHTML = (e.target.files[0].name);
+								if (selFSize)
+									selFSize.innerHTML = (bytesToSize(e.target.files[0].size));
+							}
+							document.getElementById("_ft_file_selected_").style.display = "block";
+							document.getElementById("_ft_send_form_").style.display = "none";
+							document.getElementById("#_ft_send_file_").style.display = "block";
+						} catch (e) { }
+					};
+			
+				try {
+					siofu.listenOnSubmit(document.getElementById("_ft_send_file_"), document.getElementById("upload_file"));
+				} catch(e) {}
+			
+				try {
+					document.getElementById("_ft_send_file_").addEventListener("click", function (e) {
+						document.getElementById("_ft_send_file_").style.display = "none";
+					});
+				
+					document.getElementById("close_upload_file").addEventListener("click", clearFileUpload);
+				} catch(e) {}
+			}
+
+			function clickAction(element) {
+				if (element) {
+					if (element.click)
+						element.click();
+					else
+						eventFire(element, 'click');
+				}
+			}
+
+			function keyPressed(e) {
+				try {
+					if (e.keyCode == 13 && !e.shiftKey) {
+						e.preventDefault();
+						var input = document.getElementById("m").value;
+						sendChatMsg(input);
+						return false;
+					}
+					typingEvent();
+					return true;
+				} catch(e) {console.log(e)}
+			}
+
+			var typing = false;
+
+			function typingEvent() {
+				if (!typing) {
+					typing = true;
+					sendTyping();
+					setTimeout(function() {
+						typing = false;
+					}, 4500);
+				}
+			}
+
+			function sendTyping() {
+				var msg = {
+					h: {
+						chatId: chatId,
+						type: "typing",
+						recepient: "agent",
+						senderId: senderId,
+						sender: "user",
+						gid: gid
+					},
+					d: {}
+				};
+				var recepientId = getStorageItem("__ft__recepientId__", "local");
+				if (typeof recepientId !== 'object') {
+					msg.h.recepientId = recepientId;
+					sendNotif(msg);
+				}
+			}
+
+			function chatSubmit(e) {
+				try {
+					e.preventDefault();
+					var input = document.getElementById("m").value;
+
+					return sendChatMsg(input);
+				} catch(e) {console.log(e)}
+			}// chat-submit
+
+			//--- submission of registration form ---
+
+
+			function regSubmit(key, value) {
+				console.log("In regSubmit ", key, value);
+				var msg = {
+					h: {
+						senderId: senderId,
+						sender: sender,
+						gid: gid,
+						purpose: "reg",
+						channel: channel
+					},
+					d: {
+						save: true
+					}
+				};
+				msg.d[key] = value;
+				var obj = {};
+				obj[key] = value;
+				console.log(msg);
+				socket.emit("form", msg);
+				var ftSets = getFtSettings();
+				var lead = ""
+				if (!ftSets.userType || ftSets.userType != 'user')
+					lead = "lead";
+				window.parent.setFtSettings(obj,lead);
+				return false;
+			}
+
+			//--- socket connection management
+			socket.on("connect", function (msg) { ftCon(socket, msg); }); //connect
+			socket.on("ack", function (msg) { ftAck(msg); });//ack
+			socket.on("msg", function (msg) { ftMsg(msg); });//msg
+			socket.on("notif", function (msg) { ftNotif(msg); }); // notif
+			socket.on("echo", function (msg) { ftEcho(msg); });	// echo msg confirmation
+			socket.on("disconnect", function (msg) { ftDisconnect(socket, msg); });// disconnect
+			socket.on("fileuploaded", function (msg) { fileUploadComplete(msg); });
+			socket.on("chatRating", function (msg) { ftChatRatingHandler(msg); }); //chat rating ack handler
+			socket.on("npsResponse", function (msg) {
+				console.log("got flows nps response from server", msg);
+				npsChecked = true;
+				if (msg.h.status == "success") {
+					console.log("flows nps response was success so starting");
+					// var local_settings = getStorageItem("_ft_w_settings_", "session");
+					// if (local_settings.nps)
+					//     ftStartNps(local_settings.nps);
+					npsStatus = true;
+					npsChecked = false;
+					resumeFlow();
+				}
+			});
+			socket.on("announcements", function (msg) { handleAnnouncements(msg) });
+			socket.on("userSettings", function (msg) { ftUserSettings(msg); });
+			socket.on("start_chat", function (msg) { ftStartChat(msg); });
+			socket.on("end_chat", function (msg) { ftEndChat(msg); });
+			var agTyping;
+			socket.on("typing", function (msg) {console.log("typing...",msg);
+				try {
+					document.getElementById("agent-typing").style.display = "block";
+					clearTimeout(agTyping);
+					agTyping = setTimeout(function () {
+						document.getElementById("agent-typing").style.display = "none";
+					}, 5000);
+				} catch(e) {console.log(e)}
+			});
+			socket.on("cohorts", function (msg) { cohortCheckRes(msg) });
+
+			function clearFileUpload(e) {
+				try {
+					document.getElementById("upload_file").value = "";
+					document.getElementById("upload_progress").style.width = "0px";
+					document.getElementById("_ft_file_selected_").style.display = "none";
+					document.getElementById("_ft_send_form_").style.display = "flex";
+					document.getElementById("_ft_file_selected_error_").innerHTML = ("");
+				} catch(e) {console.log(e)}
+			}
+			//--functions
+
+			function fileUploadStart(event) {
+				event.file.meta.type = event.file.type;
+				console.log(event);
+			}// fileUploadStart
+
+			function fileUploading(event) {
+				var percent = event.bytesLoaded / event.file.size * 100;
+				try {
+					document.getElementById("upload_progress").style.width = percent.toFixed(0) + "%";
+				} catch (e) { }
+				return false;
+			}// fileUploading
+
+			function fileUploadComplete(input) {
+
+				console.log(input);
+				var msg = {
+					h: {
+						senderId: senderId,
+						gid: gid,
+						chatId: chatId,
+						sender: sender,
+						channel: channel,
+						msgtype: "file"
+					},
+					d: {
+						msg: [
+							{
+								type: input.d.type,
+								payload: { url: input.d.url }
+							}
+						]
+					}
+				};
+				var recepientId = getStorageItem("__ft__recepientId__", "local");
+				if (typeof recepientId !== 'object')
+					msg.h.recepientId = recepientId;
+
+				var ui = getFtSettings();
+				if (ui.email) {
+					var replyto = ui.email;
+					if (ui.name)
+						replyto = ui.name + " <" + replyto + ">";
+					msg.h.replyto = replyto;
+				}
+				msg['f'] = {
+					form: ui,
+				}
+				msg.f.form.ua = fta;
+
+				socket.emit("msg", msg);
+				setFtData("lastChat", msg);
+				// document.getElementById("fibotalk-chat-board")
+				//     .append(('<div id="temp_chat" class="row"><div class="fibotalk-user-msg">\
+				//     <div class="msg theme"><img class="upload_temp_img" src="'+ msg.d.msg[0].payload.url + '" /></div>\
+				//     <div class="fibotalk-time pull-right">sending....</div></div></div>'));
+
+				document.getElementById("m").value = "";
+				scrolltobottom();
+				clearFileUpload();
+				return false;
+			}// fileuploadcomplete
+
+			function ftCheck(socket) {
+				gid = getCookie("_ft_gid_");
+				chatId = getCookie("_ft_cid_") || null;
+
+				var msg = {
+					h: {
+						gid: gid,
+						senderId: senderId,
+						chatId: chatId,
+						channel: channel,
+						sender: sender
+					},
+					d: {}
+				};
+
+				socket.emit("check", msg);
+			}
+			// when socket is connected
+			function ftCon(socket, reset) {
+				// handle initial connection
+
+				gid = getCookie("_ft_gid_");
+				chatId = getCookie("_ft_cid_") || null;
+				if(chatId=="undefined" || reset)
+					chatId = "";
+				if(senderId =="undefined" || reset)
+					senderId = chatId || "";
+				var msg = {
+					h: {
+						gid: gid,
+						senderId: senderId,
+						chatId: chatId,
+						channel: channel,
+						sender: sender
+					},
+					d: {}
+				}
+				try {
+					if (!reset) {
+						var session_storage = getStorageItem("__ft__sess__", "local");
+						msg.h.sess = session_storage.id;
+					}
+				} catch (e) {}
+				var userInfo = getFtSettings();
+				try {
+					if(!userInfo.userType){
+						userInfo.userType = "visitor";
+						window.parent.setFtSettings({},'visitor');
+					}
+				} catch(e) {
+					console.log(e);
+				}
+				msg.h.userInfo = JSON.stringify(userInfo);
+				var chatBoard = document.getElementById("fibotalk-chat-board");
+				if (chatBoard)
+					chatBoard.innerHTML = "";
+				socket.emit("subscribe", msg);
+			}
+
+			function ftStartChat(msg) {
+				console.log("chat_stat", msg);
+				if (msg.h && msg.h.senderId) {
+					setStorageItem("__ft__recepientId__", "local", msg.h.senderId);
+
+					msg.h.sender = sender;
+					msg.h.recepient = "agent";
+					msg.h.recepientId = msg.h.senderId;
+					msg.h.senderId = senderId;
+					msg.h.purpose = "res";
+
+					sendNotif(msg);
+				}
+			}
+
+			function ftEndChat(msg) {
+				console.log("chat_stat", msg);
+				ftAddonEnabled('chatRating', msg);
+				if (msg.h && msg.h.senderId) {
+					window.parent.window.localStorage.removeItem("__ft__recepientId__");
+
+					msg.h.sender = sender;
+					msg.h.recepient = "agent";
+					msg.h.recepientId = msg.h.senderId;
+					msg.h.senderId = senderId;
+					msg.h.purpose = "res";
+
+					sendNotif(msg);
+				}
+			}
+
+			var interfaceLoaded = false; // if the messenger html is parsed
+
+			// ==== handle ack messages =====
+			function ftAck(msg) {
+				// handle ack
+				if (!msg.h)
+					return;
+				console.log("got Ack", msg);
+				setCookie("_ft_cid_", msg.h.chatId, 3000);
+				chatId = msg.h.chatId;
+				console.log(msg);
+				chat = msg;
+				if (msg.h.sess)
+					sess = msg.h.sess;
+
+				if (msg.h.ua) {
+					try {
+						if (window.parent.window.sessionStorage.getItem("blocked"))
+							return;
+						fta = msg.h.ua;
+						console.log(fta);
+			
+					} catch (e) { 
+						console.log(e);
+					}
+				}
+				if (msg.h.ts) {
+					var foo_ts = 0;
+					try {
+						foo_ts = (parseInt(new Date().getTime() / 1000));
+						foo_ts = msg.h.ts - foo_ts;
+						window.sessionStorage.setItem("__ft__offset__", foo_ts);
+					} catch(e) {
+						console.log(e);
+					}
+				}
+				if (msg.h.settings) {
+					try {
+						window.parent.sessionStorage.setItem("_ft_w_settings_", JSON.stringify(msg.h.settings));
+						if (!interfaceLoaded) {
+							// initTemplate();
+							initWidget();
+							interfaceLoaded = true;
+						}
+						if (!applyFibotalkSettings(msg.h.settings))
+							return;
+					} catch(e) {
+						console.log(e);
+					}
+				}
+
+				if(!msg.h.widgetAdd) {
+					try {
+						widget_added(msg);
+					} catch(e) {
+						console.log(e);
+					}
+				}
+
+				if (msg.h.widget) {
+					try {
+						if (msg.h.widget.blocked)
+							return disconnectChat();
+						if (msg.h.widget.hidewidget) {
+							return;
+						}
+						window.parent.window.postMessage({ event: "setwidget", widget: msg.h.widget }, "*");
+						window.parent.sessionStorage.setItem("_ft_widget_setting_", JSON.stringify(msg.h.widget));
+						setWidget(msg.h.widget);
+					} catch(e) {
+						console.log(e);
+					}
+				}
+
+				if (msg.h.agents) {
+					try {
+						setAgents(msg.h.agents);
+					} catch(e) {
+						console.log(e);
+					}
+				}
+				if (!senderId) {
+					// check if uid/senderid exists if not then update the cookie
+					try {
+						setCookie("_ft_cid_", msg.h.recepientId, 3000);
+						senderId = msg.h.recepientId;
+					} catch(e) {
+						console.log(e);
+					}
+				}
+				try {
+					if (!msg.h.agentsOnline) {
+						setOffline(msg);
+					}
+					else {
+						unsetOffline(msg);
+					}
+				} catch(e) {
+					console.log(e);
+				}
+				if (msg.h.data) {
+					try {
+						if (msg.h.data.email) {
+							var html = '<div style="font-size:14px;">' + msg.h.data.email + '</div><div class="row fibotalk-form-element" style="margin:0px"><span id="email-update" class="ft_material pull-right" style="margin-top:10px"> Update </span></div>'
+							document.getElementById("email-form").innerHTML = (html);
+						}
+						if (msg.h.data.phone) {
+							var html = '<div >' + msg.h.data.phone + '</div><div class="row fibotalk-form-element" style="margin:0px"><span id="phone-update" class="ft_material pull-right" style="margin-top:10px"> Update </span></div>'
+							document.getElementById("phone-form").innerHTML = (html);
+						}
+						if (msg.h.data.name) {
+							var html = '<div >' + msg.h.data.name + '</div><div class="row fibotalk-form-element" style="margin:0px"><span id="name-update" class="ft_material pull-right" style="margin-top:10px"> Update </span></div>';
+							document.getElementById("name-form").innerHTML = (html);
+						}
+					} catch(e) {
+						console.log(e);
+					}
+				}
+
+				try {
+					switch (msg.h.purpose) {
+						case "subscribe":
+							if (msg.h.theme) {
+								theme = JSON.parse(msg.h.theme);
+							}
+							if (msg.d.msgs)
+								handleMsgs(msg.d.msgs, true);
+							break;
+					}
+				} catch(e) {
+					console.log(e);
+				}
+				// if (!upscope_short_id) {
+				//     window.parent.Upscope('init', {
+				//         uniqueId: chatId,
+				//     });
+				//     try {
+				//         upscope_short_id = JSON.parse(window.localStorage.getItem("__upscope:shortId"));
+				//     } catch (e){}
+				// }
+
+				try {
+					var ftData = {};
+					if (msg.h.feature)
+						ftData.features = msg.h.feature;
+					if (msg.h.flows)
+						ftData.flows = msg.h.flows;
+					if (msg.h.cohorts)
+						ftData.cohorts = msg.h.cohorts;
+					setStorageItem("__ft__data__", "session", ftData, true);
+					executeAddons();
+				} catch(e) {
+					console.log(e);
+				}
+
+				if (msg.ph) {
+					try {
+						widgetAnalytics(msg.ph);
+						if (msg.ph.name)
+							guestName = msg.ph.name;
+					} catch(e) {
+						console.log(e);
+					}
+				}
+			}// end FTACk()
+
+			/** 
+			 * function to set codeAdd as true in group details
+			 */
+			function widget_added(msg){
+				var msgObj = {
+					h: {
+						sender: sender,
+						senderId: senderId,
+						recepientId: senderId,
+						recepient: sender,
+						chatId: chatId,
+						gid: gid,
+						type: "widget_added"
+					},
+					d: {}
+				};
+				socket.emit("widget_added", msgObj);
+
+				//log event widget_added
+				var groupName = msg.h.gid;
+				if(msg.h.name)
+					groupName = msg.h.name + '-' + groupName;
+				else if(msg.h.org)
+					groupName = msg.h.org + '-' + groupName;
+				var custom = {
+					widget_group_name: groupName
+				};
+				var response = [];
+				var obj = window.parent.window.fibo.prepareDoc("widget_added", custom);
+			obj = handleLogEvent(obj);
+			obj.ui = {};
+				response.push(obj);
+				try {
+					socket.emit("logEvent", { data: response, gid: consts.fgid });
+				} catch (e) {}    
+			}
+
+			/************* Function to apply group settings to messenger *********/
+			function applyFibotalkSettings(settings) {
+				if (settings.whitelist) {
+					var websites = settings.whitelist.split(',');
+					var currUrl = window.parent.window.location.hostname;
+					var replaceStr = ["www.", "http://", "https://"];
+					var flag = false;
+					for (var i in websites) {
+						var checker = websites[i].trim()
+
+						for(var j in replaceStr) {
+							currUrl =  currUrl.replace(replaceStr[j],"");
+							checker = checker.replace(replaceStr[j],"");
+						}
+
+						var check1 = new RegExp('\.' + currUrl);
+						var check2 = new RegExp('^' + currUrl);
+						if(check1.test(checker) || check2.test(checker)) {
+							flag = true;
+							break;
+						}
+					}
+					if(!flag) {
+						disconnectChat();
+						return false;
+					}
+				} else {
+					var hostname = window.parent.window.location.hostname;
+					if (hostname.indexOf("localhost") > -1 || hostname.search(/127.[0-255].[0-255].[0-255]/) > -1)
+						return false;
+				}
+				if (settings.blockIPs) {
+					var ips = settings.blockIPs.split(",");
+					if (fta.ip && ips.indexOf(fta.ip) > -1) {
+						disconnectChat();
+						return false;
+					}
+				}
+				if (settings.analytics && settings.analytics != 'True') {
+					sendFTNotif({ event: "remFibo" }, "*");
+				}
+
+				var chatbtn = "load";
+				if (!settings.chat || settings.chat == "True") {
+					// loadDetails('chat');
+					initChat();
+				} else {
+					// unloadDetails('chat');
+					chatbtn = "unload";
+				}
+				if (settings.hideChatBtn)
+					chatbtn = "unload";
+				sendFTNotif({ event: "chatbtn", action: chatbtn });
+
+				if ((!settings.chat || settings.chat == "True") && (settings.messaging && settings.messaging.length))
+					autoMessages(settings.messaging);
+				return true;
+			}
+
+			function disconnectChat() {
+				console.log("setting socket to null");
+				socket.disconnect(true);
+				socket = null;
+				setStorageItem("blocked", "session", "yes");
+			}
+
+			/********************** function to get userInfo ********************/
+
+			function getUserSettings() {
+				var ui = getFtSettings();
+				if (ui['userId']) {
+					var _id = ui.userId;
+					var msg = {
+						h: {
+							sender: sender,
+							senderId: senderId,
+							recepientId: senderId,
+							recepient: sender,
+							chatId: chatId,
+							gid: gid,
+							type: "userSettings"
+						},
+						d: {
+							query: {
+								id: _id,
+								gid: gid
+							}
+						}
+					};
+					socket.emit("userSettings", msg);            
+				}
+			}
+
+			//===== handle user info gotten from server =================
+			function ftUserSettings(msg) {
+				console.log("userInfo", msg);
+				if (msg.h && msg.h.status == 'success') {
+					if (msg.d && msg.d.ui) {
+						setFtData("settings", msg.d.ui);
+						startFlows();
+					}
+				}
+			}
+
+
+			/**
+					 * TODO:
+					 * 	- check if session is already there. 
+					 * 		if not - send session_start event 
+					 * 		else
+					 * 			-check if page is same 
+					 * 			yes -> do nothing
+					 * 			no -> if tab is same 
+					 * 					send page_open event for current page an following additional events
+					 * 				yes -> page_close event with previous page details
+					 *				no ->  page_inactive event with previous page details
+					* */
+
+			function widgetAnalytics(ph) {
+				var foo_page = window.parent.location.pathname;
+				if (foo_page.indexOf("?") > -1)
+					foo_page = foo_page.substring(0, foo_page.indexOf("?"));
+				var foo_cookie = window.parent.window.localStorage.getItem("__ft__sess__");
+				//var foo_tabId = window.parent.window.sessionStorage.getItem("_ft_tabid")
+				//console.log(foo_page,foo_tabId);
+				try {
+					foo_cookie = JSON.parse(foo_cookie);
+					if (foo_cookie.id != sess)
+						foo_cookie = null;
+				} catch (e) { }
+				//if(!window.parent.window.localStorage.getItem("__ft__events"))
+				//	foo_cookie = null;
+				if (!foo_cookie)//First Time
+				{
+					sessionStart(ph);
+					setActive(null, foo_page);
+				}
+				else {
+					try {
+						if (window.parent.window.fibo.getHiddenProp())//not on focus
+							return;
+					} catch (e) {
+						return;
+					}
+					console.log(foo_cookie.active_page, foo_page)
+					if (foo_cookie.curr != foo_page) {
+						// console.log("1.1",{foo_tabId},foo_cookie["active_tab"])
+						// foo_cookie[foo_page] = {open : timeNow};
+						if (foo_cookie.curr) {
+							setClose(foo_cookie, "on focus");
+						}
+						setActive(foo_cookie, foo_page);
+					}
+				}
+			}// widget analytics()
+
+			function setActive(cookie, newPage) {
+				resumeSession();
+				var foo_cookie = cookie || JSON.parse(window.parent.window.localStorage.getItem("__ft__sess__"));
+				foo_cookie.curr = newPage;
+				foo_cookie.open = new Date().getTime();
+				try {
+					window.parent.window.fibo.logEvent("page_open", null, { page: newPage }, newPage);
+					window.parent.window.localStorage.setItem("__ft__sess__", JSON.stringify(foo_cookie));
+				} catch (e) {}
+			}
+			/**
+				 * Actions to be done on session start
+				 *      1. Remove old events in localstorage
+				 *      2. Setup session data in localstorage
+				 *      3. Increment visit count
+				 *      4. Log session_start event 
+				 *      5. Send a notification to agent
+				 */
+			function sessionStart(ph) {
+				try {
+					var timeNow = new Date().getTime();
+					window.parent.window.localStorage.removeItem("__ft__events");
+					var init_load = {
+						id: sess,
+						startTime: timeNow
+					};
+					window.parent.window.localStorage.setItem("__ft__sess__", JSON.stringify(init_load));
+					var visits = window.localStorage.getItem("_ft_visits");
+					window.localStorage.setItem("_ft_visits", visits ? (parseInt(visits) + 1) : 1);
+					window.parent.window.fibo.logEvent("session_start");
+					var notif = {
+						h: {
+							type: 'new_visitor',
+							sender: 'user',
+							senderId: senderId || chatId,
+							chatId: chatId,
+							gid: gid,
+							recepient: 'agent_group'    // used for broadcasting to all online agents
+						},
+						d: {
+							txt: createText('sessionStart')
+						}
+					};
+					if (ph) {
+						notif.ph = ph;
+						notif.ph.channel = "web";
+					}
+					console.log(notif);
+					sendNotif(notif);
+				} catch (e) { console.log(e); };
+			}// sessionStart
+
+			/**
+			* creates text to be sent/displayed on various occassions
+			* @param {*} topic 
+			* @param {*} data (optional) 
+			*/
+			function createText(topic, data) {
+				var text = '';
+				var info = getFtSettings();
+				switch (topic) {
+					case "sessionStart":
+						text += info.name ? info.name : 'New visitor';
+						var loc = (fta.region_name ? fta.region_name + ', ' : '') + (fta.country_name ? fta.country_name : '');
+						text += loc ? ' from ' + loc : '';
+						text += ' has arrived on website';
+						break;
+					case "autoMessage":
+						text = data.replace(/{{\w+}}/g, function (fld) {
+							fld = fld.replace('\{\{', '');
+							fld = fld.replace('}}', '');
+							return info[fld] || '';
+						});
+						break;
+				};
+				return text;
+			};// createText
+
+			/**
+			* Send notifications
+			* @param {*} data 
+			*/
+			function sendNotif(data) {
+				console.log("sending notification", data);
+				socket.emit("notif", data);
+			}// sendNotif
+
+			/**
+			* Set specific value in the storage
+			* @param {*} key 
+			* @param {*} type
+			* @param {*} obj
+			*/
+			function setStorageItem(key, type, obj, append) {
+				var item;
+				if (type == "session")
+					item = window.parent.sessionStorage.getItem(key);
+				else if (type == "local")
+					item = window.parent.localStorage.getItem(key);
+				try {
+					item = JSON.parse(item);
+				} catch(e) {}
+				if (append) { 
+					if (Array.isArray(obj)) {
+						if (!item)
+							item = [];
+						item = item.concat(obj);
+					} else if (typeof obj === "object") {
+						if (!item)
+							item = {};
+						for (var i in obj)
+							item[i] = obj[i];
+					} else {
+						item = obj;
+					}
+				} else {
+					item = obj;
+				}
+				if (type == "session")
+					window.parent.window.sessionStorage.setItem(key, JSON.stringify(item));
+				else if (type == "local")
+					window.parent.window.localStorage.setItem(key, JSON.stringify(item));
+			}
+
+			function getStorageItem(key, type) {
+				var item;
+				if (type == "session")
+					item = window.parent.sessionStorage.getItem(key);
+				else if (type == "local")
+					item = window.parent.localStorage.getItem(key);
+				if (!item)
+					return {};
+				try {
+					item = JSON.parse(item);
+				} catch (e) {}
+				return item;
+			}
+
+			function setClose(cookie, reason) {
+				try {
+					pauseSession();
+					var foo_cookie = cookie || JSON.parse(window.parent.window.localStorage.getItem("__ft__sess__"));
+					var duration = null;
+
+					if (foo_cookie.open)
+						duration = new Date().getTime() - foo_cookie.open;
+
+					if (foo_cookie.curr)
+						window.parent.window.fibo.logEvent("page_close", { reason: reason || "" }, { page: foo_cookie.curr, duration: duration }, foo_cookie.curr);
+
+					delete foo_cookie.curr; delete foo_cookie.open;
+					console.log("saving cookie at close ", foo_cookie);
+					window.parent.window.localStorage.setItem("__ft__sess__", JSON.stringify(foo_cookie));
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+			function ftGetDefaults(topic) {
+				switch (topic) {
+					case "widget_desc":
+						return "Click on \"Start Chat\" to chat with agent";
+					case "widget_header":
+						return "Agent";
+					case "nps_que":
+						return "How likely are you to recommend us?";
+					case "nps_comment_que":
+						return "Comments";
+					case "nps_thanks":
+						return "Thank you for your valuable feedback";
+					case "notif_close_clr":
+						return "#407ebc";
+					case "demo_title":
+						return "Fill out the below form to know what we can do for your buisiness";
+				}
+			}
+
+			function daysToMs(time) {
+				return time * 24 * 60 * 60 * 1000;
+			}
+
+			function addOnRuleParse(query, condition) {
+				if (query.key) {
+					var keys = query.key.split('.');
+					if (keys[0] == "event" && keys[1])
+						keys.shift();
+					var valKey = condition;
+					for (var i in keys) {
+						if (typeof valKey === 'object') {
+							if (valKey[keys[i]])
+								valKey = valKey[keys[i]];
+							else
+								return 0;
+						}
+					}
+					if (query.operator == "$gt")
+						return Number(query.val < valKey);
+					else if (query.operator == "$lt")
+						return Number(query.val > valKey);
+					else if (query.operator == "$lte")
+						return Number(query.val >= valKey);
+					else if (query.operator == "$gte")
+						return Number(query.val <= valKey);
+					else if (query.operator == "lessThanDays")
+						return (new Date().getTime() - valKey > daysToMs(query.val));
+					else if (query.operator == "$in")
+						return query.val.toString().indexOf(valKey) > -1;
+					return valKey == query.val;
+				} else if (query.operator == "$and") {
+					if (addOnRuleParse(query.cond[0], condition)) {
+						var retVal = 1;
+						for (var i = 1; i < query.cond.length; i++) {
+							retVal = retVal && addOnRuleParse(query.cond[i], condition);
+							if (!retVal)
+								return 2;
+						}
+						return 1;
+					}
+				}
+				return 0;
+			}
+
+			//===== ADD On(s) Code ===================
+
+			function executeAddons(force) {
+				ftFlows(force);
+			}
+
+			//===== NPS handler code starts here =====
+
+			function ftChNps(nps_settings) {
+				if ((!nps_settings.enabled) && isShown({id: "nps"})) {
+					return false;
+				}
+				var local_ui = getFtSettings();
+				var last_events = getStorageItem('__ft__named__events', 'local');
+				var nps_pre_event = last_events.nps_submitted ? last_events.nps_submitted : last_events.nps_skipped;
+				var logins = getStorageItem('_ft_visits', 'local');
+				if (nps_pre_event) {
+					nps_pre_event['login'] = logins || '';
+					if (nps_settings.rules) {
+						for (var i in nps_settings.rules) {
+							var ruleRes = addOnRuleParse(nps_settings.rules[i], nps_pre_event);
+							if (ruleRes == 1) {
+								return true;
+							} else if (ruleRes == 2) {
+								break;
+							}
+						}
+					} 
+				} else if (logins && logins < 10) {
+					if (nps_settings.id && local_ui[nps_settings.id]) {
+						var query = {
+							events: "NPS,nps_submitted,nps_skipped,login",
+							id: nps_settings.id,
+							gid: gid,
+							_id: local_ui[nps_settings.id],
+						};
+						var data = {
+							h: {
+								type: "msg",
+								gid: gid,
+								senderId: senderId,
+								chatId: chatId,
+								sess: sess,
+								recepient: "sys",
+								sender: sender,
+								channel: channel,
+								purpose: "nps",
+								status: 'req'
+							},
+							d: {
+								query: query,
+								rules: nps_settings.rules
+							}
+						};
+						console.log("emitting nps", data);
+						socket.emit("npsCheck", data);
+					}
+				}
+				return false;
+			}
+
+			function ftNps() {
+				try {
+					var local_settings = getStorageItem("_ft_w_settings_", "session");
+					var nps_settings = local_settings.nps;
+					if (!nps_settings) {
+						return;
+					}
+					nps_settings["id"] = local_settings.identifier;
+					var delay = nps_settings.delay || 60;
+					setTimeout(function() {
+						if (ftChNps(nps_settings))
+							ftStartNps(nps_settings);
+					}, delay * 1000);
+				} catch (e) {}
+			}
+
+			function ftStartNps(nps_settings) {
+				console.log("staring nps.........................");
+				var widget = window.parent.sessionStorage.getItem("_ft_widget_setting_");
+				widget = JSON.parse(widget);
+				if (widget && widget.color)
+					nps_settings["theme_color"] = widget.color;
+				if (nps_settings.show == "notification")
+					ftNpsNotif(nps_settings);
+				else if (nps_settings.show == "modal")
+					ftNpsModal(nps_settings);
+				setShown({id: "nps"});        
+			}
+
+			function ftNpsNotif(nps_settings) {
+				var cdn = getStorageItem("_ft_const", "local");
+				var npsNotifHtml = '\<div id="_ft_nps_small_">\
+					<div class="_ft_notif_close_holder_" style="background-color: ' + (nps_settings.theme_color || ftGetDefaults("notif_close_clr")) + '" onclick="window.__ftNpsSendEvent(\'skipped\')">\
+						<img class="_ft_notif_close_" src="' + cdn.base + cdn.icons.close + '">\
+					</div>\
+					<br><br>\
+					<div class="_ft_nps_container_">\
+						<p class="_ft_nps_text_">' + (nps_settings.que || ftGetDefaults("nps_que")) + '</p>\
+						<br>\
+						<table class="_ft_nps_score_" cellspacing="0" cellpadding="0">\
+							<tr>\
+								<td><div id="_ft_nps_0_" class="_ft_score_red_" onclick="window.__ftNpsSelected(0)">0</div></td>\
+								<td><div id="_ft_nps_1_" class="_ft_score_red_" onclick="window.__ftNpsSelected(1)">1</div></td>\
+								<td><div id="_ft_nps_2_" class="_ft_score_red_" onclick="window.__ftNpsSelected(2)">2</div></td>\
+								<td><div id="_ft_nps_3_" class="_ft_score_red_" onclick="window.__ftNpsSelected(3)">3</div></td>\
+								<td><div id="_ft_nps_4_" class="_ft_score_red_" onclick="window.__ftNpsSelected(4)">4</div></td>\
+								<td><div id="_ft_nps_5_" class="_ft_score_red_" onclick="window.__ftNpsSelected(5)">5</div></td>\
+								<td><div id="_ft_nps_6_" class="_ft_score_red_" onclick="window.__ftNpsSelected(6)">6</div></td>\
+								<td><div id="_ft_nps_7_" class="_ft_score_blue_" onclick="window.__ftNpsSelected(7)">7</div></td>\
+								<td><div id="_ft_nps_8_" class="_ft_score_blue_" onclick="window.__ftNpsSelected(8)">8</div></td>\
+								<td><div id="_ft_nps_9_" class="_ft_score_green_" onclick="window.__ftNpsSelected(9)">9</div></td>\
+								<td><div id="_ft_nps_10_" class="_ft_score_green_" onclick="window.__ftNpsSelected(10)">10</div></td>\
+							</tr>\
+						</table>\
+						<br>\
+						<div id="__ft_nps_ini_lat_" class="_ft_nps_button_"  onclick="window.__ftNpsSendEvent(\'skipped\')">Later</div>\
+						<div id="_ft_nps_comments">\
+							<p class="_ft_nps_text_">' + (nps_settings.comment || ftGetDefaults("nps_comment_que")) + ' <span style="color: #6c757d!important;">(Optional)</span></p>\
+							<div class="_ft_nps_comment_msg_">\
+								<textarea type="text" rows="3" class="input-msg" id="_ft_nps_comment_data_" name="input" placeholder="Comments" autocomplete="off" autofocus="" onkeyup="parent.__ftNpsKeypress(event)"></textarea>\
+							</div>\
+							<div id="__ft_nps_aft_lat_" class="_ft_nps_button_" onclick="window.__ftNpsSendEvent(\'skipped\')">Later</div>\
+							<button class="_ft_nps_submit_button_" onclick="window.__ftNpsSendEvent(\'submitted\')">Submit</button>\
+						</div>\
+					</div>\
+				</div>';
+				sendFTNotif({ event: "billboard", html: npsNotifHtml, type: "nps" });
+			}
+
+			function ftNpsModal(nps_settings) {
+				var cdn = getStorageItem("_ft_const", "local");
+				var npsNotifHtml = '\
+				<div id="_ft_modal_">\
+					<div class="_ft_nps_modal-content">\
+						<div class="_ft_notif_close_holder_" style="background-color: ' + (nps_settings.theme_color || ftGetDefaults("notif_close_clr")) + '" onclick="window.__ftNpsSendEvent(\'skipped\')">\
+							<img class="_ft_notif_close_" src="' + cdn.base + cdn.icons.close + '">\
+						</div>\
+						<p class="_ft_nps_text_">' + (nps_settings.que || ftGetDefaults("nps_que")) + '</p>\
+						<table class="_ft_nps_score_">\
+							<tr>\
+								<td><div id="_ft_nps_0_" class="_ft_score_red_" onclick="window.__ftNpsSelected(0)">0</div></td>\
+								<td><div id="_ft_nps_1_" class="_ft_score_red_" onclick="window.__ftNpsSelected(1)">1</div></td>\
+								<td><div id="_ft_nps_2_" class="_ft_score_red_" onclick="window.__ftNpsSelected(2)">2</div></td>\
+								<td><div id="_ft_nps_3_" class="_ft_score_red_" onclick="window.__ftNpsSelected(3)">3</div></td>\
+								<td><div id="_ft_nps_4_" class="_ft_score_red_" onclick="window.__ftNpsSelected(4)">4</div></td>\
+								<td><div id="_ft_nps_5_" class="_ft_score_red_" onclick="window.__ftNpsSelected(5)">5</div></td>\
+								<td><div id="_ft_nps_6_" class="_ft_score_red_" onclick="window.__ftNpsSelected(6)">6</div></td>\
+								<td><div id="_ft_nps_7_" class="_ft_score_blue_" onclick="window.__ftNpsSelected(7)">7</div></td>\
+								<td><div id="_ft_nps_8_" class="_ft_score_blue_" onclick="window.__ftNpsSelected(8)">8</div></td>\
+								<td><div id="_ft_nps_9_" class="_ft_score_green_" onclick="window.__ftNpsSelected(9)">9</div></td>\
+								<td><div id="_ft_nps_10_" class="_ft_score_green_" onclick="window.__ftNpsSelected(10)">10</div></td>\
+							</tr>\
+						</table>\
+						<p class="_ft_nps_text_">' + (nps_settings.comment || ftGetDefaults("nps_comment_que")) + ' <span style="color: #6c757d!important;">(Optional)</span></p>\
+						<div class="_ft_nps_comment_msg_">\
+							<textarea type="text" rows="3" class="input-msg" id="_ft_nps_comment_data_" name="input" placeholder="Comment" autocomplete="off" autofocus="" onkeyup="parent.__ftNpsKeypress(event)"></textarea>\
+						</div>\
+						<br>\
+						<div>\
+							<div class="_ft_nps_button_" onclick="window.__ftNpsSendEvent(\'skipped\')">Later</div>\
+							<button class="_ft_nps_submit_button_" onclick="window.__ftNpsSendEvent(\'submitted\')">Submit</button>\
+						</div>\
+					</div>\
+				</div>';
+				sendFTNotif({ event: "modal", html: npsNotifHtml, type: "nps" });
+			}
+
+			//===== NPS handler code ends here =====
+
+			//===== Announcements ==================
+
+			function ftAnnouncements(annSeenIds) {
+				var anns = getFtData("announcements");
+				var local_ui = getFtSettings();
+				var local_settings = getStorageItem("_ft_w_settings_", "session");
+				console.log(annSeenIds);
+				try {
+					if (!local_settings.announce.enabled)
+						return;
+				} catch (e) {
+					return;
+				}
+				if (Object.keys(anns).length) {
+					ftAnnouncementsExec(anns);
+				} else {
+					console.log("ann setttings ui", local_ui);
+					console.log("ann settings id", local_settings);
+					if (local_settings.identifier && local_ui[local_settings.identifier]) {
+						var data = {
+							h: {
+								type: "announcements",
+								gid: gid,
+								senderId: senderId,
+								chatId: chatId,
+								sess: sess,
+								recepient: "sys",
+								sender: sender,
+								channel: channel,
+								purpose: "new",
+								status: 'req',
+								announceIds: annSeenIds
+							},
+							d: {
+								query: {
+									gid: gid
+								}
+							}
+						};
+						console.log("sending ann to server");
+						socket.emit("announcements", data);
+					}
+				}
+			}
+
+			function setFtAnnNotif(ann, screen) {
+				try {
+					var characters = 200;
+					var notifCta = "";
+					if (ann.action_url)
+						notifCta = '<td class="_ft_ann_notif_cta_">\
+						<button class="btn annCtaButton" onclick="annCtaOpener(\'' + ann.action_url + '\')">' + ann.action + '</button>\
+						</td>';
+					var body = "<div class='d-flex'>";
+					if (ann.media_src) {
+						var media_src = "";
+						switch(ann.mediaType) {
+							case "image":
+								media_src = ann.media_src;
+								break;
+							case "video":
+								media_src = ann.thumbnail;
+								break;
+						}
+						body += "<img src=" + media_src + " class='_ft_ann_notif_media_'>";
+						characters = 100;
+					} 
+					if (ann.notifText) {
+						body += "<div class='ml-2'>";
+						if (ann.notifText[0]) {
+							if (ann.notifText[0].length > characters) {
+								ann.notifText[0] = ann.notifText[0].substr(0, characters - 3);
+								ann.notifText[0] += '...';
+								characters -= 100;
+							} else {
+								characters -= ann.notifText[0].length;
+							}
+							body += '<div class="_ft_ann_notif_title_">' + ann.notifText[0] + '</div>'
+						}
+						if (ann.notifText[1]) {
+							if (ann.notifText[1].length > characters) {
+								ann.notifText[1] = ann.notifText[1].substr(0, characters - 3);
+								ann.notifText[1] += '...';
+							}
+							body += '<div class="_ft_ann_notif_sub_">' + ann.notifText[1] + '</div>';
+						}
+						body += "</div>";
+					}
+					body += "</div>";
+					var html = '<div id="announceNotif"><table class="_ft_ann_notif_">\
+						<tbody>\
+						<tr>\
+							<td id="announcement" class="_ft_ann_notif_text_">' + body + '</td>' + notifCta +
+						'</tr>\
+						</tbody>\
+					</table></div>';
+					var data = {
+						html: html,
+						type: 'ann',
+						event: screen,
+						height: "125px"
+					};
+					ftSmall(html, 'ann', screen);
+				} catch(e) {
+					console.error(e);
+				}
+			}
+
+			function announcementFiller(anns) {
+				var annHtml = "";
+				for (var i in anns) {
+					var actionHtml = '';
+					if (anns[i].action_url)
+						actionHtml = '<div class="ann-action-holder">\
+							<a href="' + anns[i].action_url + '" target="_blank">\
+								<button class="ann-action" onclick="ftAnnouncementOpen(\'' + anns[i].divId + '\')">' + anns[i].action + '</button>\
+							</a>\
+						</div>';
+					var launchDate = getDate(anns[i].launchDate);
+					var img = "";
+					if (anns[i].img_src)
+						img = '<img src="' + anns[i].img_src + '" class="ann-cover-img" />';
+					annHtml += '<div id="' + anns[i].id + '" class="ann-notif" onclick="ftAnnouncementOpen(\'' + anns[i].divId + '\', \'modal\')">\
+						' + img + '<div class="ann-text-con">\
+							<div class="ann-title">\
+								' + anns[i].title + '\
+							</div>\
+							<div class="ann-subT">' + anns[i].sub_title + '</div>\
+							<span class="ann-date">' + launchDate + '</span>\
+							' + actionHtml + '\
+						</div>\
+					</div>';
+				}
+				document.getElementById("fibo-announce-holder").innerHTML = (annHtml);
+			}
+
+			function ftAnnouncementsExec(anns) {
+				try {
+					setFtData("announcements", anns);
+					console.log("starting announcements", anns);
+					if (anns.length > 0) {
+						if (!isShown({id: "annNotif"})) {
+							setFtAnnNotif(anns[0], 'billboard');
+							setShown({id: "annNotif"});
+						}
+						announcementFiller(anns);
+					}
+				} catch (e) {}
+			}
+
+			window.ftAnnouncementOpen =  function(id, open) {
+				var anns = getFtData("announcements");
+				for (var i in anns) {
+					if (anns[i].divId && anns[i].divId == id) {
+						switch (open) {
+							case "modal":
+								ftModal(anns[i].html, 'ann', anns[i]);
+								break;
+							case "snack":
+							case "notif":
+								setFtAnnNotif(anns[i], 'snack');
+								break;
+							// default:
+							//     this.event.stopPropagation();
+						}
+						var action;
+						/**
+						* four lines below and 2 lines commented as this.event not working in mozilla
+						*/
+						// if (this.event.target.classList && this.event.target.classList[0] == "ann-action")
+						//     action = "clicked";
+						// else {
+							setStorageItem("__ft_ann_seen_only__", "session", anns[i], false);
+							action = "seen";
+						// }
+						var params = {};
+						var activeFlow = getFtData("activeFlow");
+						params['misc'] = activeFlow;
+						params['announcement'] = anns[i].name;
+						var flows = getFtData('flows');
+						if (Array.isArray(flows))
+							for (var j in flows) {
+								if (flows[j].id == activeFlow.flowId) {
+									params['campaign'] = flows[j].name;
+									break;
+								}
+							}
+						var remDiv = document.getElementById(anns[i].id);
+						if (remDiv)
+						remDiv.parentNode.removeChild(remDiv);
+						var fsets = getStorageItem("__ft__settings__", "local");
+						annUi = "announcement_" + action;
+						var seenAnn = [];
+						if (fsets[annUi]) {
+							if (typeof fsets[annUi] === 'string')
+								seenAnn = fsets[annUi].split(',');
+							else
+								seenAnn = fsets[annUi];
+						}
+						if (seenAnn.indexOf(anns[i].id) == -1)
+							seenAnn.push(anns[i].id);
+						var uiObj = {};
+						uiObj[annUi] = seenAnn;
+						try {
+							window.parent.window.fibo.setUserInfo(uiObj);
+							window.parent.window.fibo.logEvent(annUi, params, null, anns[i].name, "announcement");
+						} catch (e) {
+							return;
+						}
+						window.parent.window.remFtSettings([annUi]);
+						anns.splice(i, 1);
+					}
+				}
+				setFtData("announcements", anns);
+			};
+
+			function pubNotifAnn(ann) {
+				var announcement = ann;
+				if (!announcement) {
+					announcement = getStorageItem("__ft_ann_seen_only__", "session");
+					announcement.firstAnn = true;
+					setFtData("announcements", [announcement]);
+				}
+				var screen = 'snack';
+				if (announcement.firstAnn)
+					screen = 'modal';
+				if (Object.keys(announcement).length) {
+					ftAnnouncementOpen(announcement.divId, screen);
+				}
+			}
+
+			//======= Announcements ended ===========
+
+			//======= Demo request code starts here =====
+
+			function ftDemoReq(demo) {
+				if (!demo.enabled)
+					return;
+				setDemoBtn();
+			}
+
+			function setDemoBtn() {
+				var html = '<div class="fibo-welcome-msg">\
+				<p>Schedule a demo with us</p>\
+				<button class="theme fibo-welcome-button" onclick="initDemoReq()">Demo Request</button>\
+				</div>';
+				document.getElementById("fibo-demo-holder").innerHTML = (html);
+			}
+
+			window.initDemoReq = function() {
+				var local_settings = getStorageItem("_ft_w_settings_", "session");
+
+				var html = '<div class="_ft_ann_modal_">\
+				<div class="_ft_modal_close_holder_">\
+					<img class="_ft_modal_close_" src="' + cdn + consts.icons.bClose + '">\
+				</div>\
+				<div class="bootstrapBody">\
+				<div class="container">';                
+				if (local_settings && local_settings.demo) {
+					html += '<h5 class="modal-title pt-3 mb-3">' + (local_settings.demo.title || ftGetDefaults('demo_title')) + '</h5>';
+					if (local_settings.demo.fields && local_settings.demo.fields.length)
+						for (var i in local_settings.demo.fields) {
+							var name = local_settings.demo.fields[i];
+							html += '<div class="form-group">\
+								<label for="' + name + '">' + name + ':</label>&nbsp;<span style="color: red;">*</span>\
+								<input type="text" class="form-control" id="' + name + '" name="' + name + '" required>\
+							</div>'
+						}
+					if (local_settings.demo.preferred_time) {
+						html += '<div class="form-group">\
+							<label>What days work best for you?</label>\
+							<br>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="monday">\
+								<input type="checkbox" class="form-check-input" id="monday" name="day" value="Monday">Monday\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="tuesday">\
+								<input type="checkbox" class="form-check-input" id="tuesday" name="day" value="Tuesday">Tuesday\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="wednesday">\
+								<input type="checkbox" class="form-check-input" id="wednesday" name="day" value="Wednesday">Wednesday\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="thursday">\
+								<input type="checkbox" class="form-check-input" id="thursday" name="day" value="Thursday">Thursday\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="friday">\
+								<input type="checkbox" class="form-check-input" id="friday" name="day" value="Friday">Friday\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="saturday">\
+								<input type="checkbox" class="form-check-input" id="saturday" name="day" value="Saturday">Saturday\
+							</label>\
+							</div>\
+						</div>\
+						<div class="form-group">\
+							<label>What time works best for you?</label>\
+							<br>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="morning">\
+								<input type="radio" class="form-check-input" id="morning" name="period" value="Morning">Morning\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="afternoon">\
+								<input type="radio" class="form-check-input" id="afternoon" name="period" value="Afternoon">Afternoon\
+							</label>\
+							</div>\
+							<div class="form-check-inline">\
+							<label class="form-check-label" for="evening">\
+								<input type="radio" class="form-check-input" id="evening" name="period" value="Evening">Evening\
+							</label>\
+							</div>\
+						</div>';
+					}
+					if (local_settings.demo.note) {
+						html += '<div class="form-group">\
+							<label for="note">Message:</label>\
+							<textarea class="form-control" rows="5" id="note"></textarea>\
+						</div>'
+					}
+					html += '<label class="statement">\
+						Your information will be shared with <span style="font-weight: bold;">Fibotalk</span>. We may reach out with relevant content, product and service updates.\
+					</label>\
+					<button id="_ft_demo_submit_" class="btn btn-primary mb-2" style="width: 100%;">Schedule a demo</button>\
+					</div></div></div>';
+					ftModal(html, 'demo', local_settings.demo);
+				}
+			};
+
+			//======= Demo request code ends here =====
+
+			//======= Flows handler start here =====
+
+			function ftFlows(force) {
+				var valCohorts = getFtData("valCohorts");
+				if (Array.isArray(valCohorts))
+					runFlows(valCohorts);
+				else
+					validateCohorts(force);
+			}
+
+			var npsChecked = false;
+			var npsStatus = false;
+			var npsAnnId;
+			var npsAnn;
+			
+			var enabledAnnFlows = [];
+
+			function runFlows(valCohorts) {
+				console.log("flows called", valCohorts);
+				var flows = getFtData("flows");
+				if (!Object.keys(flows).length)
+					return;
+
+				for (var i in flows) {
+					var flow = flows[i];
+					console.log("flows", flows[i]);
+					if (flow.enabled && ((valCohorts.indexOf(flow.cohort) > -1))) {
+						console.log("enabled flows found", flow);
+						switch (flow.type) {
+							case "nps":
+								npsAnnId = flow.announcement;
+								console.log("nps flows found", flow, npsChecked);
+								if (!npsChecked)
+									checkProductNps(flow.rules);
+								break;
+							case 'ann':
+								enabledAnnFlows.push(flow);
+						}
+					}
+				}
+
+				var flag = true;
+				var userSettings = getFtData("settings");
+				if (userSettings.id)
+					flag = false;
+				startFlows(flag);
+			}
+
+			function checkProductNps (rules) {
+				if (!rules)
+					return;
+				var settings = getStorageItem("_ft_w_settings_", "session");
+				var ui = getFtSettings();
+				if (!settings.identifier)
+					settings.identifier = 'email';
+				if (!ui[settings.identifier])
+					return;
+
+				var query = {
+					events: "NPS,nps_submitted,nps_skipped,login",
+					id: settings.identifier,
+					gid: gid,
+					_id: ui[settings.identifier],
+				};
+				var data = {
+					h: {
+						type: "msg",
+						gid: gid,
+						senderId: senderId,
+						chatId: chatId,
+						sess: sess,
+						recepient: "sys",
+						sender: sender,
+						channel: channel,
+						purpose: "nps",
+						status: 'req'
+					},
+					d: {
+						query: query,
+						rules: rules
+					}
+				};
+				console.log("emitting flows nps", data);
+				socket.emit("npsCheck", data);
+			}
+
+			var nps = "";
+
+			function startFlows(getSettings) {
+				if (!Object.keys(enabledAnnFlows).length) {
+					console.log("No enabled announcement flows found")
+					return;
+				}
+
+				if (getSettings) {
+					getUserSettings();;
+					return;
+				}
+				
+				var ui = getFtData("settings");
+				var features_used = ui.features_used;
+				
+				if (features_used)
+					features_used = Object.keys(features_used);
+				else
+					features_used = [];
+				console.log("flows used features", features_used);
+				
+				var runnableFlows = [];
+
+				for (var i in enabledAnnFlows) {
+					var flow = enabledAnnFlows[i];
+					if (flow.steps && flow.steps.length) {
+						for (var i in flow.steps) {
+							if (flow.steps[i].feature) {
+								if (features_used.indexOf(flow.steps[i].feature) < 0) {
+									runnableFlows.push({
+										annId: flow.steps[i].announcement,
+										flowId: flow.id
+									});
+									break;
+								}
+							} else {
+								runnableFlows.push({
+									annId: flow.steps[i].announcement,
+									flowId: flow.id
+								});
+								break;
+							}
+						}
+					}
+				}
+				
+				if (runnableFlows.length)
+					getFlowAnnouncement(runnableFlows[0]);
+			}
+
+			function resumeFlow() {
+				console.log("flows resumed", npsStatus, popup);
+				if (npsStatus && !popup || popup == 'billboard') {
+					if (!nps) {
+						console.log("going to execute nps");
+						nps = setTimeout(function() {
+							if (npsAnn)
+								ftExecuteFlow([npsAnn]);
+							else
+								getFlowAnnouncement({ annId: npsAnnId });
+						}, 15000);
+					}
+				}
+			}
+
+			function getFlowAnnouncement (activeFlow) {
+				setFtData("activeFlow", activeFlow);
+				var id = activeFlow.annId;
+				console.log("valid flows announcement found");
+				if (isShown({ id: id })) {
+					console.log("flows, this ann already shown");
+					return;
+				}
+				var data = {
+					h: {
+						type: "announcements",
+						gid: gid,
+						senderId: senderId,
+						chatId: chatId,
+						sess: sess,
+						recepient: "sys",
+						sender: sender,
+						channel: channel,
+						purpose: "flow",
+						status: 'req'
+					},
+					d: {
+						query: {
+							id: id,
+							gid: gid
+						}
+					}
+				};
+				if (!isShown({ id: "first" })) {
+					data.h.firstAnn = true;
+					setShown({ id: "first" });
+				}
+				console.log("sending flows ann to server", data);
+				socket.emit("announcements", data);
+			}
+
+			function ftExecuteFlow(ann, firstAnn) {
+				if (popup == "modal")
+					return;
+				switch (ann[0].type) {
+					case "nps":
+						npsAnn = ann[0];
+						sendFTNotif({ event: "snack", html: npsAnn.html["snack"], type: "nps", position: "bottom" });
+						break;
+					default:
+						setFtData("announcements", ann);
+						if (firstAnn)
+							ann[0].firstAnn = true;
+						if (popup)
+							sendFTNotif({ event: "closeFeature", screen: popup });
+						pubNotifAnn(ann[0]);
+						setShown(ann[0]);
+				}
+			}
+
+			//======= Flows handler end here =====
+
+			function handleAnnouncements(msg) { 
+				console.log("received ann from server", msg);
+				if (msg.h && msg.h.status) {
+					if (msg.h.status != "success") {
+						return;
+					} else if (msg.d && msg.d.data) {
+						switch (msg.h.purpose) {
+							case "flow":
+								ftExecuteFlow(msg.d.data, msg.h.firstAnn);
+								break
+							default:
+								ftAnnouncementsExec(msg.d.data);
+						}
+					}
+				}
+			}
+
+			function openFeature(data) {
+				console.log(data);
+				switch (data.name) {
+					case "demo":                   
+						initDemoReq();
+						break;
+					case "announce":
+						if (data.type == "modal")
+							pubNotifAnn();
+						break;
+					case "nps":
+						if (npsAnn)
+							sendFTNotif({ event: "modal", html: npsAnn.html["modal"], type: "nps", data: { score: data.score } });
+						break;
+					case "flow":
+						resumeFlow();
+						break;
+					case "messenger":
+						if (data.type) {
+							var event = "chat" + data.type;
+							sendFTNotif({ event: event });
+						}
+						break;
+					default:
+						break;
+				}
+			}
+
+			function ftModal(html, type, data) {
+				var cdn = getStorageItem("_ft_const", "local");
+				var modal = '\
+				<div id="_ft_modal_">'
+					+ html +
+				'</div>';
+				sendFTNotif({ event: "modal", html: modal, type: type, data: data });
+			}
+
+			function ftSmall(html, type, screen) {
+				var notifHtml = '<div id="_ft_small_">\
+				<button id="_ft_close_" type="button" class="close" data-dismiss="modal" aria-label="Close">\
+					<span aria-hidden="true">×</span></button>' + html + '</div>';
+				sendFTNotif({ event: screen, html: notifHtml, type: type });
+			}
+
+			//===== ADD On(s) Code ends ============
+
+			function validateCohorts (force) {
+				var rawCohorts = getFtData("cohorts");
+				var cohorts = {};
+				var flows = getFtData("flows");
+				var valCohorts = [];
+				var settings = getStorageItem("_ft_w_settings_", "session");
+				var ui = getFtSettings();
+				if (!settings.identifier)
+					settings.identifier = 'email';
+				if (!ui[settings.identifier] || !Object.keys(rawCohorts).length)
+					return;
+				for (var i in rawCohorts) {
+					if (rawCohorts[i].id)
+						cohorts[rawCohorts[i].id] = rawCohorts[i];
+				}
+				for (var i in flows) {
+					if (flows[i].enabled && flows[i].cohort && cohorts[flows[i].cohort])
+						valCohorts.push(cohorts[flows[i].cohort]);
+				}
+
+				if (!valCohorts.length)
+					return;
+
+				var body = {
+					gid: gid,
+					cohorts: valCohorts,
+					identifier: settings.identifier,
+					_id: ui[settings.identifier]
+				};
+				if (force)
+					body.force = true;
+				var data = {
+					h: {
+						type: "cohorts",
+						gid: gid,
+						senderId: senderId,
+						sender: sender,
+						chatId: chatId,
+						sess: sess,
+						recepient: sender,
+						recepientId: senderId,
+						channel: channel,
+					},
+					d: {
+						body: body
+					}
+				};
+				console.log("validating cohorts", data);
+				socket.emit("cohorts", data);
+			}
+
+			function cohortCheckRes(msg) {
+				console.log("got cohorts check response");
+				if (msg.d && msg.d.data && Array.isArray(msg.d.data)) {
+					var valCohorts = [];
+					for (var i in msg.d.data[0]) {
+						if (Object.keys(msg.d.data[0][i]).length)
+							valCohorts.push(i);
+					}
+					setFtData("valCohorts", valCohorts);
+					runFlows(valCohorts);
+				}
+			}
+
+			function setNotifData(msg) {
+				var bar = "";
+				var agent = msg.h.agentname || "";
+				if (msg.h.agentpic) {
+					bar = '<span class="__ft_agent_chat_img__"><img class="agentimg " src="' + msg.h.agentpic + '"> </span>';
+					bar += '<div style="padding-left:20px"><b style="font-weight:600">' + agent + '</b><br><br>' + msg.d.msg.text + '</div>';
+					window.parent.document.title = msg.h.agentname + " says...";
+				}
+				else {
+					bar = '<div><b>' + agent + '</b></div>';
+					bar += "<div>" + msg.d.msg.text + "</div>";
+				}
+				return bar;
+			}
+
+			//===== notif handler ===
+			function ftNotif(msg) {
+				var html = '<div class="__ft_notif_">' + setNotifData(msg) + '</div>';
+				sendFTNotif({ event: "billboard", html: html, type: "notif" });
+			}// Show Notif
+
+			//--- Echo handler : confirmation of message received by the server ---
+
+			function ftEcho(msg) {
+				try {
+					console.log("echo for messaage", msg);
+					document.getElementById("m").disabled = false;
+					var tempChat = document.getElementById("temp_chat");
+					if (tempChat)
+						tempChat.parentNode.removeChild(tempChat);
+					handleEcho(msg);
+					chat = msg;
+				} catch(e) {console.log(e)}
+			}
+
+			// --- msg handler : message received by the chat client---- 
+			function ftMsg(msg) {
+				// handle message on socket
+				console.log("got message");
+				switch (msg.h.sender) {
+					case "agent":
+					case "user":
+						handleUserMsg(msg);
+						break;
+					case "bot":
+						handleBotMsg(msg);
+						break;
+					case "sys":
+						handleOtherMsg(msg, false);
+						break;
+				}
+				scrolltobottom();
+				ftHideDiv('#_ft_rating_div_');
+			}// FtMsg
+
+			function ftHideDiv(e) {
+				var div = document.getElementById(e);
+				if (div)
+					div.style.display = "none";
+			}
+
+			function parse(str) {
+				var parser = new DOMParser();
+				var doc = parser.parseFromString(str, "text/html");
+				return doc.body.firstChild;
+			}
+
+			function ftChatRatingHandler(msg) {
+				console.log(msg)
+				switch (msg.h.status) {
+					case "req":
+						ftAddonEnabled('chatRating', msg);
+						break;
+					case "ack":
+						handleOtherMsg(msg, true);
+						break;
+				}
+			}
+			function ftAddonEnabled(topic, msg) {
+				if (getSetting(topic, 'enabled')) {
+					switch (topic) {
+						case "chatRating":
+							ftAskChatRating(msg);
+							break;
+					}
+				}
+			}
+
+			function ftAskChatRating(msg) {
+				console.log(msg);
+				try {
+					var ratingDiv = document.getElementById("_ft_rating_div_");
+					if (ratingDiv)
+						return;
+					var pre_rating = getFtData("chatRating");
+					var lastChatMsg = getFtData("lastChat");
+					var newAgMsg = getFtData("newMsg");
+					if (!(Object.keys(lastChatMsg).length && typeof newAgMsg !== 'object') || typeof pre_rating !== 'object')
+						return;
+					var ratingQn = getSetting('chatRating', 'ratingQn') || "Overall chat rating";
+					var body = parse('\
+						<div class="col-xs-12">\
+							<div id="_ft_rating_div_">\
+								'+ ratingQn + '\
+								<table class="table">\
+									<tr id="_ft_rating_">\
+										<td onclick="ftHandleRating(1)">\
+											<img class="_ft_rating_star_" src="'+ cdn + '/img/star.png" id="_ft_rating_one_">\
+											<img class="hidden _ft_rating_star_" src="'+ cdn + '/img/star-sel.png" id="_ft_rating_one_sel_">\
+										</td>\
+										<td onclick="ftHandleRating(2)">\
+											<img class="_ft_rating_star_" src="'+ cdn + '/img/star.png" id="_ft_rating_two_">\
+											<img class="hidden _ft_rating_star_" src="'+ cdn + '/img/star-sel.png" id="_ft_rating_two_sel_">\
+										</td>\
+										<td onclick="ftHandleRating(3)">\
+											<img class="_ft_rating_star_" src="'+ cdn + '/img/star.png" id="_ft_rating_three_">\
+											<img class="hidden _ft_rating_star_" src="'+ cdn + '/img/star-sel.png" id="_ft_rating_three_sel_">\
+										</td>\
+										<td onclick="ftHandleRating(4)">\
+											<img class="_ft_rating_star_" src="'+ cdn + '/img/star.png" id="_ft_rating_four_">\
+											<img class="hidden _ft_rating_star_" src="'+ cdn + '/img/star-sel.png" id="_ft_rating_four_sel_">\
+										</td>\
+										<td onclick="ftHandleRating(5)">\
+											<img class="_ft_rating_star_" src="'+ cdn + '/img/star.png" id="_ft_rating_five_">\
+											<img class="hidden _ft_rating_star_" src="'+ cdn + '/img/star-sel.png" id="_ft_rating_five_sel_">\
+										</td>\
+									</tr>\
+								</table >\
+								<div class="col-xs-12 text-right _ft_no_float_">\
+									<span class="hidden fibo_fake_link" id="_ft_rating_submit_" onclick="ftHandleRating(6, '+ "'" + msg.h.senderId + "', '" + sess + "'" + ')">Submit</span>\
+								</div>\
+							</div>\
+						</div>', 'text/html');
+					document.getElementById("fibotalk-chat-board").append(body);
+				} catch(e) {console.log(e)}
+				scrolltobottom();
+			}
+
+			/**
+			* to handle change of rating icons on clicking different rating scores
+			*/
+
+			window.ftHandleRating = function (val, agent, sess) {
+				try {
+					if (val == 6)
+						return ftSendRating(rating, agent, sess);
+					rating = 0;
+					var obj = {
+						1: '_ft_rating_one_',
+						2: '_ft_rating_two_',
+						3: '_ft_rating_three_',
+						4: '_ft_rating_four_',
+						5: '_ft_rating_five_'
+					};
+					var submitRatDiv = document.getElementById("_ft_rating_submit_");
+					if (submitRatDiv)
+						submitRatDiv.classList.remove("hidden");
+					for (var i in obj) {
+						var sel = obj[i] + 'sel_';
+						if (i <= val) {
+							document.getElementById(obj[i]).classList.add("hidden");
+							document.getElementById(sel).classList.remove("hidden");
+						}
+						else {
+							document.getElementById(obj[i]).classList.remove("hidden");
+							document.getElementById(sel).classList.add("hidden");
+						}
+					}
+					rating = val;
+				} catch(e) {this.console.log(e)}
+			}
+
+			function ftSendRating(rating, agent, sess) {
+				try {
+					setFtData("chatRating", rating);
+					var msg = {
+						h: {
+							type: "msg",
+							gid: gid,
+							senderId: senderId,
+							chatId: chatId,
+							recepientId: agent,
+							sess: sess,
+							recepient: "agent",
+							sender: sender,
+							channel: channel,
+							purpose: "chatRating",
+							status: 'res'
+						},
+						d: {
+							data: { rating: rating }
+						}
+					}
+					console.log(JSON.stringify(msg));
+					socket.emit("chatRating", msg);
+					ftLogRating(msg);
+					var onSubmit = getSetting('chatRating', 'onSubmit') || "Thank you for your valuable feedback.";
+					document.getElementById('_ft_rating_div_').style.display = "none";
+					document.getElementById("fibotalk-chat-board").append(parse('\
+						<div class="col-xs-12">\
+							<div id="_ft_rating_div_">\
+								<div>'+ onSubmit + '</div>\
+							</div>\
+						</div>'
+					));
+				} catch(e) {console.log(e)}
+			}
+
+			function ftLogRating(msg) {
+				var params = {
+					type: 'misc',
+					misc: {
+						agent: msg.h.agent,
+						sess: msg.h.sess
+					},
+					custom: {
+						chatRating: 5
+					}
+				}
+				try {
+					window.parent.window.fibo.logEvent("chatRating", params,null, params.custom.chatRating);
+				} catch (e) {}
+			}
+
+			function ftDisconnect(socket, msg) {
+				// Handle socket disconnect
+			}
+
+			// ===== Scroll to Bottom ====
+			function scrolltobottom(init) {
+				try {
+					var chatBoard = document.getElementById("fibotalk-chat-board");
+					var scrolldistance = chatBoard.scrollHeight;
+					// if (init)
+						chatBoard.scrollTop = scrolldistance;
+					// else
+					//     $("#fibotalk-chat-board").animate({ scrollTop: scrolldistance });
+				} catch(e) {console.log(e)}
+			}
+
+
+			//---- close notification page ----
+			function closeNotif() {
+				console.log("here");
+				// $("#_ft_notif_page_").html("");
+				// $("#_ft_mother_ship_").css({ "display": "none" });
+			}
+
+			function closePage() {
+				try {
+					document.getElementById("_ft_mother_ship_").style.display = "none";
+					showBtn(openbtn);
+				} catch(e) {console.log(e)}
+			}
+
+			// --- load-msgs ---
+			function handleMsgs(msgs, ackMsg) {
+				if (!msgs.length) {
+					return; // no messages to load
+				}
+				console.log("Loading Messages", msgs);
+				for (var i in msgs) {
+					handleMsg(msgs[i], ackMsg);
+				}
+			}
+
+			//--- handle-msg : print messages based on sender and type ---
+
+			function handleMsg(msg, ackMsg) {
+				try {
+					if (msg.h.msgId > msgId) {
+						msgId = msg.h.msgId;
+						if (msg.h.senderId == getCookie("_ft_cid_"))
+							handleEcho(msg);
+						else {
+							handleOtherMsg(msg, ackMsg);
+						}
+					}
+				} catch (e) {
+					console.log("Some exeption in message handling", e);
+				}
+			}
+
+			function makePreview(type, user, url, time, meta) {
+				var icon = cdn + "/img/filelogo.png";
+				var btn = '<h6><a style="text-align:right;" href="' + url + '" target="_blank" download="">Download</a></h6>';
+				var actionText = "Shared ";
+				var text = "a file";
+				var html = "";
+				console.log(type, user, url, time, meta);
+				switch (type) {
+					case "image":
+						icon = url;
+						btn = '<h6><a href="' + url + '" target="_blank">View</a>&nbsp;\
+								<a href="' + url + '" target="_blank" download="">Download</a></h6>';
+						text = "an Image";
+						break;
+					case "video":
+						icon = cdn + "/img/videologo.png";
+						text = "a Video";
+						break;
+					case "audio":
+						icon = cdn + "/img/audiologo.png";
+						text = "an Audio";
+						break;
+					default:
+						break;
+				}
+				var agentpic = "";
+				try {
+					agentpic = meta.agentpic || (cdn + consts.icons.agIcon);
+				} catch(e) {}
+				var pic = agentpic ? '<div class="agent-chat-img"><img class="agentimg " src="'+ agentpic + '"></div>' : '';
+				if (user == "user") {
+					actionText = "Uploaded ";
+					html = '<div class="row" >\
+			<div class="fibotalk-user-msg">\
+			<div class="msg nopad"><div class="inchat">\
+				<div class="col-xs-12 nopad multimedia">\
+					<div class="col-xs-4 fileicon" align="center">\
+						<img src="'+ icon + '" />\
+					</div>\
+					<div class="col-xs-8" style="background-color:#fff; height:60px; padding:0px 10px;">\
+						<div >'+ actionText + text + '</div>\
+						<div class="nopad" align="right">\
+						'+ btn + '\
+						</div>\
+					</div></div>\
+					<div class="fibotalk-time pull-right">'+ time + '</div>\
+				</div>\
+			</div>\
+			</div>';
+
+				} else {
+					html = '<div class="row">	<div class="fibotalk-agent-msg">\
+			' + pic +
+			'<div style="float:left">\
+			<div class="msg " > <div class="inchat">\
+			<div class="nopad multimedia left-adjust-alt" >\
+				<div class="col-xs-4 fileicon" align="center">\
+					<img src="'+ icon + '" />\
+				</div>\
+				<div class="col-xs-8" style="background-color:#fff; height:60px; padding:0px 10px;">\
+					<div >'+ actionText + text + '</div>\
+					<div class="nopad" align="right">\
+					'+ btn + '\
+					</div>\
+				</div></div> </div>\
+			<div class="fibotalk-time left-adjust-alt">'+ time + '</div></div></div>\
+			</div>';
+					console.log("here...", html);
+				}
+				return html;
+			}
+
+			// ---- handle-echo : print self message on success from server ----
+
+			function handleEcho(msg) {
+				try {
+					sending = false;
+					// if there is no messagetype, do not proceed
+					if (!msg.h.msgtype)
+						return;
+
+					switch (msg.h.msgtype) {
+						case "text":
+							document.getElementById("fibotalk-chat-board").append(parse('<div class="row"><div class="fibotalk-user-msg">\
+								<div><pre class="newline msg theme">'+ msg.d.msg.text + '</pre></div>\
+								<div class="fibotalk-time pull-right">'+ getFormattedTime(msg) + '</div></div></div>')
+							);
+
+							break;
+						case "file":
+							try {
+								for (var i in msg.d.msg) {
+									var input = msg.d.msg[i];
+									document.getElementById("fibotalk-chat-board").append(parse(makePreview(input.type, "user", input.payload.url, getFormattedTime(msg), msg.h)));
+								}
+							} catch (e) {}
+							break;
+						default:
+							// do nothing
+							break;
+					}
+				} catch(e) {console.log(e)}
+			}
+
+			function getFormattedTime(msg) {
+				var foo = "";
+				// var day = 86400000;                             // 1 day in milliseconds
+				if (msg.h.ts) {
+					var date = new Date(msg.h.ts * 1000);
+					// var now = Date.now();
+					// var diff = now - date;
+					// if (diff >= day) {
+						var hours = date.getHours();
+						// Minutes part from the timestamp
+						var minutes = "0" + date.getMinutes();
+						// Seconds part from the timestamp
+						foo = hours + ':' + minutes.substr(-2) + ' ' + getDate(msg.h.ts * 1000);
+						// Will display time in hh:mm dd/mm/yyyy format
+					// } else {
+					//     diff = parseInt(diff / 1000);
+					//     if (diff <= 60)
+					//         return diff == 0 ? 'just now' : (diff + ' seconds ago');
+					//     diff = parseInt(diff / 60);
+					//     if (diff <= 60)
+					//         return diff + ' minutes ago';
+					//     diff = parseInt(diff / 24);
+					//         return diff + ' hours ago';
+					// }
+				}
+				return foo;
+			}
+
+			function getDate(ts) {
+				var monthName = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+				ts = new Date(ts);
+				return ts.getDate() + ' ' + monthName[ts.getMonth()] + ' ' + ts.getFullYear();
+			}
+
+			//-------- msg by other users ---------
+			function handleUserMsg(msg) {
+				if (msg.h.senderId)
+					setStorageItem("__ft__recepientId__", "local", msg.h.senderId);
+				handleOtherMsg(msg, false);
+			}
+
+			// ---- handle-other-msg : messages sent by others ----
+			function handleOtherMsg(msg, ackMsg) {
+				var sets = getStorageItem("_ft_w_settings_", "session");
+				if (sets.chat && sets.chat != 'True')
+					return;
+				console.log("Print messages from agents and bots", msg);
+				setFtData("newMsg", true);
+				var formattedTime = getFormattedTime(msg);
+				try {
+					// other message types may come up later
+					if (msg.d) {
+						if (msg.d.msg) {
+							if (msg.d.msg.text) {
+								document.getElementById("fibotalk-chat-board").append(parse(viewTextMessage(msg)));
+								if (!ackMsg) {
+									ftNotif(msg);
+								}
+							} else if (msg.d.msg.attachments) {
+								for (var i in msg.d.msg.attachments) {
+									var input = msg.d.msg.attachments[i];
+									document.getElementById("fibotalk-chat-board").append(parse(makePreview(input.type, "agent", input.payload.url, formattedTime, msg.h)));
+								}
+							}
+							var fiboDetails = document.getElementById("fibotalk-details");
+							if(fiboDetails && (fiboDetails.style.display == "block" || fiboDetails.style.visibility == "visible"))
+								sendChatOpen();
+						} else {
+							if (msg.h.purpose == 'screenShare') {
+								if (msg.h.status == "req") {
+									screenShareRes(msg);
+								} else if (msg.h.status == 'connected') {
+									setTimeout(function () {
+										clickAction(document.getElementById('close-chat'));
+									}, 500);
+								}
+							}
+						}
+					}
+					chat = msg;
+					setHeader();
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+			function screenShareRes(msg) {
+				var msg = {
+					h: {
+						type: "msg",
+						gid: gid,
+						senderId: senderId,
+						chatId: chatId,
+						recepient: "agent",
+						sender: sender,
+						channel: channel,
+						purpose: "screenShare",
+						status: 'res'
+					},
+					d: {
+						short_id: upscope_short_id,
+					}
+				};
+				var recepientId = getStorageItem("__ft__recepientId__", "local");
+				if (typeof recepientId !== 'object')
+					msg.h.recepientId = recepientId;
+
+				socket.emit("screenShare", msg);
+			}
+
+			function viewSysMessage(msg) {
+				console.log(msg)
+				var foo = '';
+				switch (msg.h.purpose) {
+					case "chatRating":
+						foo = '<div class="row text-center"><div class="badge badge-warning">You rated the chat ';
+						for (var i = 1; i < 6; i++) {
+							if (i <= msg.d.data.rating)
+								foo += '<img class="_ft_rating_star_small_" src="' + cdn + '/img/star-sel-small.png">';
+							else
+								foo += '<img class="_ft_rating_star_small_" src="' + cdn + '/img/star-non-sel-small.png">';
+						}
+						foo += '</div></div>';
+				break;
+					case "screenShare":
+						foo = '<div class="row text-center"><div class="badge badge-warning">';
+						if (msg.h.status == "connected")
+							foo += 'Screen share started';
+						foo += '</div></div>';
+						break;
+				}
+			console.log(foo);
+				return foo;
+			}
+
+			/**
+			* 	If message has text. It can also have quick replies
+			* @param {*} msg 
+			*/
+			function viewTextMessage(msg) {
+				var html = '<div class="row">	<div class="fibotalk-agent-msg">';
+				var agentPic = msg.h.agentpic || (cdn + consts.icons.agIcon);
+				html += '<div class="agent-chat-img"><img class="agentimg " src="' + agentPic + '"> </div>';
+				html += '<div style="float:left">\
+			<div><pre class="newline msg agent">'+ msg.d.msg.text + '</pre></div>\
+			<div class="fibotalk-time">'+ getFormattedTime(msg) + '</div>\
+			</div></div></div>';
+				// handle quick replies
+				try {
+					if (msg.d.msg.quick_replies && msg.h.msgId >= msgId) {
+						html += showQuickReplies(msg.d.msg.quick_replies);
+					}
+				} catch (e) {
+					// nothing to do
+				}
+				return html;
+			}
+
+			/**
+			* 	Send Message from customer to agent/bot
+			* @param {*} input 
+			*/
+			function sendChatMsg(input) {
+				console.log("here////");
+				try {
+					var foo = input
+					if (!input)
+						return false;
+					if (!foo.trim(" ").length) {
+						return false;
+					}
+					// setHeader();
+					if (sending) {
+						// if message is still sending
+						document.getElementById("m").disabled = true;
+						return false;
+					}
+
+					sending = true;
+					var msg = {
+						h: {
+							senderId: senderId,
+							gid: gid,
+							chatId: chatId,
+							sender: sender,
+							channel: channel,
+							msgtype: "text",
+							type:"msg"
+						},
+						d: {
+							msg: { "text": input }
+						}
+					}
+
+					var recepientId = getStorageItem("__ft__recepientId__", "local");
+					if (typeof recepientId !== 'object')
+						msg.h.recepientId = recepientId;
+
+					var ui = getFtSettings();
+					if (ui.email) {
+						var replyto = ui.email;
+						if (ui.name)
+							replyto = ui.name + " <" + replyto + ">";
+						msg.h.replyto = replyto;
+					}
+					msg['f'] = {
+						form: ui,
+					}
+					msg.f.form.ua = fta;
+
+					socket.emit("msg", msg);
+					setFtData("lastChat", msg);
+					document.getElementById("fibotalk-chat-board").append(parse('<div id="temp_chat" class="row"><div class="fibotalk-user-msg">\
+						<div class="msg theme">'+ input + '</div>\
+						<div class="fibotalk-time pull-right">sending....</div></div></div>')
+					);
+
+					document.getElementById("m").value = "";
+					scrolltobottom();
+					return false;
+				} catch(e) {console.log(e)}
+			}
+
+			/**
+			* 	Make html output of quick reply buttons.
+			* @param {*} qr 
+			*/
+			function showQuickReplies(qr) {
+				var foo = "";
+				for (var i in qr) {
+					// only content type text is supported
+					if (qr[i].content_type == "text") {
+						if (qr[i].payload) {
+							// foo+='<div style="border:1px solid #ced4da;border-radius:20px;width:55%;height:48vh;margin-bottom:10px;"><div><img src="img/bg.jpg"  style="width:100%;height:20vh;border-top-left-radius:10px;border-top-right-radius:10px;"></div><div><div><h6 style="font-weight:700;color:#0c0c0c;padding-right:5px;padding-left:5px;">Welcome to Fibotalk!</h6><p style="color:gray;padding-right:5px;padding-left:5px;">Install Fibotalk and convert your visitors into customers</p></div></div><hr style="margin-bottom:10px;margin-top:5px;"><div style="text-align:center; padding:3px;"><a href="" style="">Start Shopping</a></div><hr style="margin-bottom:10px;margin-top:5px;"><div style="text-align:center;padding:3px;"><a href="" style="">Call Us</a></div></div>';
+							// foo +='<button class='btn _ft_qr_' id="${qr[i].payload}">${qr[i].title || qr[i].payload}</button>';
+						}
+					}
+				}
+				return foo;
+			}
+			/**
+			* Handle Bot message
+			*/
+			function handleBotMsg(msg) {
+				console.log("IN bot message");
+				var formattedTime = "";
+				try {
+					switch (msg.h.purpose) {
+						case "reg":
+							regHandler(msg);
+							break;
+						default:
+							if (msg.d.msg.text) {
+								document.getElementById("fibotalk-chat-board").append(parse('<div class="row">	<div class="fibotalk-agent-msg">\
+									<div style="float:left">\
+									<div ><pre class="newline msg agent">'+ msg.d.msg.text + '</pre></div>\
+									<div class="fibotalk-time">'+ formattedTime + '</div></div></div>\
+									</div>\
+								'));
+							}
+							break;
+					}
+					// other message types may come up later
+					scrolltobottom();
+					chat = msg;
+					setHeader();
+				} catch (e) {
+					console.log(e);
+				}
+			}
+
+
+			/**
+			* 
+			*/
+			function regHandler(msg) {
+				console.log(msg)
+				try {
+					if (msg.d.msg.text) {
+						document.getElementById("fibotalk-chat-board").append(parse('<div class="row">	<div class="fibotalk-agent-msg">\
+							<div style="float:left">\
+							<div class="" ><pre class="newline msg agent">'+ msg.d.msg.text + '</pre></div>\
+							</div>\
+						'));
+					}
+					if (msg.h.fields.length) {
+						var _html = "";
+						console.log(msg.h.fields)
+						for (var i in msg.h.fields) {
+							_html = setForm(msg.h.fields[i])
+							document.getElementById("fibotalk-chat-board").append(parse(_html));
+						}
+					} // if there are fields
+				} catch(e) {console.log(e)}
+			}// regHandler
+
+			/**
+			* 
+			*/
+			function setHeader() {
+				try {
+					var nameHTML = '', picHTML = '';
+					if (chat.h) {
+						if (chat.h.agentname)
+							nameHTML = '<span>' + (chat.h.agentname || ftGetDefaults("widget_header")) + '</span>';
+						if (chat.h.agentpic)
+							picHTML = '<img class="agentimg" src="' + chat.h.agentpic + '"/>';
+					}
+
+					var html = '';
+					if (picHTML) {
+						html += picHTML + '&nbsp;';
+						document.getElementById("chat-header-text").classList.add("chat-head-img");
+					} else {
+						document.getElementById("chat-header-text").classList.remove("chat-head-img");
+					}
+					if (nameHTML) {
+						html += nameHTML;
+						document.getElementById("chat-header-text").innerHTML = html;
+					} else {
+						document.getElementById("chat-header-text").innerHTML = (org);
+					}
+					
+					document.getElementById("off-header-text").innerHTML = (org);
+					document.getElementById("home-header-text").innerHTML = (org);
+				} catch(e) {console.log(e)}
+			}
+
+			function addTheme(color) {
+				console.log("add theme///// ", color);
+				var css = '.theme{	background-color : ' + color + ';	color:#eee;}',
+					head = document.head || document.getElementsByTagName('head')[0],
+					style = document.createElement('style');
+				style.type = 'text/css';
+				if (style.styleSheet) {
+					style.styleSheet.cssText = css;
+				} else {
+					style.appendChild(document.createTextNode(css));
+				}
+				head.appendChild(style);
+			}
+
+
+			function setWidget(widget) {
+				console.log("here in setWidget", widget);
+				addTheme(widget.color);
+				setWelcomeMsg(widget);
+				// try {
+				//     $(openbtn).css('background-image', 'url("' + consts.icons.chat + '")');
+				//     $(closebtn).css('background-image', 'url("' + consts.icons.close + '")');
+				// } catch (e) {}
+				// $(openbtn).css('display', 'block');
+				org = widget.name || ftGetDefaults("widget_header");
+				setHeader();
+			}
+
+			function setWelcomeMsg(widget) {
+				try {
+					var cdn = getStorageItem("_ft_const", "local");
+					var welMsgHtml = widget.desc || ftGetDefaults("widget_desc"); 
+					var settings = getStorageItem("_ft_w_settings_", "session");
+					if (!settings.chat || settings.chat == "True") {
+						welMsgHtml += '<br>\
+							<input type="email" class="form-control" id="fibo-start-email" aria-describedby="email" placeholder="Enter email">\
+							<br><button class="theme fibo-welcome-button" onclick="startChat()">\
+							Start Chat<img src="' + cdn.base + cdn.icons.schat + '">\
+						</button>';
+					}
+					document.getElementById("fibo-welcome-msg").innerHTML = (welMsgHtml);
+					document.getElementById('fibo-start-email').addEventListener("keypress", function(event){
+						var keycode = (event.keyCode ? event.keyCode : event.which);
+						if(keycode == '13') {
+							startChat();
+						}
+					});
+					var ftSets = getFtSettings();
+					if (ftSets.email) {
+						document.getElementById('fibo-start-email').style.display = "none";
+					}
+				} catch(e) {console.log(e)}
+			}
+
+			function setAgents(agents) {
+				if (!agents.length)
+					return;
+				console.log(agents);
+				var html = '<table cellspacing="0" cellpadding="0" style="margin: auto;"><tr>';
+				if (agents.length > 0)
+					html += '<td class="agent-block"><img class="agentimg " src="' + agents[0].pic + '" title="' + agents[0].name + '"></td>';
+				for (var i = 1; i < agents.length; i++) {
+					html += '<td class="agent-block"><img class="ftNegMargin agentimg " src="' + agents[i].pic + '" title="' + agents[i].name + '"></td>';
+				}
+				html += '</tr></table>';
+				var agImgs = document.getElementById("home-agent-images");
+				if (agImgs) {
+					agImgs.style.display = "block";
+					agImgs.html(html);
+				}
+				return;
+			}
+
+
+			function setForm(type) {
+				console.log("here.....", type);
+				var _html = "";
+				_html = '<div class="row"><div class="fibotalk-agent-msg"><div style="float:left"><div class="msg agent" >';
+
+				switch (type) {
+					case "email":
+						_html += "<div id='email-form'> <div>Email</div>";
+						_html += '<input id="user-email" class="fibotalk-form-element" id="email" type="email" />\
+			<div class="row fibotalk-form-element" style="margin:0px"><span id="email-submit" class="ft_material pull-right" style="margin-top:10px"> submit </span></div>';
+						break;
+					case "phone":
+						_html += "<div id='phone-form'><div>Phone</div>";
+						_html += '<input id="user-phone" class="fibotalk-form-element" type="number" />\
+			<div class="row fibotalk-form-element" style="margin:0px"><span id="phone-submit" class="ft_material pull-right" style="margin-top:10px"> submit </span></div>';
+						break;
+					case "name":
+						_html += "<div id='name-form'><div>Name</div>";
+						_html += '<input id="user-name" class="fibotalk-form-element" type="text" />\
+			<div class="row fibotalk-form-element" style="margin:0px"><span id="name-submit" class="ft_material pull-right" style="margin-top:10px"> submit </span></div>';
+						break;
+				}
+				_html += '</div></div>';
+				return _html;
+			}
+
+
+			function setOffline(msg) {
+				if (msg.h.settings && msg.h.settings.offline) {
+					// switch (msg.h.settings.offline.method) {
+					//     case "form":
+							setHeader();
+							setOfflineView(msg.h.settings.offline);
+							settings = msg.h.settings.offline.config.info;
+					//         break;
+					//     default:
+					//         return;
+					// }
+				}
+			}
+
+			function unsetOffline(msg) {
+				try {
+					var fiboOff = document.getElementById("fibotalk-offline");
+					if(fiboOff && (fiboOff.style.display == "block" || fiboOff.style.visibility == "visible")) {
+						fiboOff.style.display = "none";
+						document.getElementById("fibotalk-details").style.display = "none";
+						document.getElementById("fibotalk-home").style.display = "block";
+					}
+				} catch(e) {console.log(e)}
+			}
+
+			function setOfflineView(settings) {
+				try {
+					var temp = '<div style="padding:10px 0px;"> <div class="text"> ' + settings.config.text + '</div>\
+					<div style="margin-top:25px;"></div><form id="_ft_form_">\
+					<div id="_ft_offline_form_submit_err_" style="display:none; color:red;" align="center"></div>';
+					for (var i in settings.config.info) {
+						temp += '<div class="input-field col s6">\
+						<label for="form_'+ settings.config.info[i].key + '">' + settings.config.info[i].disp + '<sup style="color:red">*</sup></label>\
+						<input id="form_'+ settings.config.info[i].key + '" type="text" class="form-control" style=" margin-bottom: 20px !important;" maxlength="50">\
+						</div>'
+					}
+					temp += '<div class="input-field col s6" >\
+					<label for="input_msg"> Your  Message<sup style="color:red">*</sup></label>\
+					<textarea id="input_msg" class="form-control" maxlength="150" style="word-wrap:normal;height:100px; max-height:150px;padding-bottom:0px ; resize: none; margin-bottom: 20px !important;"></textarea>\
+					</div>';
+
+					temp += '</div>';
+					document.getElementById("fibotalk-details").style.display = "none";
+					document.getElementById("fibotalk-home").style.display = "none";
+					document.getElementById("_ft_go_home_").style.display = "none";
+					document.getElementById("fibotalk-offline").style.display = "block";
+					document.getElementById("_ft_offline_form_submit_").style.display = "block";
+					document.getElementById("fibotalk-off-board").innerHTML = (temp);
+				} catch(e) {
+					console.log("no offline", e);
+				}
+			}
+
+			function bytesToSize(bytes) {
+				var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+				if (bytes == 0) return 'n/a';
+				var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+				if (i == 0) return bytes + ' ' + sizes[i];
+				return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+			};
+
+			function autoMessages(config) {
+				for (var i in config) {
+					if (validAutoMsg(config[i]))
+						setMsg(config[i]);
+				}
+			}
+
+			function setMsg(msg) {
+				setTimeout(function () {
+					displayAutoMsg(msg.msg);
+					setShown(msg);
+				}, msg.delay)
+			}
+
+			function validAutoMsg(msg) {
+				console.log(msg);
+				if (!msg.id)
+					return false;
+				if (isShown(msg)) {
+					return false;
+				}
+				if (!msg.page || msg.page == "*")
+					return true;
+				for (var i in msg.page) {
+					//var url = location.href.split('//')[1];
+					console.log(msg.page[i], window.parent.location);
+					if (msg.page[i] == window.parent.location.pathname)
+						return true;
+				}
+				return false;
+			}
+
+			function displayAutoMsg(msg) {
+				var foo = {
+					h: {
+						senderId: "auto",
+						gid: gid,
+						chatId: chatId,
+						sender: "agent",
+						channel: channel,
+						msgtype: "text"
+					},
+					d: {
+						msg: { "text": createText('autoMessage', msg) }
+					}
+				}
+				ftNotif(foo);
+				//handleBotMsg(foo);
+			}
+
+			/**
+			* General fibotalk data
+			*/
+			function getFtData(type) {
+				var ftData = getStorageItem("__ft__data__", "session");
+				if (type in ftData)
+					return ftData[type];
+				return {};
+			}
+
+			function setFtData(type, value) {
+				var ftData = getStorageItem("__ft__data__", "session");
+				ftData[type] = value;
+				setStorageItem("__ft__data__", "session", ftData, true);
+			}
+
+			/**
+			* return __ft__settings__ from localStorage or {}
+			*/
+			function getFtSettings() {
+				var info = {};
+				try {
+					info = JSON.parse(window.localStorage.getItem("__ft__settings__"));
+				} catch (error) { };
+				if (!info)
+					info = {};
+				return info;
+			}// getFtSettings
+
+			/**
+			* return _ft_w_settings_ from sessionStorage or null
+			* @param {*} addon 
+			* @param {*} fld 
+			*/
+			function getSetting(addon, fld) {
+				var settings = window.parent.sessionStorage.getItem('_ft_w_settings_');
+				if (settings) {
+					settings = JSON.parse(settings);
+					try {
+						if (settings[addon][fld])
+							return settings[addon][fld]
+					} catch (e) { console.error(e, settings) }
+				}
+				return null;
+			}
+
+
+			function setShown(msg) {
+				if (!msg.id)
+					return;
+				var list = getFtData("shown");
+				if (!Array.isArray(list))
+					list = [];
+				list.push(msg.id);
+				setFtData("shown", list)
+			}
+
+			function isShown(msg) {
+				var list = getFtData("shown");
+				if (Array.isArray(list) && list.includes(msg.id))
+					return true;
+				return false;
+			}
+			
+			window.submitUser = function() {
+				console.log("here.... ", settings)
+				try {
+					var form = {
+						h: {
+							senderId: senderId,
+							sender: sender,
+							gid: gid,
+							purpose: "reg",
+							channel: channel
+						},
+						d: {
+							save: true,
+							ua: fta
+						}
+					}
+					console.log(settings);
+					var obj = {};
+					var errFormDiv = document.getElementById("_ft_offline_form_submit_err_");
+					for (var i in settings) {
+						var formDiv = document.getElementById('form_' + settings[i].key);
+						if (!formDiv.value) {
+							errFormDiv.style.display = "block"
+							var temp = "All fields are required";
+							errFormDiv.innerHTML = (temp);
+							return;
+						}
+						else {
+							errFormDiv.style.display = "none";
+							form.d[settings[i].key] = formDiv.value;
+							obj[settings[i].key] = formDiv.value;
+							console.log(form, i, settings.length - 1);
+						}
+					}
+					var inMsg = document.getElementById("input_msg");
+					if (!(inMsg && inMsg.value)) {
+						errFormDiv.style.display = "block";
+						var temp = "All fields are required";
+						errFormDiv.innerHTML = (temp);
+						return;
+						}
+				
+						var msg = {
+							h: {
+								senderId: senderId,
+								gid: gid,
+								chatId: chatId,
+								sender: sender,
+								channel: channel,
+								msgtype: "text",
+								type: "msg"
+							},
+							d: {
+								msg: { "text": inMsg.value }
+							},
+							f: {
+								form: form.d
+							}
+						}
+						var recepientId = getStorageItem("__ft__recepientId__", "local");
+						if (typeof recepientId !== 'object')
+							msg.h.recepientId = recepientId;
+
+						var ui = getFtSettings();
+						var email = form.d.email || ui.email;
+						var name = form.d.name || ui.name;
+						if (email) {
+							var replyto = email;
+							if (name)
+								replyto = name + " <" + replyto + ">";
+							msg.h.replyto = replyto;
+					}
+				
+					console.log(msg,obj);
+					socket.emit("form", msg);
+					var ftSets = getFtSettings();
+					var lead = ""
+					if (!ftSets.userType || ftSets.userType != 'user')
+						lead = "lead";
+					window.parent.setFtSettings(obj,lead);
+				
+					var temp = '<div style="padding:15px;">\
+						<h3 style="color:#666; margin-top:20%;" class="text-center">Thank you</h3>\
+						<h5 style="color:#888; margin-top:15px;text-align: center;">We have received your message and we\'ll get back to you soon</h5>\
+						</div>';
+					document.getElementById("fibotalk-details").style.display = "none";
+					document.getElementById("fibotalk-offline").style.display = "block";
+					document.getElementById("fibotalk-home").style.display = "none";
+					document.getElementById("_ft_offline_form_submit_").style.display = "none";
+					document.getElementById("fibotalk-off-board").innerHTML = (temp);
+					return false;
+				} catch(e) {this.console.log(e)}
+			}
+
+			function sendChatOpen() {
+				var msg = {
+					h: {
+						gid: gid,
+						type: "chat_open",
+						senderId: senderId,
+						chatId: chatId,
+						recepient: "agent_group"
+					},
+					d: {}
+				};
+				sendNotif(msg);
+				setFtData("newMsg", false);
+			}
+			
+			window.startChat = function () {
+				try {
+					document.getElementById("fibotalk-home").style.display = "none";
+					document.getElementById("fibotalk-details").style.display = "block";
+					document.getElementById("_ft_go_home_").style.display = "block";
+					var emailDiv = document.getElementById("fibo-start-email");
+					if (emailDiv) {
+						var email = emailDiv.value;
+						if (email.length && email.indexOf('@') > -1) {
+							regSubmit("email", email);
+							emailDiv.style.display = "none";
+						}
+						var newMsg = getFtData("newMsg");
+						if (typeof newMsg !== 'object' && newMsg) {
+							sendChatOpen();
+						}
+					}
+					scrolltobottom(true);
+				} catch(e) {this.console.log(e)}
+			};
+			
+			window.goHome = function () {
+				try {
+					document.getElementById("fibotalk-home").style.display = "block";
+					document.getElementById("fibotalk-details").style.display = "none";
+					document.getElementById("fibotalk-offline").style.display = "none";
+					document.getElementById("_ft_go_home_").style.display = "none";
+				} catch(e) {this.console.log(e)}
+			}
+
+			function closeChat() {
+				try {
+					document.getElementById("fibotalk-chat-window").style.display = "none";
+					sendFTNotif({ event: "chatclose" });
+				} catch(e) {
+					console.log(e);
+				}
+			}
+
+		})(window, document);// end of main function
+
+	</script>
+
+	<!-- Button style and js -->
+	<style>
+		._ft_btn_{
+			width:60px;
+			height:60px;
+			cursor:pointer;
+			border-radius:50%;
+			border:0;
+			background-repeat:no-repeat;
+			background-position: center;
+			position:fixed;
+			bottom:10px;
+			right:5px;
+			transition: visibility 0.3s, opacity 0.3s linear, box-shadow .5s;
+			box-shadow: 0 3px 5px rgba(0, 0, 0, .6);
 		}
-	};
-
-	foo.chat = foo.protocol + foo.com + foo.appserver;
-	window.foo = foo;
-
-	var scripts = [
-		{ path: foo.chat + '/socket.io', f: "socket.io" },
-		{ path: foo.chat + '/siofu', f: "client" },
-		{ path: foo.base + '/js', f: "main" },
-	];
-
-	function addCSS() {
-		var s = document.createElement("link");
-		s.href = foo.base + '/css/bootstrap.min.css',
-			s.async = 1,
-			s.rel = "stylesheet";
-		document.head.appendChild(s);
-
-		var s = document.createElement("link");
-		s.href = foo.base + '/css/' + foo.css.chat + '.css',
-			s.async = 1,
-			s.rel = "stylesheet";
-		document.head.appendChild(s);
-	}
-
-	// add scripts
-	function addScripts(obj) {
-		var s = document.createElement("script");
-		s.src = obj.path + '/' + obj.f + '.js';
-		s.async = false;
-		var ref = document.getElementsByTagName("script");
-		var refnode = ref[ref.length - 1]
-		refnode.parentNode.appendChild(s, refnode.nextSibling);
-
-	}
-
-	// initialize template
-	window.initTemplate = function() {
-		parseTemplate(template, "body");
-	};
-
-	// load appropriate template in second widget screen
-	window.loadDetails = function(type) {
-		if (servicesTemplate.active && servicesTemplate.active == type)
-			return;
-		servicesTemplate.active = type;
-		var elBody = document.getElementById("fibotalk-details");
-		if (servicesTemplate[type])
-			parseTemplate([servicesTemplate[type]], elBody);
-	};
-
-	// unload the second widget screen
-	window.unloadDetails = function(type) {
-		if (servicesTemplate.active && servicesTemplate.active == type)
-			document.getElementById("fibotalk-details").innerHTML = "";
-		servicesTemplate.active = "";
-		goHome();
-	};
-
-	// function parse template
-	function parseTemplate(template, insertIn) {
-		for (var i in template) {
-			createElement(template[i], insertIn);
+		
+		#_ft_chatopen_btn_{
+			background-size: 35px;
+			visibility: visible;
+			opacity:1;
 		}
-	}
-
-	// function create element
-	function createElement(element, parent) {
-		var el = document.createElement(element.tag);
-		for (var i in element.attr)
-			el.setAttribute(i, element.attr[i]);
-		if (element.innerHTML)
-			el.innerHTML = element.innerHTML;
-		if (parent == "body")
-			document.body.appendChild(el);
-		else {
-			parent.appendChild(el);
+	</style>
+	<script>
+		// handle click event on open chat
+		function openChat() {
+			document.getElementById("fibotalk-chat-window").style.display = "block";
 		}
-		if (element.body) {
-			parseTemplate(element.body, el)
-		}
-	}
+	</script>
+</head>
 
-	addCSS();
-	for (var i in scripts)
-		addScripts(scripts[i]);
-	console.log("sequence 1");
+<body>
+	<div id="fibotalk-chat-button">
+		<div id="_ft_chatopen_btn_" class="theme _ft_btn_" style="background-image: url(&quot;http://localhost/cdn/img/icon-02.png&quot;);" onclick="openChat()"></div>
+	</div>
+	<div id="fibotalk-chat-window" style="display: none;">
+		<div id="fibotalk-welcome-page">
+			<div id="fibotalk-home">
+				<div class="theme fibotalk-header">
+					<div id="home-header-text" class="header-text">Local Testing</div>
+					<div id="home-agent-images" class="header-agent-images"></div>
+				</div>
+				<div id="fibotalk-welcome-board">
+					<div id="fibo-welcome-msg" class="fibo-welcome-msg">This is a sample local testing environment...
+						<br>
+						<input type="email" class="form-control" id="fibo-start-email" aria-describedby="email" placeholder="Enter email" style="display: none;">
+						<br>
+						<button class="theme fibo-welcome-button" onclick="startChat()"> Start Chat<img src="http://localhost/cdn/img/send.png"> </button>
+					</div>
+					<div id="fibo-announce-holder"></div>
+					<div id="fibo-demo-holder"></div>
+				</div>
+			</div>
+			<div id="fibotalk-details">
+				<div id="fibotalk-chat">
+					<div class="theme fibotalk-header">
+						<div id="chat-header-text" class="header-text">Local Testing</div>
+						<div id="agent-typing">typing...</div>
+					</div>
+					<div id="fibotalk-chat-board"></div>
+					<div class="fibotalk-action-board">
+						<form id="_ft_chat_form_" class="_ft_form" style="overflow:visible;" action="">
+							<div id="_ft_send_form_" class="_ft_conversation_compose_">
+								<textarea type="text" rows="1" class="input-msg" id="m" name="input" placeholder="Send Message" autocomplete="off" autofocus=""></textarea>
+								<input type="file" id="upload_file" style="display:none">
+								<div id="upload_button"><img src="http://localhost/cdn/img/attach.png"></div>
+								<button id="_ft_chat_send_btn_" class="send">
+									<div class="circle"><img src="http://localhost/cdn/img/send_o.png"></div>
+								</button>
+							</div>
+						</form>
+						<div id="_ft_file_selected_" class="_ft_conversation_compose_"><span id="_ft_file_selected_error_"></span>
+							<div class="row" id="_ft_file_selected_details_" style="padding:15px;">
+								<div class="col-xs-3"><img id="selected_file_image"></div>
+								<div class="col-xs-9">
+									<label id="selected_file_name"></label>
+									<br><span id="selected_file_size"></span>
+									<div class="upload_status">
+										<div id="upload_progress"></div>
+									</div>
+								</div>
+								<button id="_ft_send_file_">
+									<div class="circle"><img src="http://localhost/cdn/img/send_o.png"></div>
+								</button>
+							</div><a id="close_upload_file" class="close" title="close">×</a></div>
+					</div>
+				</div>
+			</div>
+			<div id="fibotalk-offline">
+				<div class="theme fibotalk-header">
+					<div id="off-header-text" class="header-text">Local Testing</div>
+				</div>
+				<div id="fibotalk-off-board"></div>
+				<button id="_ft_offline_form_submit_" style="width:100%" class="btn btn-small theme" onclick="submitUser()">Submit</button>
+			</div>
+		</div>
+		<div id="fibotalk-footer"><a href="https://fibotalk.com/" target="_blank">Running On <img src="http://localhost/cdn/img/fibotalk/FIBO_LOGO_final-03.png" style="width:42px; margin-top:-2px;"></a></div><img id="close-chat" src="http://localhost/cdn/img/close.png"><img id="_ft_go_home_" src="http://localhost/cdn/img/back.png">
+	</div>
+</body>
 
-	function preload(arrayOfImages) {
-        for (var i in arrayOfImages) {
-            (new Image()).src = arrayOfImages[i];
-        }
-	}
-
-	// Usage:
-
-	// preload([
-	// 	foo.base + '/img/star.png',
-	// 	foo.base + '/img/star-sel.png',
-	// 	foo.base + '/img/star-sel-small.png',
-	// 	foo.base + '/img/star-non-sel-small.png'
-	// ]);
-
-})(window, document)
-</script>
+</html>
