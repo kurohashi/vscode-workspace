@@ -26,7 +26,7 @@
                     agIcon: "/img/usericon_thumb.jpg"
                 },
                 static: "",
-				/*	For Local
+			//	/*	For Local
                 com: "", // socket. for unireply chat for fibotalk.com
                 protocol: "http://",
                 server: "localhost/cdn",
@@ -41,7 +41,7 @@
 				fgid: "123329a1fc798fa3ecdbcf9123637e",
 			//	*/
 
-			//	/*	For testing
+				/*	For testing
 				com: "",
 				protocol: "http://",
 				server: "192.168.1.100/cdn",
@@ -166,7 +166,10 @@
 
 
 		* { margin: 0; padding: 0; box-sizing: border-box; }
-		body { font: 13px Helvetica, Arial; }
+		body {
+			font: 13px Helvetica, Arial;
+			background: transparent !important;
+		}
 
 		._ft_form_ { 
 		width: 100%; }
@@ -983,67 +986,57 @@
 			"notif": "#fibotalk_notif_page"
 		};
 		var msgId = 0;
-		var gid = getCookie("_ft_gid_"), senderId = getCookie("_ft_cid_"), chatId = getCookie("_ft_cid_");
-		var regSt = getCookie("_ft_st_") || "noreg";
+		var gid = '', senderId = '', chatId = '';
 		var org = "", title = "";
 		var fta = {}, sess = "";
 		var rating = 0;
 		var popup = "";
-		/**
-		* Util functions
-		*/
-		function getCookie(name) {
-			name = name + "=";
-			var decodedCookie = decodeURIComponent(window.parent.document.cookie);
-			var ca = decodedCookie.split(';');
-			for (var i = 0; i < ca.length; i++) {
-				var c = ca[i];
-				while (c.charAt(0) == ' ') {
-					c = c.substring(1);
-				}
-
-				if (c.indexOf(name) == 0) {
-					return c.substring(name.length, c.length);
-				}
-			}
-			return "";
-		}
-
-		function setCookie(name, value, days) {
-			var dt = new Date(), expires = "expires=";
-			if (days) {
-				dt.setTime(dt.getTime() + (days * 24 * 60 * 60 * 1000));
-				expires = expires + dt.toUTCString();
-			}
-			else {
-				expires = expires + "Session";
-			}
-
-			if (consts.domain != ".localhost")
-				window.parent.document.cookie = name + "=" + value + ";" + expires + ";path=/;domain=" + consts.domain + ";";
-			else
-				window.parent.document.cookie = name + "=" + value + ";" + expires + ";path=/;";
-
-		}
-
-		function delCookie(name) {
-			var val = "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
-			if (consts.domain != ".localhost")
-				val += "domain=" + consts.domain + ";";
-			window.parent.document.cookie = name + val;
-		}
-
+		
 		var consts = window.foo;
 		var cdn = window.foo.protocol + window.foo.server;
 		var socket = io(window.foo.chat);
-
+		
 		// main function
 		(function (window, document) {
+			/**
+			* Util functions
+			*/
+			function getSystemVar(name) {
+				var item = getStorageItem(name, "local");
+				if (['object','function'].includes(typeof item))
+					return "";
+				return item;
+			}
+	
+			function setSystemVar(name, value, days) {
+				setStorageItem(name, "local", value);
+			}
 
-			var siofu = new SocketIOFileUpload(socket);
-			if (!getCookie("_ft_gid_"))
+			// Extract URL params values
+			try {
+				var paramString = window.location.search.slice(1);
+				var params = paramString.split('&');
+				var mandatoryObj = {};
+				for (var i in params) {
+					var tempParam = params[i].split('=');
+					setSystemVar("_ft_" + tempParam[0] + "_", tempParam[1]);
+					mandatoryObj[tempParam[0]] = tempParam[1];
+				}
+				console.log(mandatoryObj);
+			} catch(e) {
+				console.log(e);
 				return;
+			}
+
+			gid = getSystemVar("_ft_gid_");
+			chatId = getSystemVar("_ft_cid_");
+			senderId = chatId;
+
+			if (!gid)
+				return;
+			var siofu = new SocketIOFileUpload(socket);
 			title = window.parent.document.title;
+
 			
 			/**
 			 *	Chat Workflow opening and closing of chat boxes and buttons 
@@ -1069,7 +1062,7 @@
 							console.log("close page for onblur & stoping time interval");
 							try {
 								if (sess) {
-									var bar_cookie = JSON.parse(window.parent.window.localStorage.getItem("__ft__sess__"));
+									var bar_cookie = JSON.parse(window.localStorage.getItem("__ft__sess__"));
 									if (sess == bar_cookie.id)
 										setClose(null, "on Blur");
 								}
@@ -1106,13 +1099,13 @@
 			setInterval(runEventLogger, timeInterval);
 
 			function runEventLogger() {
-				var bar = window.parent.window.localStorage.getItem("__ft__events");
+				var bar = window.localStorage.getItem("__ft__events");
 
 				if (!bar)
 					return;
 				bar = JSON.parse(bar);
 				if (bar.length > 25) {
-					window.parent.window.localStorage.removeItem("__ft__events");
+					window.localStorage.removeItem("__ft__events");
 					return;
 				}
 				var response = [];
@@ -1122,7 +1115,7 @@
 				try {
 					socket.emit("logEvent", { data: response, gid: gid });
 				} catch (e) {}
-				window.parent.window.localStorage.removeItem("__ft__events");
+				window.localStorage.removeItem("__ft__events");
 				pauseSession();
 				resumeSession();
 			}
@@ -1138,7 +1131,7 @@
 					arr.map(function (fld) {
 						try {
 							var key = fld.key.replace('_ft_', '');
-							bar[key] = window.parent.window.localStorage.getItem(fld.key);
+							bar[key] = window.localStorage.getItem(fld.key);
 							switch (fld.type) {
 								case "num":
 									bar[key] = parseInt(bar[key]);
@@ -1673,8 +1666,8 @@
 			}// fileuploadcomplete
 
 			function ftCheck(socket) {
-				gid = getCookie("_ft_gid_");
-				chatId = getCookie("_ft_cid_") || null;
+				gid = getSystemVar("_ft_gid_");
+				chatId = getSystemVar("_ft_cid_") || null;
 
 				var msg = {
 					h: {
@@ -1693,8 +1686,8 @@
 			function ftCon(socket, reset) {
 				// handle initial connection
 
-				gid = getCookie("_ft_gid_");
-				chatId = getCookie("_ft_cid_") || null;
+				gid = getSystemVar("_ft_gid_");
+				chatId = getSystemVar("_ft_cid_") || null;
 				if(chatId=="undefined" || reset)
 					chatId = "";
 				if(senderId =="undefined" || reset)
@@ -1750,7 +1743,7 @@
 				console.log("chat_stat", msg);
 				ftAddonEnabled('chatRating', msg);
 				if (msg.h && msg.h.senderId) {
-					window.parent.window.localStorage.removeItem("__ft__recepientId__");
+					window.localStorage.removeItem("__ft__recepientId__");
 
 					msg.h.sender = sender;
 					msg.h.recepient = "agent";
@@ -1770,7 +1763,7 @@
 				if (!msg.h)
 					return;
 				console.log("got Ack", msg);
-				setCookie("_ft_cid_", msg.h.chatId, 3000);
+				setSystemVar("_ft_cid_", msg.h.chatId, 3000);
 				chatId = msg.h.chatId;
 				console.log(msg);
 				chat = msg;
@@ -1779,7 +1772,7 @@
 
 				if (msg.h.ua) {
 					try {
-						if (window.parent.window.sessionStorage.getItem("blocked"))
+						if (window.sessionStorage.getItem("blocked"))
 							return;
 						fta = msg.h.ua;
 						console.log(fta);
@@ -1800,7 +1793,7 @@
 				}
 				if (msg.h.settings) {
 					try {
-						window.parent.sessionStorage.setItem("_ft_w_settings_", JSON.stringify(msg.h.settings));
+						window.sessionStorage.setItem("_ft_w_settings_", JSON.stringify(msg.h.settings));
 						if (!interfaceLoaded) {
 							// initTemplate();
 							initWidget();
@@ -1829,7 +1822,7 @@
 							return;
 						}
 						window.parent.window.postMessage({ event: "setwidget", widget: msg.h.widget }, "*");
-						window.parent.sessionStorage.setItem("_ft_widget_setting_", JSON.stringify(msg.h.widget));
+						window.sessionStorage.setItem("_ft_widget_setting_", JSON.stringify(msg.h.widget));
 						setWidget(msg.h.widget);
 					} catch(e) {
 						console.log(e);
@@ -1846,7 +1839,7 @@
 				if (!senderId) {
 					// check if uid/senderid exists if not then update the cookie
 					try {
-						setCookie("_ft_cid_", msg.h.recepientId, 3000);
+						setSystemVar("_ft_cid_", msg.h.recepientId, 3000);
 						senderId = msg.h.recepientId;
 					} catch(e) {
 						console.log(e);
@@ -2087,15 +2080,15 @@
 				var foo_page = window.parent.location.pathname;
 				if (foo_page.indexOf("?") > -1)
 					foo_page = foo_page.substring(0, foo_page.indexOf("?"));
-				var foo_cookie = window.parent.window.localStorage.getItem("__ft__sess__");
-				//var foo_tabId = window.parent.window.sessionStorage.getItem("_ft_tabid")
+				var foo_cookie = window.localStorage.getItem("__ft__sess__");
+				//var foo_tabId = window.sessionStorage.getItem("_ft_tabid")
 				//console.log(foo_page,foo_tabId);
 				try {
 					foo_cookie = JSON.parse(foo_cookie);
 					if (foo_cookie.id != sess)
 						foo_cookie = null;
 				} catch (e) { }
-				//if(!window.parent.window.localStorage.getItem("__ft__events"))
+				//if(!window.localStorage.getItem("__ft__events"))
 				//	foo_cookie = null;
 				if (!foo_cookie)//First Time
 				{
@@ -2123,12 +2116,12 @@
 
 			function setActive(cookie, newPage) {
 				resumeSession();
-				var foo_cookie = cookie || JSON.parse(window.parent.window.localStorage.getItem("__ft__sess__"));
+				var foo_cookie = cookie || JSON.parse(window.localStorage.getItem("__ft__sess__"));
 				foo_cookie.curr = newPage;
 				foo_cookie.open = new Date().getTime();
 				try {
 					window.parent.window.fibo.logEvent("page_open", null, { page: newPage }, newPage);
-					window.parent.window.localStorage.setItem("__ft__sess__", JSON.stringify(foo_cookie));
+					window.localStorage.setItem("__ft__sess__", JSON.stringify(foo_cookie));
 				} catch (e) {}
 			}
 			/**
@@ -2142,12 +2135,12 @@
 			function sessionStart(ph) {
 				try {
 					var timeNow = new Date().getTime();
-					window.parent.window.localStorage.removeItem("__ft__events");
+					window.localStorage.removeItem("__ft__events");
 					var init_load = {
 						id: sess,
 						startTime: timeNow
 					};
-					window.parent.window.localStorage.setItem("__ft__sess__", JSON.stringify(init_load));
+					window.localStorage.setItem("__ft__sess__", JSON.stringify(init_load));
 					var visits = window.localStorage.getItem("_ft_visits");
 					window.localStorage.setItem("_ft_visits", visits ? (parseInt(visits) + 1) : 1);
 					window.parent.window.fibo.logEvent("session_start");
@@ -2217,9 +2210,9 @@
 			function setStorageItem(key, type, obj, append) {
 				var item;
 				if (type == "session")
-					item = window.parent.sessionStorage.getItem(key);
+					item = window.sessionStorage.getItem(key);
 				else if (type == "local")
-					item = window.parent.localStorage.getItem(key);
+					item = window.localStorage.getItem(key);
 				try {
 					item = JSON.parse(item);
 				} catch(e) {}
@@ -2240,17 +2233,17 @@
 					item = obj;
 				}
 				if (type == "session")
-					window.parent.window.sessionStorage.setItem(key, JSON.stringify(item));
+					window.sessionStorage.setItem(key, JSON.stringify(item));
 				else if (type == "local")
-					window.parent.window.localStorage.setItem(key, JSON.stringify(item));
+					window.localStorage.setItem(key, JSON.stringify(item));
 			}
 
 			function getStorageItem(key, type) {
 				var item;
 				if (type == "session")
-					item = window.parent.sessionStorage.getItem(key);
+					item = window.sessionStorage.getItem(key);
 				else if (type == "local")
-					item = window.parent.localStorage.getItem(key);
+					item = window.localStorage.getItem(key);
 				if (!item)
 					return {};
 				try {
@@ -2262,7 +2255,7 @@
 			function setClose(cookie, reason) {
 				try {
 					pauseSession();
-					var foo_cookie = cookie || JSON.parse(window.parent.window.localStorage.getItem("__ft__sess__"));
+					var foo_cookie = cookie || JSON.parse(window.localStorage.getItem("__ft__sess__"));
 					var duration = null;
 
 					if (foo_cookie.open)
@@ -2273,7 +2266,7 @@
 
 					delete foo_cookie.curr; delete foo_cookie.open;
 					console.log("saving cookie at close ", foo_cookie);
-					window.parent.window.localStorage.setItem("__ft__sess__", JSON.stringify(foo_cookie));
+					window.localStorage.setItem("__ft__sess__", JSON.stringify(foo_cookie));
 				} catch (e) {
 					console.log(e);
 				}
@@ -2422,7 +2415,7 @@
 
 			function ftStartNps(nps_settings) {
 				console.log("staring nps.........................");
-				var widget = window.parent.sessionStorage.getItem("_ft_widget_setting_");
+				var widget = window.sessionStorage.getItem("_ft_widget_setting_");
 				widget = JSON.parse(widget);
 				if (widget && widget.color)
 					nps_settings["theme_color"] = widget.color;
@@ -3207,7 +3200,21 @@
 			//===== notif handler ===
 			function ftNotif(msg) {
 				var html = '<div class="__ft_notif_">' + setNotifData(msg) + '</div>';
-				sendFTNotif({ event: "billboard", html: html, type: "notif" });
+				var notifDiv = document.getElementById("fibotalk-notif-div");
+				try {
+					notifDiv.innerHTML = html;
+					document.getElementsByClassName("__ft_notif_")[0].addEventListener("click", function() {
+						openChat();
+						startChat();
+						closeNotif();
+					});
+					setTimeout(function() {
+						closeNotif();
+					}, 4000);
+				} catch (error) {
+					console.log(error);
+				}
+				// sendFTNotif({ event: "billboard", html: html, type: "notif" });
 			}// Show Notif
 
 			//--- Echo handler : confirmation of message received by the server ---
@@ -3432,9 +3439,12 @@
 
 			//---- close notification page ----
 			function closeNotif() {
-				console.log("here");
-				// $("#_ft_notif_page_").html("");
-				// $("#_ft_mother_ship_").css({ "display": "none" });
+				var notifDiv = document.getElementById("fibotalk-notif-div");
+				try {
+					notifDiv.innerHTML = "";
+				} catch (error) {
+					console.log(error);
+				}
 			}
 
 			function closePage() {
@@ -3461,7 +3471,7 @@
 				try {
 					if (msg.h.msgId > msgId) {
 						msgId = msg.h.msgId;
-						if (msg.h.senderId == getCookie("_ft_cid_"))
+						if (msg.h.senderId == getSystemVar("_ft_cid_"))
 							handleEcho(msg);
 						else {
 							handleOtherMsg(msg, ackMsg);
@@ -3929,7 +3939,23 @@
 				// } catch (e) {}
 				// $(openbtn).css('display', 'block');
 				org = widget.name || ftGetDefaults("widget_header");
+				setChatElements(widget);
 				setHeader();
+			}
+
+			function setChatElements(widget) {
+				var chatbtn = document.getElementById("_ft_chatopen_btn_");
+				var notifDiv = document.getElementById("fibotalk-notif-div");
+				if (widget.position) {
+					try {
+						if (widget.position.left) {
+							chatbtn.style.left = "4px";
+							notifDiv.style.left = "70px";
+						}
+					} catch (error) {
+						console.log(error);
+					}
+				}
 			}
 
 			function setWelcomeMsg(widget) {
@@ -4151,7 +4177,7 @@
 			* @param {*} fld 
 			*/
 			function getSetting(addon, fld) {
-				var settings = window.parent.sessionStorage.getItem('_ft_w_settings_');
+				var settings = window.sessionStorage.getItem('_ft_w_settings_');
 				if (settings) {
 					settings = JSON.parse(settings);
 					try {
@@ -4333,7 +4359,7 @@
 	</script>
 
 	<!-- Button style and js -->
-	<style>
+	<style type="text/css">
 		._ft_btn_{
 			width:60px;
 			height:60px;
@@ -4343,8 +4369,8 @@
 			background-repeat:no-repeat;
 			background-position: center;
 			position:fixed;
-			bottom:10px;
-			right:5px;
+			bottom:7px;
+			right:4px;
 			transition: visibility 0.3s, opacity 0.3s linear, box-shadow .5s;
 			box-shadow: 0 3px 5px rgba(0, 0, 0, .6);
 		}
@@ -4353,6 +4379,29 @@
 			background-size: 35px;
 			visibility: visible;
 			opacity:1;
+		}
+
+		.__ft_notif_ {
+			color: #263238;
+			background-color: #f4f7f9;
+			padding: 17px 20px;
+			border-radius: 6px;
+			/* max-width:270px; */
+			min-width:150px;
+			font-weight: 100;
+			margin: 8px;
+			font-size:13px;
+			line-height:15px;
+			font-family: Helvetica, Arial, sans-serif;
+			cursor:pointer;
+			box-shadow: 0 0 10px 2px rgba(50,50,50,0.4);
+			z-index:2147483646;
+		}
+
+		#fibotalk-notif-div {
+			bottom: 7px;
+			position: fixed;
+			right: 70px;
 		}
 	</style>
 	<script>
@@ -4367,6 +4416,7 @@
 	<div id="fibotalk-chat-button">
 		<div id="_ft_chatopen_btn_" class="theme _ft_btn_" style="background-image: url(&quot;http://localhost/cdn/img/icon-02.png&quot;);" onclick="openChat()"></div>
 	</div>
+	<div id="fibotalk-notif-div"></div>
 	<div id="fibotalk-chat-window" style="display: none;">
 		<div id="fibotalk-welcome-page">
 			<div id="fibotalk-home">
