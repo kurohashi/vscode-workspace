@@ -13,26 +13,30 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
     <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
-    <script type='text/javascript'>
-        !function (t, e, a, c, r, n) {
-            t._ft_ = t._ft_ || {}, t._ft_.rcl = '471b1f2fe4db6dcfb1751a17';
-            var s = e.createElement('script');
-            s.src = 'http://localhost/cdn/widget.js', s.async = 1, s.type = 'text/javascript';
-            var f = e.getElementsByTagName('script')[0];
-            f.parentNode.insertBefore(s, f)
-        } (window, document);
+    
+    <!-- Fibotalk Script start --> 
+<script type='text/javascript'>!function(t,e,a,c,r,n){t._ft_=t._ft_||{},t._ft_.rcl='f3f2e50f7e4d3ec0b716df18';var s=e.createElement('script');s.src='https://cdn.fibotalk.com/widget.js',s.async=1,s.type='text/javascript';var f=e.getElementsByTagName('script')[0];f.parentNode.insertBefore(s,f)}(window,document);
 
-        window.fibotalkSettings = {
-            name: "Shubham Srivastava",
-            phone: 9953817970,
-            email: "shubham@rytangle.com",
-        }
-    </script>
+window.fibotalkSettings = {
+  user: {
+    userId: "shubham@fibotalk.com",
+    email: "shubham@fibotalk.com",
+  },
+  name: "Fibotalk Tester",
+  account: {
+    accountId: "unireply",
+    org: "Staging",
+    type: "testers"
+  }
+};
+</script>
+
+    
 </head>
 
 <body>
     <h1 class = "fibotrack">Sample page for sampling tests.............</h1>
-    <button class="btn btn-primary mt-5" onclick="fibo.open({name: 'messenger', type: 'open'})">Open chat</button>
-    <button class="btn btn-primary mt-5 float-right" onclick="fibo.open({name: 'messenger', type: 'close'})">Close chat</button>
+    <button class="btn btn-primary mt-5" onclick="fibo.open({name: 'messenger', type: 'open'}, function() {})">Open chat</button>
+    <button class="btn btn-primary mt-5 float-right" onclick="fibo.open({name: 'messenger', type: 'close'}, function() {})">Close chat</button>
 </body>
 </html>
