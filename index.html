@@ -15,20 +15,31 @@
     <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
     
     <!-- Fibotalk Script start --> 
-<script type='text/javascript'>!function(t,e,a,c,r,n){t._ft_=t._ft_||{},t._ft_.rcl='f3f2e50f7e4d3ec0b716df18';var s=e.createElement('script');s.src='https://cdn.fibotalk.com/widget.js',s.async=1,s.type='text/javascript';var f=e.getElementsByTagName('script')[0];f.parentNode.insertBefore(s,f)}(window,document);
+<script type='text/javascript'>
+!function (t,e,a,c,r,n) {
+  t._ft_ = t._ft_ || {}, t._ft_.rcl = "4f8abdbfcd2f19ee34dda496";  //local
+  // t._ft_ = t._ft_ || {}, t._ft_.rcl = "123329a1fc798fa3ecdbcf9123637e";   //unireply
+  // t._ft_ = t._ft_ || {}, t._ft_.rcl = "b46654bda14d03cfa39562de623c89"  //prod
+  // t._ft_ = t._ft_ || {}, t._ft_.rcl = "741c660af599ab93b4539c5d";
+  var s = e.createElement("script");
+  s.src = "http://localhost/cdn/ss/widget.js", s.async = 1, s.type = "text/javascript";
+  // s.src = "http://cdn.rytstage.com/widget.js", s.async = 1, s.type = "text/javascript";
+  var f = e.getElementsByTagName("script")[0];
+  f.parentNode.insertBefore(s,f)
+} (window,document);
 
-window.fibotalkSettings = {
-  user: {
-    userId: "shubham@fibotalk.com",
-    email: "shubham@fibotalk.com",
-  },
-  name: "Fibotalk Tester",
-  account: {
-    accountId: "unireply",
-    org: "Staging",
-    type: "testers"
-  }
-};
+// window.fibotalkSettings = {
+//   user: {
+//     userId: "shubham@rytangle.com",
+//     email: "shubham@rytangle.com",
+//   },
+//   name: "Fibotalk Tester",
+//   account: {
+//     accountId: "unireply",
+//     org: "Staging",
+//     type: "testers"
+//   }
+// };
 </script>
 
     
@@ -37,6 +48,7 @@ window.fibotalkSettings = {
 <body>
     <h1 class = "fibotrack">Sample page for sampling tests.............</h1>
     <button class="btn btn-primary mt-5" onclick="fibo.open({name: 'messenger', type: 'open'}, function() {})">Open chat</button>
+    <a class="btn btn-dark" href="/sample/jspractice.html">Learn JS</a>
     <button class="btn btn-primary mt-5 float-right" onclick="fibo.open({name: 'messenger', type: 'close'}, function() {})">Close chat</button>
 </body>
 </html>
