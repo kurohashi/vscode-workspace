@@ -1,61 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script>
-class Car {
-  constructor(brand) {
-    this.carname = brand;
-  }
-  present() {
-    return 'I have a ' + this.carname;
-  }
-  set carname(x) {
-    this._carname = x;
-  }
-  get carname() {
-    return this._carname;
-  }
-}
-  
-class Model extends Car {
-  constructor(brand, mod) {
-    super(brand);
-    this.model = mod;
-  }
-  show() {
-    return this.present() + ', it is a ' + this.model;
-  }
-  set model(x) {
-    this._model = x;
-  }
-  get model() {
-    return this._model;
-  }
-}
-
-tracker = 0;
-
-function action() {
-  mycar = new Model("Ford", "Mustang");
-  if (tracker % 2 == 0) {
-    tracker += 1;
-    document.getElementById("function").innerHTML = "The function " + mycar.present + " is used";
-    document.getElementById("result").innerHTML= "The result is " + mycar.present();
-  } else {
-    tracker += 1;
-    document.getElementById("function").innerHTML = null;
-    document.getElementById("result").innerHTML = null;
-  }
-}
-</script>
 </head>
 <body>
-
-<h2>Test to see how JS works...</h2>
-<br />
-<button onclick="action()"><p>Click Me</p></button>
-<br />
-<p id="function"></p>
-<p id="result"></p>
+  <iframe src="https://app.fibotalk.com/" height="100%" width="100%"></iframe>
 </body>
 </html>
