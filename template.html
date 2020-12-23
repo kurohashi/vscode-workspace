@@ -1,26 +1,122 @@
 <html>
 
 <head>
-	<link href="http://localhost/widget/css/bootstrap.min.css" rel="stylesheet">
-	<link href="./billboard.css" rel="stylesheet">
 </head>
 
 <body>
-	<div id="_ft_small_" class="top">
-		<div class="_ft_ann_notif_">
-			<div class="_ft_ann_notif_img_holder_">
-				<img src="//img.youtube.com/vi/JbDktrsnH40/0.jpg" class="_ft_ann_notif_media_">
-			</div>
-			<div class="p-1 _ft_ann_notif_text_">
-				<div class="_ft_ann_notif_title_">Yeh moh moh ke dhage</div>
-				<div class="_ft_ann_notif_sub_">Lorem ipsum is mere text area stan</div>
-			</div>
-			<div class="_ft_ann_notif_btns_">
-				<div class="_ft_ann_notif_cta_"	onclick="annCtaOpener( 'https://www.youtube.com/watch?v=JbDktrsnH40','_blank')">Click here to know</div>
-				<div id="_ft_close_">Later</div>
-			</div>
-		</div>
-	</div>
+	<p><span style="font-weight: 400;">If you are using a native android app, then the following few steps will help you
+			in implementing fibotalk in your app.</span></p>
+	<ol>
+		<li style="font-weight: 400;">
+			<span style="font-weight: 400;">The fibotalk module uses internet, so make sure the app has internet access permission. The </span><b><i>AndroidManifest.xml</i></b><span style="font-weight: 400;"> should have,</span>
+			<br />
+			<i style="font-family: Menlo, Consolas, monaco, monospace; font-size: 15px; white-space: pre-wrap;">
+				<span>&lt;uses-permission android:name="android.permission.INTERNET" /&gt;</span>
+			</i>
+			<br /><br />
+		</li>
+		<li style="font-weight: 400;">
+			Paste the following code in all you activity layout XMLs:
+			<br />
+			<i style="font-family: Menlo, Consolas, monaco, monospace; font-size: 15px; white-space: pre-wrap;">
+				<span>&lt;com.fibo.FiboAPI</span><br />
+				<span>   android:layout_width="match_parent"</span><br />
+				<span>   android:layout_height="match_parent"</span><br />
+				<span>   android:id="@+id/fibo"</span><br />
+				<span>   appid=”your_appid” /&gt;</span>
+			</i>
+			<br /><br />
+		</li>
+		<li style="font-weight: 400;">
+			<span style="font-weight: 400;">Get “your_appid” from “</span>
+			<a href="https://app.fibotalk.com/app/help/quick-help"><span style="font-weight: 400;">https://app.fibotalk.com/app/help/quick-help</span></a>
+			<span style="font-weight: 400;">” after logging in</span>
+			<br /><br />
+		</li>
+		<li style="font-weight: 400;">
+			<span style="font-weight: 400;">Now, in your activity code, import two classes:</span>
+			<br />
+			<i style="font-family: Menlo, Consolas, monaco, monospace; font-size: 15px; white-space: pre-wrap;">
+				<span>import com.fibo.Fibo;</span><br />
+				<span>import com.fibo.FiboAPI;</span>
+			</i>
+			<br /><br />
+		</li>
+		<li style="font-weight: 400;">
+			<span style="font-weight: 400;">In the activity class, declare a private member variable:</span>
+			<br />
+			<i style="font-family: Menlo, Consolas, monaco, monospace; font-size: 15px; white-space: pre-wrap;">
+				<span>private Fibo fibo;</span>
+			</i>
+			<br /><br />
+		</li>
+		<li style="font-weight: 400;">
+			<span style="font-weight: 400;">In the </span><b><i>onCreate(), </i></b>
+			<span style="font-weight: 400;">initialize the </span><b>fibo</b><span style="font-weight: 400;"> class member:</span>
+			<br />
+			<i style="font-family: Menlo, Consolas, monaco, monospace; font-size: 15px; white-space: pre-wrap;">
+				<span>fibo = new Fibo((FiboAPI) findViewById(R.id.fibo));</span><br />
+			</i>
+		</li>
+	</ol>
+	<p><span style="font-weight: 400;">The basic implementation is done.</span></p>
+	<p><br /><br /><br /></p>
+	<h1><span style="font-weight: 400;">Send user info to fibotalk</span></h1>
+	<p></p>
+	<p><i><span style="font-weight: 500;">fibo.set(“userInfo”, “{user: {</span></i><b><i>userId</i></b><i><span
+				style="font-weight: 500;">: ‘mandatory userId’, </span></i><b><i>name</i></b><i><span
+				style="font-weight: 500;">: ‘Your name’, </span></i><b><i>group</i></b><i><span
+				style="font-weight: 500;">: ‘General’, </span></i><b><i>phone</i></b><i><span
+				style="font-weight: 500;">: ‘9999999999’}}”);</span></i></p>
+	<p></p>
+	<p><span style="font-weight: 400;">Here, the details provided are (example):</span></p>
+	<ul>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">name: “Your name will come here”.</span></li>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">group: “Your organisation name comes here”.</span>
+		</li>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">phone: “Your phone number comes here”.</span></li>
+		<li style="font-weight: 400;"><b>userId</b><span style="font-weight: 400;">: (mandatory) “your user
+				identification”.</span></li>
+	</ul>
+	<p><br /><br /><br /><br /><br /></p>
+	<h1><span style="font-weight: 400;">Send account info to fibotalk</span></h1>
+	<p></p>
+	<p><i><span style="font-weight: 500;">fibo.set(“userInfo”, “{user: {</span></i><b><i>userId</i></b><i><span
+				style="font-weight: 500;">: ‘mandatory userId’}, account: {</span></i><b><i>accountId</i></b><i><span
+				style="font-weight: 500;">: ‘mandatory accountId’, </span></i><b><i>accName</i></b><i><span
+				style="font-weight: 500;">: ‘Your account name’}}”);</span></i></p>
+	<p></p>
+	<p><span style="font-weight: 400;">Here, the details provided are (example):</span></p>
+	<ul>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">accName: “Your name will come here”.</span></li>
+		<li style="font-weight: 400;"><b>accountId</b><span style="font-weight: 400;">: (mandatory) “your account
+				identification”.</span></li>
+		<li style="font-weight: 400;"><b>userId</b><span style="font-weight: 400;">: (mandatory) “your user
+				identification”.</span></li>
+	</ul>
+	<p><br /><br /><br /></p>
+	<h1><span style="font-weight: 400;">Send events to fibotalk</span></h1>
+	<p></p>
+	<p><span style="font-weight: 400;">You can send events to fibotalk to track the activity of the user.</span></p>
+	<ul>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">Click event: </span><b>onClick </b><span
+				style="font-weight: 400;">of a button send click_event like,</span></li>
+	</ul>
+	<p><i><span style="font-weight: 500;">fibo.set(“click_event”, “button text”);</span></i></p>
+	<p></p>
+	<ul>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">Page open: </span><b>onStart()/onResume()</b><span
+				style="font-weight: 400;"> in an activity, send the page_open like,</span></li>
+	</ul>
+	<p><i><span style="font-weight: 500;">fibo.set(“page_open”, “activity name”);</span></i></p>
+	<p></p>
+	<ul>
+		<li style="font-weight: 400;"><span style="font-weight: 400;">Signup event: when a signup in your app is
+				successful, send signup event like,</span></li>
+	</ul>
+	<p><i><span style="font-weight: 500;">fibo.set(“signup”, “{user: {</span></i><b><i>userId</i></b><i><span
+				style="font-weight: 500;">: ‘mandatory unique user identification’,
+			</span></i><b><i>name</i></b><i><span style="font-weight: 500;">: ‘name of the user’}}”);</span></i></p>
 </body>
 
 </html>

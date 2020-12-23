@@ -44,3 +44,5 @@ function action() {
     document.getElementById("result").style.display = "none";
   }
 }
+console.log(document.currentScript.src);
+console.log(window.document.currentScript.src);
