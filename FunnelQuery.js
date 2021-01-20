@@ -1,3 +1,4 @@
+// General funnel query
 [
     {
         "$match": {
@@ -21,8 +22,8 @@
                     "$group": {
                         "_id": "$browser",
                         "users": {
-                            "$addToSet": "$userId"
-                        }
+                            "$addToSet": { $ifNull: ["$userId", "$uid"] }
+                        },
                     }
                 },
                 {
@@ -32,7 +33,8 @@
                             "$size": "$users"
                         }
                     }
-                }
+                },
+                { $sort: { users: -1 } }
             ],
             "stage1": [
                 {
@@ -51,7 +53,7 @@
                     "$group": {
                         "_id": "$browser",
                         "users": {
-                            "$addToSet": "$userId"
+                            "$addToSet": { $ifNull: ["$userId", "$uid"] }
                         }
                     }
                 },
@@ -62,7 +64,8 @@
                             "$size": "$users"
                         }
                     }
-                }
+                },
+                { $sort: { users: -1 } }
             ],
             "stage2": [
                 {
@@ -84,7 +87,7 @@
                     "$group": {
                         "_id": "$browser",
                         "users": {
-                            "$addToSet": "$userId"
+                            "$addToSet": { $ifNull: ["$userId", "$uid"] }
                         }
                     }
                 },
@@ -95,13 +98,43 @@
                             "$size": "$users"
                         }
                     }
-                }
+                },
+                { $sort: { users: -1 } }
             ]
         }
     }
 ]
 
+// Stage users query
+[
+    {
+        "$match": {
+            "docType": "sessInfo",
+            "firstTs": {
+                "$gte": ISODate("2020-09-22T18:30:00.000Z"),
+                "$lt": ISODate("2021-09-30T18:29:59.999Z")
+            },
+            "$and": [
+                {
+                    "events.event": "session_start"
+                },
+                {
+                    "events.event": "click_event"
+                }
+            ]
+        }
+    },
+    {
+        "$group": {
+            "_id": null,
+            "users": {
+                "$addToSet": { $ifNull: ["$userId", "$uid"] }
+            }
+        }
+    }
+]
 
+// Dropped Users query
 [
     {
         "$match": {
@@ -120,7 +153,7 @@
                     "$group": {
                         "_id": null,
                         "users": {
-                            "$addToSet": "$userId"
+                            "$addToSet": { $ifNull: ["$userId", "$uid"] }
                         }
                     }
                 }
@@ -142,13 +175,13 @@
                     "$group": {
                         "_id": null,
                         "users": {
-                            "$addToSet": "$userId"
+                            "$addToSet": { $ifNull: ["$userId", "$uid"] }
                         }
                     }
                 }
             ]
         }
     },
-    {$project:{stage0:{$arrayElemAt:["$stage0",0]},stage1:{$arrayElemAt:["$stage1",0]}}},
-    {$project:{users:{$setDifference:["$stage0.users","$stage1.users"]}}}
+    { $project: { stage0: { $arrayElemAt: ["$stage0", 0] }, stage1: { $arrayElemAt: ["$stage1", 0] } } },
+    { $project: { users: { $setDifference: ["$stage0.users", "$stage1.users"] } } }
 ]
