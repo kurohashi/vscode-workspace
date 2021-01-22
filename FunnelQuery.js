@@ -1,4 +1,4 @@
-// General funnel query
+// New gen query for finding more accurate numbers
 [
     {
         "$match": {
@@ -6,6 +6,30 @@
             "firstTs": {
                 "$gte": ISODate("2020-10-29T18:30:00.000Z"),
                 "$lt": ISODate("2021-01-06T18:29:59.999Z")
+            },
+            "events.event": "session_start"
+        }
+    },
+    {
+        $facet: {
+            stage0: [
+                { $group: { _id: "$uid", userId: { $addToSet: "$userId" } } },
+                { $unwind: { path: "$userId", preserveNullAndEmptyArrays: true } },
+                { $group: { _id: null, users: { $addToSet: { $ifNull: ["$userId", "$_id"] } } } },
+                { $project: { users: { $size: "$users" } } }
+            ]
+        }
+    },
+]
+
+// General funnel query
+[
+    {
+        "$match": {
+            "docType": "sessInfo",
+            "firstTs": {
+                "$gte": ISODate("2020-09-22T18:30:00.000Z"),
+                "$lt": ISODate("2021-09-30T18:29:59.999Z")
             },
             "events.event": "session_start"
         }
@@ -182,6 +206,5 @@
             ]
         }
     },
-    { $project: { stage0: { $arrayElemAt: ["$stage0", 0] }, stage1: { $arrayElemAt: ["$stage1", 0] } } },
-    { $project: { users: { $setDifference: ["$stage0.users", "$stage1.users"] } } }
+    { $project: { users: { $setDifference: [{ $arrayElemAt: ["$stage0.users", 0] }, { $arrayElemAt: ["$stage1.users", 0] }] } } }
 ]
