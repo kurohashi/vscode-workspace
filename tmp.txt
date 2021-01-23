@@ -1,7 +1,47 @@
-6 7 5
-.......
-...O.O.
-....O..
-..O....
-OO...OO
-OO.O...
+auth:
+    accounts.js:
+        /accounts (*)
+    user.js:
+        /user/accounts
+open:
+    announcements.js:
+        /user/check/announcement
+    events.js:
+        /read/users
+        /funnel
+        /updateLabel
+        /publish/many
+        /events/user
+        /events/reporting
+        /insights/events/avg
+        /features/:topic
+    extraction.js
+        /extraction/new
+    groups.js:
+        /create
+        /block
+    logs.js:
+        /event/logs
+    meta.js:
+        /funnel
+        /meta
+        /meta/details
+        /meta/notif
+        /labels
+    rules.js:
+        /rule/engine
+    segmentation.js:
+        /user/segments
+    sessions.js:
+        /sessions
+        /session/count
+        /session/events
+        /insights/duration/avg
+        /report/activeusers/:topic
+    user.js:
+        /usersession/details
+        /update/user
+        /get/user/setting
+        /get/users/new
+        /get/cohort/count
+        /user/userJourney
