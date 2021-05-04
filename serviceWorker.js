@@ -1,12 +1,42 @@
+(function () {
+    /*
 
-self.addEventListener("fetch", function(e) {
-    console.log(e);
-});
-
-self.addEventListener('install', function(event) {
-    event.waitUntil(self.skipWaiting()); // Activate worker immediately
-});
-
-self.addEventListener('activate', function(event) {
-    event.waitUntil(self.clients.claim()); // Become available to all pages
-});
+ Copyright The Closure Library Authors.
+ SPDX-License-Identifier: Apache-2.0
+*/
+    "use strict";
+    new (function () {
+        var a = self,
+            b = this;
+        this.l = a;
+        this.g = new Tb(a);
+        this.l.addEventListener(
+            "install",
+            function (c) {
+                c.waitUntil(b.l.skipWaiting());
+            },
+            !1
+        );
+        this.l.addEventListener(
+            "fetch",
+            function (c) {
+                console.log(b, c);
+            },
+            !1
+        );
+        this.l.addEventListener(
+            "activate",
+            function (c) {
+                console.log(b, c);
+            },
+            !1
+        );
+        this.l.addEventListener(
+            "message",
+            function (c) {
+                console.log(b, c);
+            },
+            !1
+        );
+    })();
+}.call(this));
