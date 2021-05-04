@@ -1,42 +1,26 @@
-(function () {
-    /*
 
- Copyright The Closure Library Authors.
- SPDX-License-Identifier: Apache-2.0
-*/
-    "use strict";
-    new (function () {
-        var a = self,
-            b = this;
-        this.l = a;
-        this.g = new Tb(a);
-        this.l.addEventListener(
-            "install",
-            function (c) {
-                c.waitUntil(b.l.skipWaiting());
-            },
-            !1
-        );
-        this.l.addEventListener(
-            "fetch",
-            function (c) {
-                console.log(b, c);
-            },
-            !1
-        );
-        this.l.addEventListener(
-            "activate",
-            function (c) {
-                console.log(b, c);
-            },
-            !1
-        );
-        this.l.addEventListener(
-            "message",
-            function (c) {
-                console.log(b, c);
-            },
-            !1
-        );
-    })();
-}.call(this));
+self.addEventListener("fetch", function(e) {
+    console.log(e);
+});
+
+var CACHE_NAME = 'my-site-cache-v1';
+var urlsToCache = [
+  '/',
+  '/template.html',
+];
+
+self.addEventListener('install', function(event) {
+  // Perform install steps
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
+  );
+});
+
+
+self.addEventListener('activate', function(event) {
+    event.waitUntil(self.clients.claim()); // Become available to all pages
+});
