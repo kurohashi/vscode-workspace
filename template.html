@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<style>
 		#payTable {
 			width: 50%;
@@ -54,38 +55,63 @@
 			color: white;
 		}
 	</style>
+	<script>
+		// Store a reference to the native method
+		let open = XMLHttpRequest.prototype.open; 
+
+		// Overwrite the native method
+		XMLHttpRequest.prototype.open = function() {
+			// Assign an event listener
+			this.addEventListener("load", function(event) {
+				var resp = event.target;
+				console.log(resp.status, resp.statusText, resp.responseURL);
+			}, false);
+			// Call the stored reference to the native method
+			open.apply(this, arguments);
+		};
+
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function() {
+				navigator.serviceWorker.register('serviceWorker.js').then(function(registration) {
+					// Registration was successful
+					console.log('ServiceWorker registration successful with scope: ', registration.scope);
+					call();
+				}, function(err) {
+					// registration failed :(
+					console.log('ServiceWorker registration failed: ', err);
+				});
+			});
+		}
+
+	</script>
+	<script>
+		// var xhr = new XMLHttpRequest();
+		// xhr.onreadystatechange = function () {
+		// 	if(xhr.readyState === XMLHttpRequest.DONE) {
+		// 		var status = xhr.status;
+		// 		console.log(status, xhr.responseText);
+		// 	}
+		// };
+		// xhr.open("GET", "http://localhost:12000/apis/open/v1/get/group");
+		// xhr.setRequestHeader("Content-Type", "application/json");
+		// xhr.setRequestHeader("auth", "4f8abdbfcd2f19ee34dda496");
+		// xhr.send();
+
+		function call() {
+			fetch("http://localhost:12000/apis/open/v1/get/group", {
+				method: "GET",
+				headers: {
+					auth: "4f8abdbfcd2f19ee34dda496",
+					"Content-Type": "application/json"
+				}
+			})
+			.then(response => response.json())
+			.then(data => console.log(data))
+		}
+	</script>
 </head>
 
 <body style="background-color:#ececec;padding:15px;">
-	<div style="background-color:white;border:1px solid #e3e0e0; width:80%;margin:0px auto;border-radius:10px;padding-top:15px;">
-		<img src="https://cdn.fibotalk.com/img/fibotalk/fibotalklogo.png" alt="Fibotalk" style="padding-top:25px;padding-left:25px;width:110px;">
-
-		<!-- Footer code starts -->
-		<div style="padding:25px">
-			<p style="color:#9e9e9e;"><strong>Thank You,</strong><br><strong>Team Fibotalk.</strong></p>
-			<div class="x_2083712768space">
-				<a href="https://www.facebook.com/Fibotalk-1765100176874700/" target="_blank" style="text-decoration: none;">
-					<img id="1557910482309100001_imgsrc_url_1" alt="facebook" width="15px" src="https://cdn.fibotalk.com/img/fibotalk/web/facebook.png">
-				</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="https://twitter.com/fibotalk" target="_blank" style="text-decoration: none;">
-					<img id="1557910482309100001_imgsrc_url_2" alt="twitter" width="15px" src="https://cdn.fibotalk.com/img/fibotalk/web/twitter.png">
-				</a>
-				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="https://www.linkedin.com/company/13692349" target="_blank" style="text-decoration: none;">
-					<img id="1557910482309100001_imgsrc_url_3" alt="linkedIn" width="15px" src="https://cdn.fibotalk.com/img/fibotalk/web/linkedin.png">
-				</a>
-			</div>
-			<p style="color: #9e9e9e;" class="x_2083712768support_help">
-				Send us an email to <a href="mailto:support@fibotalk.com">support@fibotalk.com</a> in case of any queries.
-			</p>
-			<p style="color: #9e9e9e;">
-				If you do not want to receive this mailer, please <a href="https://app.fibotalk.com/accounts/unsubscribe/${item.to.uid}/${item.to.gid}">unsubscribe here</a>. To make sure this email is not sent to your "junk/spam" folder, select the email and add the sender to your Address Book.
-			</p>
-		</div>
-		<!-- Footer code ends -->
-
-	</div>
 </body>
 
 </html>
