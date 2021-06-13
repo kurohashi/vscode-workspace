@@ -1,55 +1,168 @@
 <html>
 
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> -->
-    <!-- <script src="https://d3js.org/d3.v5.js"></script> -->
-    <!-- <script src="http://cdn.unireply.com/widget.js?rcl=64d8fb09ad03396d4750cc82"></script> -->
-    
-    <!-- Fibotalk Script start --> 
-<script type='text/javascript'>
-!function (t,e,a,c,r,n) {
-  // t._ft_ = t._ft_ || {}, t._ft_.rcl = "4f8abdbfcd2f19ee34dda496";  //local
-  // t._ft_ = t._ft_ || {}, t._ft_.rcl = "123329a1fc798fa3ecdbcf9123637e";   //unireply
-  // t._ft_ = t._ft_ || {}, t._ft_.rcl = "b46654bda14d03cfa39562de623c89"  //prod
-  t._ft_ = t._ft_ || {}, t._ft_.rcl = "741c660af599ab93b4539c5d";
-  var s = e.createElement("script");
-  s.src = "http://localhost/cdn/ss/widget.js", s.async = 1, s.type = "text/javascript";
-  // s.src = "http://cdn.rytstage.com/widget.js", s.async = 1, s.type = "text/javascript";
-  var f = e.getElementsByTagName("script")[0];
-  f.parentNode.insertBefore(s,f)
-} (window,document);
+  <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.css" crossorigin="anonymous">
+  <link rel="stylesheet" href="/bootstrap/css/bootstrap.css" crossorigin="anonymous">
 
-window.fibotalkSettings = {
-  user: {
-    userId: "shubham@rytangle.com",
-    email: "shubham@rytangle.com",
-    name: "Fibotalk Tester",
-  },
-  account: {
-    accountId: "local",
-    org: "testing",
-    type: "testers"
-  }
-};
-</script>
+  <script src="/jquery/jquery.js"></script>
+  <script src="/bootstrap/js/bootstrap-bundle.js"></script>
 
-    
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="utf-8">
+
+  <!-- Fibotalk Script start -->
+  <script type='text/javascript'>
+    !function (t, e, a, c, r, n) {
+      t._ft_ = t._ft_ || {}, t._ft_.rcl = "4f8abdbfcd2f19ee34dda496";  //local
+      // t._ft_ = t._ft_ || {}, t._ft_.rcl = "123329a1fc798fa3ecdbcf9123637e";   //unireply
+      // t._ft_ = t._ft_ || {}, t._ft_.rcl = "b46654bda14d03cfa39562de623c89"  //prod
+      // t._ft_ = t._ft_ || {}, t._ft_.rcl = "741c660af599ab93b4539c5d";
+      var s = e.createElement("script");
+      s.src = "http://localhost/cdn/ss/widget.js", s.async = 1, s.type = "text/javascript";
+      // s.src = "http://cdn.rytstage.com/widget.js", s.async = 1, s.type = "text/javascript";
+      var f = e.getElementsByTagName("script")[0];
+      f.parentNode.insertBefore(s, f)
+    }(window, document);
+
+    window.fibotalkSettings = {
+      user: {
+        userId: "shubham@rytangle.com",
+        email: "shubham@rytangle.com",
+        name: "Fibotalk Tester",
+      },
+      account: {
+        accountId: "local",
+        org: "testing",
+        type: "testers"
+      }
+    };
+  </script>
+
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+      font-size: 12px;
+      color: #4a4a4a;
+    }
+    .title {
+      font-weight: 700;
+      background-color: #b5c2df;
+      color: #607380;
+    }
+    .label-basic {
+      font-weight: 600;
+    }
+    .detail-holder {
+      border-top: 1px solid #d9dde0;
+      padding-top: 5px;
+    }
+    .detail-holder p {
+      font-size: 16px;
+      font-weight: 600;
+    }
+    ul {
+      list-style-type: none;
+      font-size: 14px;
+      padding-left: 0px;
+    }
+  </style>
+
 </head>
 
 <body>
-    <h1 class = "fibotrack">Sample page for sampling tests.............</h1>
-    <button class="btn btn-primary mt-5" onclick="fibo.open({name: 'messenger', type: 'open'}, function() {})">Open chat</button>
-    <a class="btn btn-dark" href="/sample/jspractice.html">Learn JS</a>
-    <button class="btn btn-primary mt-5 float-right" onclick="fibo.open({name: 'messenger', type: 'close'}, function() {})">Close chat</button>
+  <div class="container">
+    <div class="text-center title pt-4 pb-1">
+      <!-- <img src="/downloads/Pictures/cafe.jpeg" style="height: 168px;"> -->
+      <p class="h1 font-weight-bold">Shubham Srivastava</p>
+    </div>
+    <div class="mt-2">
+      <p><span class="label-basic">E:</span> shubhamsri94@gmail.com&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<span class="label-basic">P:</span> +91 9953817970&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<span class="label-basic">A:</span> Adarsh Apartments, Sector 3, Dwarka, New Delhi, India (own residence)</p>
+    </div>
+    <div class="mt-5">
+      <div class="row">
+        <div class="col-4">
+          <div class="detail-holder">
+            <p>PERSONAL DETAILS</p>
+            <ul>
+              <li><span class="label-basic">Age:</span> 26 (20th December 1994)</li>
+              <li><span class="label-basic">Time & place of birth:</span> 07:35 AM, New Delhi</li>
+              <li><span class="label-basic">Religion:</span> Hindu</li>
+              <li><span class="label-basic">Caste:</span> Kayastha</li>
+              <li><span class="label-basic">Mangalik:</span> No (no dosh whatsoever)</li>
+              <li><span class="label-basic">Siblings:</span> None (single child)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="detail-holder">
+            <p>FAMILY DETAILS</p>
+            <ul>
+              <li><span class="label-basic">Father:</span> Shri Surendra Kumar Srivastava (own business)</li>
+              <li><span class="label-basic">Mother:</span> Late Smt Lily Srivastava</li>
+              <!-- <li class="mt-1 label-basic">Father youngest among all brothers & Sisters</li> -->
+              <li><span class="label-basic">Bare Papa:</span> Mr R K Srivastava, Retd. Labour Commissioner Allahabad, Settled in Allahabad</li>
+              <li><span class="label-basic">Bare Papa:</span> Mr R K Srivastava, Retd. A.E. UPSBC</li>
+              <li><span class="label-basic">Bare Papa:</span> Mr V K Srivastava, Retd. DGM, Indian Oil</li>
+              <li><span class="label-basic">All Bua(s)</span> settled in UP</li>
+              <!-- <li class="mt-1 label-basic">Mother eldest among all brothers & sisters</li> -->
+              <li><span class="label-basic">Mama:</span> Mr Anuj Kumar, with Central Govt. GST Department</li>
+              <li><span class="label-basic">All Masi(s)</span> settled in UP</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="detail-holder">
+            <p>APPEARANCE</p>
+            <ul>
+              <li><span class="label-basic">Height:</span> 5’ 5”</li>
+              <li><span class="label-basic">Build:</span> Normal</li>
+              <li><span class="label-basic">Complexion:</span> Fair</li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="detail-holder">
+            <p>LIFE STYLE</p>
+            <ul>
+              <li><span class="label-basic">Hobbies:</span> Cooking, dancing, reading about tech.</li>
+              <li><span class="label-basic">Values:</span> Generosity, moderacy, family, society, religion.</li>
+              <li><span class="label-basic">Likes to:</span> Listen to music, watch humorous shows.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <div class="detail-holder">
+            <p>EDUCATION</p>
+            <ul>
+              <li>B.Tech from <span class="label-basic">Computer Science</span></li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="detail-holder">
+            <p>WORK HISTORY</p>
+            <ul>
+              <li>Working as <span class="label-basic">Software Product Engineer</span> from <a href="https://www.fibotalk.com" target="_blank">Fibotalk</a> in Bengaluru</li>
+              <li>Worked as <span class="label-basic">DevOps engineer</span> from OpsTree Solutions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="detail-holder">
+        <p>IDEAL PARTNER/LOOKING FOR</p>
+        <ul>
+          <li><span class="label-basic">Age:</span> >= 23</li>
+          <li><span class="label-basic">Education/profession:</span> Qualified professional.</li>
+          <li><span class="label-basic">Height:</span> >= 4’ 11’’</li>
+          <li><span class="label-basic">Values:</span> Having familial values.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </body>
+
 </html>
