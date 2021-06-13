@@ -1,20 +1,23 @@
-// var http = require('http');
-// var url = require('url');
-// var fs = require('fs');
+function missingNumbers(arr) {
+    let obj = {};
+    for (let i in arr) {
+        obj[arr[i]] = 1;
+    }
+    for (let i = 1; i <= 10; i++) {
+        if (!obj[i])
+            console.log(i);
+    }
+}
 
-// // (function(){})
-// http.createServer(function (req, res) {
-// //  fs.readFile("html_test.html", function (err, data) {
-// //    res.writeHead(200, {'Content-Type': 'text/html'});
-// //    res.write(data);
-// //    var q = url.parse(req.url, true).query;
-// //    var txt = q.year + " " + q.month;
-// //    res.end(txt);
-// //  });  
-// }).listen(8080);
-// setTimeout(function () {
-//     console.log("timeout function");
-// }, 5000);
-// console.log("yeeeeeeeeee");
-const nodeCmd = require('node-cmd');
-nodeCmd.get('resize.cmd', (err, data, stderr) => console.log(data));
+// missingNumbers([]);
+
+function fibonacci(i, j, rec) {
+    if (rec > 5) {
+        return i;
+    }
+    console.log(fibonacci(i + j, rec + 1));
+}
+
+console.log(0)
+console.log(1)
+fibonacci(0, 1, 1);
