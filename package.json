@@ -21,9 +21,13 @@
   "homepage": "https://github.com/kurohashi/vscode-workspace#readme",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
+    "async": "^3.2.0",
     "bootstrap": "^5.0.1",
     "jquery": "^3.6.0",
+    "moment-timezone": "^0.5.33",
+    "mongodb": "^3.6.10",
     "node-cmd": "^4.0.0",
-    "node-run-cmd": "^1.0.1"
+    "node-run-cmd": "^1.0.1",
+    "request": "^2.88.2"
   }
 }

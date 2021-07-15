@@ -1,21 +1,386 @@
-<html>
-    <head>
-        <title>Reach Platform</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
-            </script>
-        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
-            </script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
-            </script>
-    </head>
-    <body>
-        <img src="https://reach.sh/header/logo.svg" alt="logo">
-        <p>Discord integration with reach.sh</p>
-    </body>
-</html>
+<h2></h2>
+<h2><span style="font-weight: 400;">API details:</span></h2>
+<div style="font-size: 14px;">
+<span style="font-weight: 400;">API URL: </span><a href="https://appsuite.fibotalk.com/apis/open/v1/events/sync"><span style="font-weight: 400;">https://appsuite.fibotalk.com/apis/open/v1/events/sync</span></a>
+<br>
+<span style="font-weight: 400;">API Method: POST</span>
+<br>
+<span style="font-weight: 400;">API Header: { “auth”: “” },</span>
+<br>
+<span style="font-weight: 400;">API Body: { “events”: [] }</span>
+</div>
+<h2><span style="font-weight: 400;">Event structure:</span></h2>
+<table class="table table-bordered table-hover" style="font-size: 12px;">
+<tbody>
+<tr>
+<td><b>Field name</b></td><td><b>Mandatory<br></b></td>
+<td><b>&nbsp;Possible values</b></td>
+<td><b>Note</b></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">event</span></td>
+<td><span style="font-weight: 400;">Mandatory</span><br></td>
+<td><span style="font-weight: 400;">page_close / page_open / click_event / session_start / </span></td>
+<td><span style="font-weight: 400;">Event name, custom name can be provided in addition to<br>pre-defined.</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">gid</span></td>
+<td><span style="font-weight: 400;">Mandatory</span><br></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Provided by </span><a href="https://www.fibotalk.com/"><span style="font-weight: 400;">fibotalk</span></a></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">uid</span></td>
+<td><span style="font-weight: 400;">Mandatory</span><br></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Unique id of a user in a session (random id saved in the browser storage)</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">ts (in milliseconds)</span></td>
+<td><span style="font-weight: 400;">Mandatory</span><br></td>
+<td><span style="font-weight: 400;">1601443557318</span></td>
+<td><span style="font-weight: 400;">Event generation timestamp</span></td>
+</tr>
+<tr>
+<td>
+<span style="font-weight: 400;">ui - JSON object</span>
+</td>
+<td><span style="font-weight: 400;">When user information is required</span></td>
+<td>
+<span style="font-weight: 400;">{</span>
+<br>
+<span style="font-weight: 400;"> “userId”: ,</span>
+<br>
+<span style="font-weight: 400;"> “userType”: “”,</span>
+<br>
+<span style="font-weight: 400;"> …</span>
+<br>
+<span style="font-weight: 400;">}</span>
+<br>
+</td>
+<td>
+<span style="font-weight: 400;">User information as JSON object</span>
+<br>
+<span style="font-weight: 400;">“</span><b>userType”</b><span style="font-weight: 400;"> is<br>mandatory</span>
+<br>
+</td>
+</tr>
+<tr>
+<td>
+<span style="font-weight: 400;">account - JSON object</span>
+</td>
+<td><span style="font-weight: 400;">When account information is required</span></td>
+<td>
+<span style="font-weight: 400;">{</span>
+<br>
+<span style="font-weight: 400;"> “accountId”: ,</span>
+<br>
+<span style="font-weight: 400;"> “name”: </span>
+<br>
+<span style="font-weight: 400;">}</span>
+<br>
+</td>
+<td>
+<span style="font-weight: 400;">Account information as JSON object</span>
+<br>
+<span style="font-weight: 400;">“</span><b>accountId”</b><span style="font-weight: 400;"> is<br>mandatory</span>
+<br>
+</td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">val<br></span></td>
+<td><br></td>
+<td><span style="font-weight: 400;"></span></td>
+<td><span style="font-weight: 400;">Associated event value</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">sess</span></td>
+<td><br></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Unique session id</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">website</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">com.myawesomeapp</span></td>
+<td><span style="font-weight: 400;">Application name</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">page</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">about</span></td>
+<td><span style="font-weight: 400;">Route name (view name)</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">deviceId</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">sdm660</span></td>
+<td><span style="font-weight: 400;">Device build id</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">appVersion</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">0.0.1</span></td>
+<td><span style="font-weight: 400;">Current released app version</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">referrer</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">https://www.google.com/</span></td>
+<td><span style="font-weight: 400;">Source of visit to application (‘none’ if no referrer)</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">browser</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Chrome</span></td>
+<td><span style="font-weight: 400;">Web browser used</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">platform</span></td>
+<td><br></td>
+<td><br></td>
+<td><span style="font-weight: 400;">OS</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">device</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">&lt;“Laptop/ PC” / “Mobile”&gt;</span></td>
+<td><span style="font-weight: 400;">Device type</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">make</span></td>
+<td><br></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Device make</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">from</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">home</span></td>
+<td><span style="font-weight: 400;">Previous route</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">ip</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">127.0.0.1</span></td>
+<td><span style="font-weight: 400;">IP address</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">country_code</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">IN</span></td>
+<td><span style="font-weight: 400;">Code for country</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">country_name</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">India</span></td>
+<td><span style="font-weight: 400;">Country name</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">region_code</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">KA</span></td>
+<td><span style="font-weight: 400;">Code for region</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">region_name</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Karnataka</span></td>
+<td><span style="font-weight: 400;">Region name</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">city</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Bengaluru</span></td>
+<td><span style="font-weight: 400;">City name</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">time_zone (alphabetical)</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">Asia/Kolkata</span></td>
+<td><span style="font-weight: 400;">Time zone name</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">durDiff</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">5000</span></td>
+<td><span style="font-weight: 400;">Elapsed milliseconds from last event (0 if first event)</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">sessDur</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">20000</span></td>
+<td><span style="font-weight: 400;">Elapsed milliseconds from session start (0 if the event is<br>session_start)</span></td>
+</tr>
+<tr>
+<td><span style="font-weight: 400;">duration (page_close only)</span></td>
+<td><br></td>
+<td><span style="font-weight: 400;">20000</span></td>
+<td><span style="font-weight: 400;">Elapsed milliseconds from last page_open event</span></td>
+</tr>
+<tr>
+<td>
+<span style="font-weight: 400;">misc (click_event only) - JSON object. </span>
+<br>
+&nbsp;
+<br>
+<span style="font-weight: 400;">Optional</span>
+<br>
+</td>
+<td><br></td>
+<td>
+<span style="font-weight: 400;">{</span>
+    <br>
+<span style="font-weight: 400;">“text“: “text written on clicked element”,</span>
+<br>
+<span style="font-weight: 400;">“page”: ,</span>
+<br>
+<span style="font-weight: 400;">“elType”: “button” / “a” / …</span>
+<br>
+<span style="font-weight: 400;">“html”: </span>
+<br>
+<span style="font-weight: 400;">}</span>
+<br>
+</td>
+<td><span style="font-weight: 400;">JSON object (text, page, elType, html)</span></td>
+</tr>
+</tbody>
+</table>
+<h2></h2>
+<h2><span style="font-weight: 400;">Sample events:</span></h2>
+<pre>
+<span style="font-weight: 400;">[{</span>
+<span style="font-weight: 400;"> "event" : "</span><b>page_close</b><span style="font-weight: 400;">",</span>
+<span style="font-weight: 400;"> "gid" : "4f8abdbfcd2f19ee34dda496",</span>
+<span style="font-weight: 400;"> "uid" : "YwHpd8wvMdCtKGmxYcmOghFFuK5MTX",</span>
+<span style="font-weight: 400;"> "val" : ,</span>
+<span style="font-weight: 400;"> "sess" : "lYJZ4GQvY0seim67SIKsJYqRGfdJkC",</span>
+<span style="font-weight: 400;"> "website" : ,</span>
+<span style="font-weight: 400;"> "page" : ,</span>
+<span style="font-weight: 400;"> "deviceId": ,</span>
+<span style="font-weight: 400;"> "appVersion" : ,</span>
+<span style="font-weight: 400;"> "referrer : "https://google.co.in/",</span>
+<span style="font-weight: 400;"> "browser" : "Chrome",</span>
+<span style="font-weight: 400;"> "platform" : "Microsoft Windows",</span>
+<span style="font-weight: 400;"> "device" : "Laptop/ PC",</span>
+<span style="font-weight: 400;"> "make" : " x64",</span>
+<span style="font-weight: 400;"> "ts" : ISODate("2020-09-28T05:36:51.719Z"),</span>
+<span style="font-weight: 400;"> "durDiff" : 13122,</span>
+<span style="font-weight: 400;"> "sessDur" : 16.7190001010895,</span>
+<span style="font-weight: 400;"> "ui" : {</span>
+<span style="font-weight: 400;"> "userId" : "shubham@ryteleven.com",</span>
+<span style="font-weight: 400;"> "email" : "shubham@rytangle.com",</span>
+<span style="font-weight: 400;"> "name" : "Fibotalk Tester",</span>
+<span style="font-weight: 400;"> "userType" : "user"</span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "account" : {</span>
+<span style="font-weight: 400;"> "accountId" : "unireply",</span>
+<span style="font-weight: 400;"> "org" : "Staging",</span>
+<span style="font-weight: 400;"> "type" : "testers"</span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "duration" : 6000</span>
+<span style="font-weight: 400;">},</span>
+<span style="font-weight: 400;">{</span>
+<span style="font-weight: 400;"> "event" : "</span><b>click_event</b><span style="font-weight: 400;">",</span>
+<span style="font-weight: 400;"> "gid" : "4f8abdbfcd2f19ee34dda496",</span>
+<span style="font-weight: 400;"> "uid" : "YwHpd8wvMdCtKGmxYcmOghFFuK5MTX",</span>
+<span style="font-weight: 400;"> "val" : "Click me button on page / with class .btn btn-dark",</span>
+<span style="font-weight: 400;"> "sess" : "lYJZ4GQvY0seim67SIKsJYqRGfdJkC",</span>
+<span style="font-weight: 400;"> "journeyIndex" : 2,</span>
+<span style="font-weight: 400;"> "eventIndex" : 1,</span>
+<span style="font-weight: 400;"> "custom" : {},</span>
+<span style="font-weight: 400;"> "misc" : {</span>
+<span style="font-weight: 400;"> "text" : "Click me",</span>
+<span style="font-weight: 400;"> "page" : ,</span>
+<span style="font-weight: 400;"> "elType" : "button",</span>
+<span style="font-weight: 400;"> "html" : <button class="btn">Click me</button></span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "website" : ,</span>
+<span style="font-weight: 400;"> "page" : ,</span>
+<span style="font-weight: 400;"> "deviceId": ,</span>
+<span style="font-weight: 400;"> "appVersion" : ,</span>
+<span style="font-weight: 400;"> "referrer : "https://google.co.in/",</span>
+<span style="font-weight: 400;"> "browser" : "Chrome",</span>
+<span style="font-weight: 400;"> "platform" : "Microsoft Windows",</span>
+<span style="font-weight: 400;"> "device" : "Laptop/ PC",</span>
+<span style="font-weight: 400;"> "make" : " x64",</span>
+<span style="font-weight: 400;"> "ts" : ISODate("2020-09-28T05:36:38.595Z"),</span>
+<span style="font-weight: 400;"> "durDiff" : 3445,</span>
+<span style="font-weight: 400;"> "sessDur" : 3.59500002861023,</span>
+<span style="font-weight: 400;"> "ui" : {</span>
+<span style="font-weight: 400;"> "userId" : "shubham@ryteleven.com",</span>
+<span style="font-weight: 400;"> "email" : "shubham@rytangle.com",</span>
+<span style="font-weight: 400;"> "name" : "Fibotalk Tester",</span>
+<span style="font-weight: 400;"> "userType" : "user"</span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "account" : {</span>
+<span style="font-weight: 400;"> "accountId" : "unireply",</span>
+<span style="font-weight: 400;"> "org" : "Staging",</span>
+<span style="font-weight: 400;"> "type" : "testers"</span>
+<span style="font-weight: 400;"> }</span>
+<span style="font-weight: 400;">},</span>
+<span style="font-weight: 400;">{</span>
+<span style="font-weight: 400;"> "event" : "<b>page_open</b>",</span>
+<span style="font-weight: 400;"> "gid" : "4f8abdbfcd2f19ee34dda496",</span>
+<span style="font-weight: 400;"> "uid" : "YwHpd8wvMdCtKGmxYcmOghFFuK5MTX",</span>
+<span style="font-weight: 400;"> "val" : ,</span>
+<span style="font-weight: 400;"> "sess" : "lYJZ4GQvY0seim67SIKsJYqRGfdJkC",</span>
+<span style="font-weight: 400;"> "journeyIndex" : 1,</span>
+<span style="font-weight: 400;"> "eventIndex" : 1,</span>
+<span style="font-weight: 400;"> "custom" : {},</span>
+<span style="font-weight: 400;"> "website" : ,</span>
+<span style="font-weight: 400;"> "page" : ,</span>
+<span style="font-weight: 400;"> "deviceId": ,</span>
+<span style="font-weight: 400;"> "appVersion" : ,</span>
+<span style="font-weight: 400;"> "referrer : "https://google.co.in/",</span>
+<span style="font-weight: 400;"> "browser" : "Chrome",</span>
+<span style="font-weight: 400;"> "platform" : "Microsoft Windows",</span>
+<span style="font-weight: 400;"> "device" : "Laptop/ PC",</span>
+<span style="font-weight: 400;"> "make" : " x64",</span>
+<span style="font-weight: 400;"> "ts" : ISODate("2020-09-28T05:36:35.148Z"),</span>
+<span style="font-weight: 400;"> "durDiff" : 124,</span>
+<span style="font-weight: 400;"> "sessDur" : 0.148000001907349,</span>
+<span style="font-weight: 400;"> "ui" : {</span>
+<span style="font-weight: 400;"> "userId" : "shubham@ryteleven.com",</span>
+<span style="font-weight: 400;"> "email" : "shubham@rytangle.com",</span>
+<span style="font-weight: 400;"> "name" : "Fibotalk Tester",</span>
+<span style="font-weight: 400;"> "userType" : "user"</span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "account" : {</span>
+<span style="font-weight: 400;"> "accountId" : "unireply",</span>
+<span style="font-weight: 400;"> "org" : "Staging",</span>
+<span style="font-weight: 400;"> "type" : "testers"</span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "pageLoadTime" : 757</span>
+<span style="font-weight: 400;">},</span>
+<span style="font-weight: 400;">{</span>
+<span style="font-weight: 400;"> "event" : "</span><b>session_start</b><span style="font-weight: 400;">",</span>
+<span style="font-weight: 400;"> "gid" : "4f8abdbfcd2f19ee34dda496",</span>
+<span style="font-weight: 400;"> "uid" : "YwHpd8wvMdCtKGmxYcmOghFFuK5MTX",</span>
+<span style="font-weight: 400;"> "sess" : "lYJZ4GQvY0seim67SIKsJYqRGfdJkC",</span>
+<span style="font-weight: 400;"> "website" : ,</span>
+<span style="font-weight: 400;"> "page" : ,</span>
+<span style="font-weight: 400;"> "deviceId": ,</span>
+<span style="font-weight: 400;"> "appVersion" : ,</span>
+<span style="font-weight: 400;"> "referrer : "https://google.co.in/",</span>
+<span style="font-weight: 400;"> "browser" : "Chrome",</span>
+<span style="font-weight: 400;"> "platform" : "Microsoft Windows",</span>
+<span style="font-weight: 400;"> "device" : "Laptop/ PC",</span>
+<span style="font-weight: 400;"> "make" : " x64",</span>
+<span style="font-weight: 400;"> "ts" : ISODate("2020-09-28T05:36:35.023Z"),</span>
+<span style="font-weight: 400;"> "durDiff" : 0,</span>
+<span style="font-weight: 400;"> "sessDur" : 0.0230000019073486,</span>
+<span style="font-weight: 400;"> "ui" : {</span>
+<span style="font-weight: 400;"> "userId" : "shubham@ryteleven.com",</span>
+<span style="font-weight: 400;"> "email" : "shubham@rytangle.com",</span>
+<span style="font-weight: 400;"> "name" : "Fibotalk Tester",</span>
+<span style="font-weight: 400;"> "userType" : "user"</span>
+<span style="font-weight: 400;"> },</span>
+<span style="font-weight: 400;"> "account" : {</span>
+<span style="font-weight: 400;"> "accountId" : "unireply",</span>
+<span style="font-weight: 400;"> "org" : "Staging",</span>
+<span style="font-weight: 400;"> "type" : "testers"</span>
+<span style="font-weight: 400;"> }</span>
+<span style="font-weight: 400;">}]</span>
+</pre>
