@@ -61,6 +61,8 @@ function getEvents(obj, next) {
 function modifyEvents(obj, next) {
     for (let i = 1; i < obj.events.length; i++) {
         let event = obj.events[i][0];
+        if (['API_event', 'page_close'].includes(event.event) || event.event == "page_open" && event.custom.reason == "focus")
+            continue;
         let prevEvent = obj.events[i - 1][0];
         event.prev = {
             event: prevEvent.event,
