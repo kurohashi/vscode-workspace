@@ -62,7 +62,7 @@ function modifyEvents(obj, next) {
     let prevEvent = null;
     for (let i = 0; i < obj.events.length; i++) {
         let event = obj.events[i].events[0];
-        if (['API_event', 'page_close', 'session_start'].includes(event.event) || event.event == "page_open" && event.custom.reason == "focus")
+        if (['API_event', 'page_close', 'session_start'].includes(event.event) || (event.event == "page_open" && event.custom.reason == "focus"))
             continue;
         if (prevEvent) {
             event.prev = {
@@ -84,11 +84,12 @@ function runUpdate(obj, i, cb) {
     if (i >= obj.events.length)
         return cb(null, "done");
     let event = obj.events[i];
+    let id = event._id;
     delete event._id;
     delete event.id;
     delete event.docType;
     obj.db.collection(obj.gid)
-    .updateOne({ _id: event._id }, { $set: event }, {}, function (err, data) {
+    .updateOne({ _id: id }, { $set: event }, {}, function (err, data) {
         if (err)
             return cb(err);
         runUpdate(obj, ++i, cb);
