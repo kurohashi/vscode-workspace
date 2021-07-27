@@ -45,7 +45,7 @@ function setDb(obj, next) {
 function getEvents(obj, next) {
     try {
         obj.db.collection(obj.gid)
-        .find({ docType: "events", firstTs: { $gt: moment().subtract(30, 'day').toDate() } })
+        .find({ docType: "events", ts: { $gt: moment().subtract(30, 'day').toDate() } })
         .toArray(function (err, data) {
             if (err || !data.length)
                 return next(err || "no events");
