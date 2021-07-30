@@ -45,14 +45,22 @@ function setDb(obj, next) {
 function getEvents(obj, next) {
     try {
         obj.db.collection(obj.gid)
-        .find({ docType: "events", ts: { $gt: moment().subtract(30, 'day').toDate() } })
-        .toArray(function (err, data) {
-            if (err || !data.length)
-                return next(err || "no events");
-            console.log(`found ${data.length} events`);
-            obj.events = data;
-            next(null, obj);
-        });
+            .find({
+                docType: "events",
+                ts: { $gt: moment().subtract(30, 'day').toDate() },
+                $or: [
+                    { "events.event": { $in: ["API_event", "page_close"] } },
+                    { "events.event": "page_open", "events.custom.reason": "focus" }
+                ],
+                "events.prev": { $exists: 1 }
+            })
+            .toArray(function (err, data) {
+                if (err || !data.length)
+                    return next(err || "no events");
+                console.log(`found ${data.length} events`);
+                obj.events = data;
+                next(null, obj);
+            });
     } catch (error) {
         next(error);
     }
@@ -62,16 +70,7 @@ function modifyEvents(obj, next) {
     let prevEvent = null;
     for (let i = 0; i < obj.events.length; i++) {
         let event = obj.events[i].events[0];
-        if (['API_event', 'page_close', 'session_start'].includes(event.event) || (event.event == "page_open" && event.custom.reason == "focus"))
-            continue;
-        if (prevEvent) {
-            event.prev = {
-                event: prevEvent.event,
-                val: prevEvent.val,
-                custom: prevEvent.custom,
-            };
-        }
-        prevEvent = event;
+        delete event.prev;
     }
     next(null, obj);
 }
@@ -89,9 +88,9 @@ function runUpdate(obj, i, cb) {
     delete event.id;
     delete event.docType;
     obj.db.collection(obj.gid)
-    .updateOne({ _id: id }, { $set: event }, {}, function (err, data) {
-        if (err)
-            return cb(err);
-        runUpdate(obj, ++i, cb);
-    });
+        .updateOne({ _id: id }, { $set: event }, {}, function (err, data) {
+            if (err)
+                return cb(err);
+            runUpdate(obj, ++i, cb);
+        });
 }
