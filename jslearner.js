@@ -93,7 +93,7 @@ function runCron(obj, next) {
         getEvents,
         modifyEvents,
         updateEvents,
-        updateSessions,
+        // updateSessions,
     ], function (err, result) {
         if (err)
             console.error(err);
@@ -110,10 +110,8 @@ function getSessions(obj, next) {
     let query = {
         docType: "sessInfo",
         firstTs: {
-            $lte: moment().subtract(2, 'hours').toDate(),
             $gte: moment().subtract(70, 'days').startOf('day').toDate(),
         },
-        // "status.nextEvent": { $exists: 0 },
     };
     console.log(query);
     obj.db.collection(obj.gid).find(query, { id: 1, events: 1 }).toArray(function (err, data) {
@@ -177,13 +175,17 @@ function modifyEvents(obj, next) {
             let event = currObj.events;
             delete event.next;
             delete event.prev;
-            let newEv = currObj;
+            let newEv = passByValue(currObj);
             newEv.events = [newEv.events];
             events.push(newEv);
         }
     });
     obj.events = events;
     next(null, obj);
+}
+
+function passByValue(obj) {
+    return obj;
 }
 
 /**
