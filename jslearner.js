@@ -111,7 +111,7 @@ function getSessions(obj, next) {
         docType: "sessInfo",
         firstTs: {
             $lte: moment().subtract(2, 'hours').toDate(),
-            $gte: moment().subtract(240, 'days').startOf('day').toDate(),
+            $gte: moment().subtract(70, 'days').startOf('day').toDate(),
         },
         // "status.nextEvent": { $exists: 0 },
     };
