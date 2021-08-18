@@ -175,8 +175,6 @@ function modifyEvents(obj, next) {
         for (let i = 0; i < session.events.length - 1; i++) {
             let currObj = session.events[i];
             let event = currObj.events;
-            let nextObj = session.events[i + 1];
-            let nextEvent = nextObj.events;
             delete event.next;
             delete event.prev;
             let newEv = JSON.parse(JSON.stringify(currObj));
@@ -247,5 +245,5 @@ function runUpdate(obj, document, cb) {
     delete document._id;
     delete document.id;
     delete document.docType;
-    obj.db.collection(obj.gid).updateOne({ _id: id }, { $set: document }, {}, cb);
+    obj.db.collection(obj.gid).replaceOne({ _id: id }, { $set: document }, {}, cb);
 }
