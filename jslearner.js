@@ -245,5 +245,5 @@ function runUpdate(obj, document, cb) {
     delete document._id;
     delete document.id;
     delete document.docType;
-    obj.db.collection(obj.gid).replaceOne({ _id: id }, { $set: document }, {}, cb);
+    obj.db.collection(obj.gid).replaceOne({ _id: id }, document, {}, cb);
 }
