@@ -2,6 +2,7 @@ let async = require("async");
 let moment = require('moment-timezone');
 let request = require("request");
 let MongoClient = require('mongodb').MongoClient;
+let ObjectId = require("mongodb").ObjectId;
 // var conf = require("../../utils/conf");
 
 start();
@@ -205,6 +206,7 @@ function updateEvents(obj, next) {
             delete obj.eventIndex;
             return next(err);
         }
+        console.log(result.result);
         updateEvents(obj, next);
     });
 }
@@ -243,5 +245,5 @@ function updateSessions(obj, next) {
 function runUpdate(obj, document, cb) {
     let id = document._id;
     delete document._id;
-    obj.db.collection(obj.gid).replaceOne({ _id: id }, document, {}, cb);
+    obj.db.collection(obj.gid).replaceOne({ _id: ObjectId(id) }, document, {}, cb);
 }
