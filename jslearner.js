@@ -243,7 +243,5 @@ function updateSessions(obj, next) {
 function runUpdate(obj, document, cb) {
     let id = document._id;
     delete document._id;
-    delete document.id;
-    delete document.docType;
     obj.db.collection(obj.gid).replaceOne({ _id: id }, document, {}, cb);
 }
