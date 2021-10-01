@@ -1,15 +1,13 @@
-const app = require("express")();
+a().then(resp => {console.log("success", resp)}).catch(err => {console.error("error", err)});
 
-app.get("/", function (req, res) {
-    res.send(
-        {
-            "name": "Elon Musk",
-            "email": "elon@spacex.com",
-            "image": "link to image"
-          }
-    );
-});
+async function a() {
+    let a = await b();
+    console.log("a=", a);
+}
 
-app.listen(25000, function () {
-    console.log("Server started");
-});
+function b() {
+    return new Promise(function (resolve, reject) {
+        for (let i = 0; i < 1000000; i++) {}
+        resolve("done");
+    });
+}
