@@ -45,31 +45,16 @@
 // // // Prints [ [ 4, '/' ], [ 3, '/product1' ], [ 2, '/about' ] ]
 // // console.log(pageCounts.getTopK());
 
+let { JSDOM } = require("jsdom");
 
-console.log(keyValFromJson({
-    a:1,
-    b:1,
-    c: { 1:2,3:4,5:6 },
-    d: { a:1,
-        b:1,
-        c: { 1:2,3:4,5:6 }, }
-}));
+let a = '<a id="js-go-to-sandbox" class="go-to-sandbox js-navigate " href="/sandbox/1621016/details/">\
+Open in Sandbox &gt;\
+</a>\
+';
 
+let tag = a.substr(1, a.indexOf(" ") - 1);
+console.log(tag);
 
-
-function keyValFromJson(obj, k) {
-	let arr = [];
-	for (let i in obj) {
-        let key = i;
-        if (k)
-            key = `${k}.${i}`;
-		switch (typeof obj[i]) {
-			case "object":
-				arr = arr.concat(keyValFromJson(obj[i], key));
-				break;
-			default:
-				arr.push({ key: key, val: obj[i] });
-		}
-	}
-	return arr;
-}
+let dom = new JSDOM(a);
+let element = dom.window.document.getElementsByTagName(tag)[0];
+console.log(element.className, element.id);
