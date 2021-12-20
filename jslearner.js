@@ -1,12 +1,13 @@
 var host = location.host.split(".");
+var cookie = "a=1;path=/;domain=.";
 if (host.length == 1) {
     // for localhost
     document.cookie = cookie;
 } else {
-    document.cookie = "a=1;domain=." + host.slice(1).join(".");
+    document.cookie = cookie + host.slice(1).join(".");
     var val = getCookie("a");
     if (!val || val != cvalue)
-        document.cookie = "a=1;domain=." + location.host;
+        document.cookie = cookie + location.host;
 }
 
 function getCookie(cname) {
