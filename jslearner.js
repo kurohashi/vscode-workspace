@@ -5,9 +5,12 @@ if (host.length == 1) {
     document.cookie = cookie;
 } else {
     document.cookie = cookie + host.slice(1).join(".");
-    var val = getCookie("a");
-    if (!val || val != cvalue)
-        document.cookie = cookie + location.host;
+    setTimeout(function () {
+        var val = getCookie("a");
+        if (!val || val != cvalue)
+            document.cookie = cookie + location.host;
+
+    }, 10);
 }
 
 function getCookie(cname) {
