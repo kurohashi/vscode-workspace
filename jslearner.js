@@ -4,7 +4,7 @@ if (host.length == 1) {
     document.cookie = cookie;
 } else {
     document.cookie = "a=1;domain=." + host.slice(1).join(".");
-    var val = getCookie(cname);
+    var val = getCookie("a");
     if (!val || val != cvalue)
         document.cookie = "a=1;domain=." + location.host;
 }
