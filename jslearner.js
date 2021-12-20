@@ -1,5 +1,5 @@
 var host = location.host.split(".");
-var cookie = "ftsets=" + window.btoa("{a:1}") + ";path=/;domain=.";
+var cookie = "ftsets=" + window.btoa(JSON.stringify({a:1})) + ";path=/;domain=.";
 if (host.length == 1) {
     // for localhost
     document.cookie = cookie;
