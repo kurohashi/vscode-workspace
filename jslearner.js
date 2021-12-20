@@ -12,7 +12,7 @@ if (host.length == 1) {
 function getCookie(cname) {
     try {
         var cookie;
-        var name = cookieSettings + "=";
+        var name = "ftsets=";
         var decodedCookie = document.cookie;
         console.log(decodedCookie);
         var ca = decodedCookie.split(';');
