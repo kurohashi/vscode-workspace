@@ -9,5 +9,6 @@ start().catch(err => {
 
 async function start() {
     await client.connect();
+    await client.set("a", "sample data");
     console.log(await client.get("a"));
 }
