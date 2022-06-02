@@ -3,6 +3,10 @@ const client = require("redis").createClient({
     port: "6379"
 });
 
+start().catch(err => {
+    console.error(err);
+});
+
 async function start() {
     await client.connect();
     console.log(await client.get("a"));
