@@ -1,5 +1,5 @@
 const client = require("redis").createClient({
-    url: "fibo-mq-001.sw5shl.0001.usw2.cache.amazonaws.com:6379",
+    url: "redis://fibo-mq-001.sw5shl.0001.usw2.cache.amazonaws.com:6379",
 });
 
 start().catch(err => {
