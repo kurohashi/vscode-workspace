@@ -67,6 +67,7 @@ async function eachMessage(resp) {
 function publish(req, res) {
     if (!req.headers.gid)
         return res.status(400).json();
+    console.log("Incoming:", JSON.stringify(req.body));
     producer.send({
         topic: conf.kafka.topic,
         messages: [{
