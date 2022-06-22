@@ -8,8 +8,12 @@ const conf = {
 };
 
 const request = require("request");
+const bodyParser = require("body-parser");
 
 const app = require("express")();
+app.use(bodyParser.json()); //supprts JSON encoded bodies
+app.use(bodyParser.text()); //for navigator.sendBeacon api call
+app.use(bodyParser.urlencoded({ extended: true })); //supports URL encoded bodies
 app.post("/publish", publish);
 app.listen(conf.port);
 
