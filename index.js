@@ -53,7 +53,7 @@ async function eachMessage(resp) {
         request({
             method: "POST",
             url: "http://localhost:3000/monitor",
-            json: { event: event },
+            json: event,
             headers: { gid: gid },
         }, function (err, resp, body) {
             if (err)
