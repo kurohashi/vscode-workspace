@@ -52,8 +52,8 @@ async function eachMessage(resp) {
     return new Promise(function (resolve, reject) {
         request({
             method: "POST",
-            url: "http://localhost:3000",
-            json: event,
+            url: "http://localhost:3000/monitor",
+            json: { event: event },
             headers: { gid: gid },
         }, function (err, resp, body) {
             if (err)
