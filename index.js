@@ -10,7 +10,7 @@ const conf = {
 const request = require("request");
 
 const app = require("express")();
-app.post("", publish);
+app.post("/publish", publish);
 app.listen(conf.port);
 
 const { Kafka } = require("kafkajs");
