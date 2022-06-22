@@ -58,6 +58,7 @@ async function eachMessage(resp) {
         }, function (err, resp, body) {
             if (err)
                 return reject(err);
+            console.log(body);
             resolve(body);
         });
     });
