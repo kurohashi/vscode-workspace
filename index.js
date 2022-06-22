@@ -2,7 +2,7 @@ const conf = {
     port: 10000,
     kafka: {
         brokers: ['b-1.fibotalk.aeljif.c8.kafka.us-west-2.amazonaws.com:9092', 'b-2.fibotalk.aeljif.c8.kafka.us-west-2.amazonaws.com:9092', 'b-3.fibotalk.aeljif.c8.kafka.us-west-2.amazonaws.com:9092'],
-        groupId: "events",
+        groupId: "test",
         topic: "test",
     }
 };
