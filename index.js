@@ -29,7 +29,7 @@ start().then(resp => console.log("Server setup complete on 10000", resp)).catch(
  */
 async function start() {
     await producer.connect();
-    await consumer.subscribe(conf.kafka.topic);
+    await consumer.subscribe({ topic: conf.kafka.topic });
     await consumer.run({
         autoCommitThreshold: 1,
         eachMessage: eachMessage,
