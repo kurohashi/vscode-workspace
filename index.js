@@ -1,16 +1,25 @@
+const conf = {
+    port: 10000,
+    kafka: {
+        brokers: ['b-1.fibotalk.aeljif.c8.kafka.us-west-2.amazonaws.com:9092', 'b-2.fibotalk.aeljif.c8.kafka.us-west-2.amazonaws.com:9092', 'b-3.fibotalk.aeljif.c8.kafka.us-west-2.amazonaws.com:9092'],
+        groupId: "events",
+        topic: "test",
+    }
+};
+
 const request = require("request");
 
 const app = require("express")();
 app.use(publish);
-app.listen(10000);
+app.listen(conf.port);
 
 const { Kafka } = require("kafkajs");
 const kafka = new Kafka({
     clientId: 'fibotalk',
-    brokers: ["localhost:9092"],
+    brokers: conf.kafka.brokers
 });
 const producer = kafka.producer({});
-const consumer = kafka.consumer({ groupId: "events", sessionTimeout: 30000, heartbeatInterval: 3000 });
+const consumer = kafka.consumer({ groupId: conf.kafka.groupId, sessionTimeout: 30000, heartbeatInterval: 3000 });
 
 start().then(resp => console.log("Server setup complete on 10000", resp)).catch(err => console.error(err));
 
@@ -20,7 +29,7 @@ start().then(resp => console.log("Server setup complete on 10000", resp)).catch(
  */
 async function start() {
     await producer.connect();
-    await consumer.subscribe("EventStream");
+    await consumer.subscribe(conf.kafka.topic);
     await consumer.run({
         autoCommitThreshold: 1,
         eachMessage: eachMessage,
@@ -39,7 +48,7 @@ async function eachMessage(resp) {
     return new Promise(function (resolve, reject) {
         request({
             method: "POST",
-            url: "http://localhost:10001",
+            url: "http://localhost:3000",
             json: event,
             headers: { gid: gid },
         }, function (err, resp, body) {
@@ -59,7 +68,7 @@ function publish(req, res) {
     if (!req.headers.gid)
         return res.status(400).json();
     producer.send({
-        topic: "EventStream",
+        topic: conf.kafka.topic,
         messages: [{
             value: JSON.stringify(req.body),
             key: req.headers.gid,
