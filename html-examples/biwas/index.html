@@ -70,6 +70,80 @@
                         analytics.page();
                     }
             }();
+            analytics.identify('shubham@tester', {
+                name: 'Shubham Srivastava',
+                email: 'shubham@fibotalk.com'
+            });
+            window.addEventListener("click", handleClickEvent);
+            /** -------------------------------------
+             * send click_event after generating its structure
+             * @param {*} e : DOM event generated on click
+             -------------------------------------*/
+            function handleClickEvent(e) {
+                var el = e.srcElement;
+                var clicked_on = {
+                    localName: el.localName || '-',
+                    id: el.id ? '#' + el.id : '-',
+                    innerText: el.innerText || '-',
+                    baseURI: (window.location.pathname + window.location.hash) || '-',
+                    // path: getDomPath(el) || '-',
+                    className: el.className ? '.' + el.className : '-'
+                }
+                if (clicked_on.innerText != '-') {
+                    clicked_on.innerText = clicked_on.innerText.trim();
+                    clicked_on.innerText = clicked_on.innerText.replace(/\s\s+/g, ' ');
+                    if (clicked_on.innerText.length > 100)
+                        clicked_on.innerText = clicked_on.innerText.substring(0, 100) + "...";
+                }
+                for (var i in clicked_on) {
+                    if (typeof clicked_on[i] === "object")
+                        clicked_on[i] = JSON.stringify(clicked_on[i]);
+                }
+                var str = defaultClickLabel(clicked_on);
+                var obj = {
+                    val: str,
+                    text: el.innerText || '-',
+                    page: (window.location.pathname + window.location.hash) || '-',
+                    elType: el.localName || '-',
+                    html: el.outerHTML,
+                };
+                analytics.track("segment_click_event", obj);
+            }
+
+            /** -------------------------------------
+             * Generate default label for click_event
+             * @param {*} clicked_on 
+             -------------------------------------*/
+            function defaultClickLabel(clicked_on) {
+                var tags = {
+                    a: 'link'
+                };
+                var str = '';
+                if (clicked_on.innerText != '-') {
+                    str += clicked_on.innerText;
+                }
+                if (clicked_on.localName != '-') {
+                    str += ' ' + (tags[clicked_on.localName] || clicked_on.localName);
+                }
+                if (clicked_on.baseURI != '-') {
+                    str += ' on page ' + clicked_on.baseURI;
+                }
+                var classFlag = true;
+                if (clicked_on.id != '-') {
+                    str += ' with id ' + clicked_on.id;
+                    if (clicked_on.className != '-') {
+                        str += ' and class ' + clicked_on.className;
+                        classFlag = false;
+                    }
+                }
+                if (classFlag && clicked_on.className != '-') {
+                    str += ' with class ' + clicked_on.className;
+                }
+                try {
+                    str = str.trim();
+                } catch (error) { }
+                return str;
+            } //defaultClickLabel()
     </script>
 </head>
 <body class="cbp-spmenu-push">
