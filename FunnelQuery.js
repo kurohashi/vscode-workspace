@@ -1,115 +1,55 @@
-let redis = require("redis").createClient();
-// let client = new redis({});
-// var streamcount = require('streamcount');
+var MinStack = function () {
+    this.stack = [];
+    this.min;
+    this.top;
+};
 
-redis.pfadd("users", "1");
-// redis.pfadd("users", "1").then(resp => {console.log(resp)}).catch(err => console.error(err));
+/** 
+ * @param {number} val
+ * @return {void}
+ */
+MinStack.prototype.push = function (val) {
+    this.stack.push(val);
+    this.top = val;
+    if (isNaN(this.min) || (this.stack[this.min] > val))
+        this.min = this.stack.length - 1;
+};
 
-// // Create a stream counter to track unique visitors with a 1% margin of error.
-// var uniques = streamcount.createUniquesCounter(0.01);
+/**
+ * @return {void}
+ */
+MinStack.prototype.pop = function () {
+    this.stack.pop();
+    this.top = this.stack[this.stack.length - 1];
+    if (this.min == this.stack.length) {
+        this.min = undefined;
+        for (let i in this.stack) {
+            if ((this.stack[i] < this.stack[this.min]) || isNaN(this.min)) {
+                this.min = i;
+            }
+        }
+    }
+};
 
-var proms = [];
-// Add some observations
-// for (let i = 0;i < 5000000; i++) {
-//     client.pfadd("users", "user" + i, function (err, reply) {
-//         proms.push(new Promise(function (resolve, reject) {
-//             resolve();
-//         }));
-//     });
-//     uniques.add('user' + i);
-// }
+/**
+ * @return {number}
+ */
+MinStack.prototype.top = function () {
+    return this.top;
+};
 
-// console.log(uniques.count());
+/**
+ * @return {number}
+ */
+MinStack.prototype.getMin = function () {
+    return this.stack[this.min];
+};
 
-// Promise.all(proms).then(resp => {
-//     client.pfcount("users", function (err, reply) {
-//         console.log(err, reply);
-//     });
-// }).catch(err => console.error(err));
+let a = new MinStack();
 
-
-// // Create a stream counter to track the top 3 pages viewed on our site.
-// // var pageCounts = streamcount.createViewsCounter(3);
-
-// // // Add some observations
-// // let arr = [];
-// // pageCounts.increment('/');
-// // pageCounts.increment('/');
-// // pageCounts.increment('/product1');
-// // pageCounts.increment('/contact');
-// // pageCounts.increment('/product3');
-// // pageCounts.increment('/');
-// // pageCounts.increment('/about');
-// // pageCounts.increment('/about');
-// // pageCounts.increment('/product2');
-// // pageCounts.increment('/product1');
-// // pageCounts.increment('/');
-// // pageCounts.increment('/product1');
-
-// // // Prints [ [ 4, '/' ], [ 3, '/product1' ], [ 2, '/about' ] ]
-// // console.log(pageCounts.getTopK());
-
-
-
-
-
-
-
-
-
-
-// let { JSDOM } = require("jsdom");
-
-// let a = '<a id="js-go-to-sandbox" class="go-to-sandbox js-navigate " href="/sandbox/1621016/details/">\
-// Open in Sandbox &gt;\
-// </a>\
-// ';
-
-// let tag = a.substr(1, a.indexOf(" ") - 1);
-// console.log(tag);
-
-// let dom = new JSDOM(a);
-// let element = dom.window.document.getElementsByTagName(tag)[0];
-// console.log(JSON.stringify(dom.window.location));
-
-// let url = new URL("https://fibotalk.com/?a=1&a=2#test");
-// console.log(url.searchParams.get("a"))
-
-// var info = console.log;
-
-// var console = {
-//     log: function log(message) {
-//         const callerInfo = getFileName(log.caller.name);
-//         info(`${new Date()} <${arguments.callee.name}> ${callerInfo.filename} (${log.caller.name}) ${message}`);
-//     },
-// };
-
-// function getFileName(caller) {
-//     const STACK_FUNC_NAME = new RegExp(/at\s+((\S+)\s)?\((\S+):(\d+):(\d+)\)/);
-//     let err = new Error();
-
-//     Error.captureStackTrace(err);
-
-//     let stacks = err.stack.split('\n').slice(1);
-
-//     let callerInfo = null;
-//     for (let i = 0; i < stacks.length; i++) {
-//         callerInfo = STACK_FUNC_NAME.exec(stacks[i]);
-
-//         if (callerInfo[2] === caller) {
-//             return {
-//                 filename: callerInfo[3],
-//                 line: callerInfo[4],
-//                 column: callerInfo[5],
-//             };
-//         }
-//     }
-
-//     return null;
-// }
-
-// function iWantToLog() {
-//     console.log('Testing my log');
-// }
-
-// iWantToLog();
+a.push(-2);
+a.push(0);
+a.push(-1);
+console.log(a.getMin(), a.stack)
+a.pop()
+console.log(a.getMin(), a.stack)
