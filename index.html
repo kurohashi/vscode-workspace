@@ -1,112 +1,153 @@
+<!DOCTYPE html>
 <html>
 
 <head>
-  <link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.css" crossorigin="anonymous">
-  <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css" crossorigin="anonymous">
-
-  <script src="./node_modules/jquery/dist/jquery.js"></script>
-  <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
-  <script src="./node_modules/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="https://kit.fontawesome.com/941110b473.js" crossorigin="anonymous"></script>
-
+  <title>Welcome to nginx!</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta charset="utf-8">
+  <style>
+    body {
+      text-align: center !important;
+      margin: 0 auto;
+      font-family: Tahoma, Verdana, Arial, sans-serif;
+    }
+  </style>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous">
+    </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+    </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous">
+    </script>
 
-  <link rel="stylesheet" href="./index.css">
+  <!-- Google Tag Manager -->
+  <script>(function (w, d, s, l, i) {
+      w[l] = w[l] || []; w[l].push({
+        'gtm.start':
+          new Date().getTime(), event: 'gtm.js'
+      }); var f = d.getElementsByTagName(s)[0],
+        j = d.createElement(s), dl = l != 'dataLayer' ? '&l=' + l : ''; j.async = true; j.src =
+          'https://www.googletagmanager.com/gtm.js?id=' + i + dl; f.parentNode.insertBefore(j, f);
+    })(window, document, 'script', 'dataLayer', 'GTM-MBX9FM8');</script>
+  <!-- End Google Tag Manager -->
 
+  <!-- <script src="http://localhost/cdn/ss/widget.js?rcl=4f8abdbfcd2f19ee34dda496"></script> -->
+  <!-- <script id="__ft__deploy__" src="http://localhost/cdn/ss/deployment.js?gid=4f8abdbfcd2f19ee34dda496"></script> -->
+  <script>
+    window._ft_ = {
+      // rcl: "4f8abdbfcd2f19ee34dda496", // local
+      // rcl: "32a4f09f970a1304a43b770c"
+      rcl: "b46654bda14d03cfa39562de623c89",  // prod/staging main
+      // rcl: "d89404ba878c4f874a0171da",   // prod personal
+      // rcl: "fd242d1c18f918f930dcb186",
+    }
+    var script = document.createElement("script");
+    // script.src = "https://cdn.fibotalk.com/widget.js", script.async = 1, script.type = "text/javascript";
+    // script.src = "http://ft.divvyhq.com/widget.js", script.async = 1, script.type = "text/javascript";
+    // script.src = "http://localhost/cdn/ss/widget.js", script.async = 1, script.type = "text/javascript";
+    script.src = "http://cdn.unireply.com/widget.js", script.async = 1, script.type = "text/javascript";
+    // script.src = "https://staging.fibotalk.com/widget/widget.js", script.async = 1, script.type = "text/javascript";
+    var firstScript = document.getElementsByTagName("script")[0];
+    firstScript.parentNode.insertBefore(script, firstScript);
+
+    window.fibotalkSettings = {
+      user: {
+        userId: "shubham@rytangle.com",
+        email: "shubham@rytangle.com",
+        username: "Rytangle Tester",
+        api_event: "tester",
+      },
+      account: {
+        accountId: "local",
+        org: "testing",
+        type: "testers"
+      }
+    };
+
+    function login() {
+      fibo.login({
+        user: {
+          userId: "local",
+          email: "shubham@fibo.com",
+          name: "Fibo Tester",
+        },
+        account: {
+          accountId: "local",
+          org: "testing",
+          type: "testers"
+        }
+      });
+    }
+
+    var xhr = new XMLHttpRequest();
+    /** -------------------------------------
+		 * Generic API call request
+		 * @param {*} apiObj : request object containing {url: "", qs: {}, headers: {}, json: {}, method: "GET/POST/PUT/DELETE"}
+		 * @param {*} cb : callback to receive response
+		 -------------------------------------*/
+		function request(apiObj, cb) {
+			if (!(apiObj.url && apiObj.method))
+				return cb("URL not provided");
+			var url = apiObj.url;
+			if (apiObj.qs && isObject(apiObj.qs)) {
+				url += '?';
+				for (var i in apiObj.qs)
+					url += i + '=' + apiObj.qs[i] + '&';
+				url = url.slice(0, -1);
+			}
+			xhr.onreadystatechange = function () {
+				if(xhr.readyState === XMLHttpRequest.DONE) {
+					var status = xhr.status;
+					var resp = "";
+					try {
+						resp = JSON.parse(xhr.responseText);
+					} catch (error) {
+						return cb("Bad response");
+					}
+					if (status === 0 || (status >= 200 && status < 400)) {
+						return cb(null, resp.data);
+					} else {
+						return cb(resp.msg || status);
+					}
+				}
+			};
+			xhr.open(apiObj.method, url);
+			xhr.setRequestHeader("Content-Type", "application/json");
+			if (apiObj.headers && isObject(apiObj.headers)) {
+				for (var i in apiObj.headers) {
+					if (i && apiObj.headers[i])
+						xhr.setRequestHeader(i, apiObj.headers[i]);
+				}
+			}
+			var body = {};
+			if (apiObj.json)
+				body = apiObj.json;
+			xhr.send(JSON.stringify(body));
+		}//request()
+
+    function customEvent() {
+      fibo.setEvent("Custom event", "random", {
+        "city.name": "delhi"
+      });
+    }
+  </script>
 </head>
 
-<body>
-  <div class="row m-0">
-    <div class="col-5 p-4">
-      <div>
-        <h3>Contact</h3>
-        <p><i class="fa-solid fa-location-dot"></i> New Delhi, India 110078</p>
-        <p><i class="fa-solid fa-phone"></i> 9953817970</p>
-        <p><i class="fa-solid fa-envelope"></i> smjackson94@gmail.com</p>
-        <p><i class="fa-brands fa-linkedin"></i> https://www.linkedin.com/in/shubhsri</p>
-      </div>
-      <div>
-        <h3>Skills</h3>
-        <p>Teamwork and Collaboration</p>
-        <p>Multitasking Abilities</p>
-        <p>Dependable and Responsible</p>
-        <p>Analytical and Critical Thinking</p>
-        <p>Self-Motivated</p>
-        <p>Engineering</p>
-        <p>Coding</p>
-        <p>Web technologies</p>
-      </div>
-      <div>
-        <h3>Software</h3>
-        <p>Nodejs</p>
-        <p>Angular</p>
-        <p>Mongodb</p>
-        <p>Linux</p>
-        <p>AWS</p>
-        <p>Nginx</p>
-      </div>
-    </div>
-    <div class="col-7 p-4">
-      <div class="d-inline-flex">
-        <div>
-          <div class="logo has-primary-background-color">S S</div>
-        </div>
-        <div>
-          <h1>
-            Shubham<br>Srivastava
-          </h1>
-        </div>
-      </div>
-      <div><h4>Software Development Engineer</h4></div>
-      <div>
-        <p>
-          Complex problem-solver with analytical and driven mindset.
-          <br>
-          Dedicated to achieving demanding development objectives
-          <br>
-          according to tight schedules while producing impeccable code.
-        </p>
-      </div>
-      <div>
-        <h3>Work History</h3>
-        <ul>
-          <li>
-            <span class="topic">SDE at Fibotalk, Bengaluru <span class="small text-muted">(2019-08 - Current)</span></span>
-            <ul>
-              <li>Maintained status reports for clients.</li>
-              <li>Participated in Agile development processes to support continual improvements in overall delivery efforts.</li>
-              <li>Wrote and executed tests and diagnostics designed to validate products and software applications.</li>
-              <li>QA and testing. Tracked bugs and defects for corrections in subsequent iterations.</li>
-              <li>Performed functional product reviews to detect verified weaknesses in software solutions.</li>
-              <li>Reviewed design specifications to validate product designs and support testability and verification.</li>
-              <li>Designed and implemented scalable applications for data extraction and analysis.</li>
-              <li>Developed conversion and system implementation plans.</li>
-              <li>Designed and developed completely serverless architecture.</li>
-              <li>Built databases and table structures for web applications.</li>
-              <li>Corrected, modified and upgraded software to improve performance.</li>
-              <li>Coordinated deployments of new software, feature updates and fixes.</li>
-              <li>Tested and deployed scalable and highly available software products.</li>
-              <li>Designed, developed, modified and debugged programs.</li>
-              <li>Designed and developed analytical data structures.</li>
-              <li>Estimated work hours and tracked progress using Scrum methodology.</li>
-              <li>Analyzed work to generate logic for new systems, procedures and tests.</li>
-              <li>Tuned systems to boost performance.</li>
-              <li>Designed and developed forward-thinking systems that meets user needs and improve productivity.</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-      <div>
-        <h3>Education</h3>
-        <ul>
-          <li>
-            <span class="topic">B. Tech. CS, RTU <span class="small text-muted">(2012-08 - 2016-07)</span></span>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+<body style="background-color: darkgray;">
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-MBX9FM8" height="0" width="0"
+      style="display:none;visibility:hidden"></iframe></noscript>
+  <h1 id="head" class="fibotrack">LOCALHOST</h1>
+  <p class="fibotrack">If you see this page, the nginx web server is successfully installed and
+    working. Further configuration is required.</p>
+
+  <p class="fibo"><em>Thank you for using us.</em></p>
+  <br>
+  <button class="btn btn-dark" id="clickme" href="http"> Click me </button>
+  <button class="btn btn-dark" onclick="login()">Login</button>
+  <button class="btn btn-dark" onclick="customEvent()">Fire custom event</button>
 </body>
 
 </html>

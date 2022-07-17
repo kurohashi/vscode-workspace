@@ -1,17 +1,13 @@
-function getTitleVarVal(val) {
-  if (!val)
-    return "";
-  let self = { a: { b: { c: [{ d: 1 }] } } };
-  try {
-    let valArr = val.split(".");
-    for (let i of valArr) {
-      self = self[i];
-    }
-    return self.toString();
-  } catch (error) {
-    console.log(error);
-  }
-  return "";
-}
+start().then(res => {
+  console.log(res);
+}).catch(err => console.error(err));
 
-console.log(getTitleVarVal("a.b.c.0.d"));
+
+async function start() {
+  return new Promise(function (resolve, reject) {
+    reject("error");
+    for (let i = 0; i < 1000000000000; i++);
+    console.log("reached");
+    resolve("success");
+  });
+}
