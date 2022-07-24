@@ -71,8 +71,8 @@
                     }
             }();
             analytics.identify('shubham@tester', {
-                name: { a: 1 },
-                email: 'shubham@fibotalk.com'
+                name: "Shubham",
+                address: { street: "Dwarka" },
             });
             window.addEventListener("click", handleClickEvent);
             /** -------------------------------------
@@ -107,7 +107,7 @@
                     elType: el.localName || '-',
                     html: el.outerHTML,
                 };
-                analytics.track("login", obj);
+                analytics.track("click_event", obj);
             }
 
             /** -------------------------------------
@@ -144,6 +144,37 @@
                 } catch (error) { }
                 return str;
             } //defaultClickLabel()
+
+            if ('onvisibilitychange' in document)
+				document.onvisibilitychange = function () {
+					visibility(true);
+				};
+			else if (('webkitOnVisibilityChange') in document)
+				document.webkitOnVisibilityChange = function () {
+					visibility(true);
+				};
+                
+            function visibility(setParams) {
+                var params = {};
+                if (isTabHidden()) {
+                    // Setting reason for page_close
+                    if (setParams)
+                        params.reason = "blur";
+                    analytics.track("page_close", params);
+                } else {
+                    // Setting reason for page_open
+                    if (setParams)
+                        params.reason = "focus";
+                    analytics.track("page_open", params);
+                }
+            }//visibility()
+
+
+            function isTabHidden() {
+                if (document.hidden || document.webkitHidden || document.mozHidden)
+                    return true;
+                return false;
+            }//isTabHidden()
     </script>
 </head>
 <body class="cbp-spmenu-push">
