@@ -14,7 +14,13 @@ start().then(resp => {
 async function start() {
     let m = await mongo.connect(`mongodb://${server}/${database}`);
     let db = m.createConnection();
-    let data = await db.collection("test-default-gid").find({}).toArray();
+    let data = await new Promise(function (resolve, reject) {
+        db.collection("test-default-gid").find({}).toArray(function (err, data) {
+            if (err)
+                reject(err);
+            resolve(data);
+        });
+    });
     for (let d of data) {
         for (let i in d) {
             switch (typeof d[i]) {
