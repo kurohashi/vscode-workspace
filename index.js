@@ -12,8 +12,8 @@ start().then(resp => {
 });
 
 async function start() {
-    let m = await mongo.connect(`mongodb://${server}/${database}`);
-    let db = m.createConnection();
+    let db = mongo.createConnection();
+    await db.openUri(`mongodb://${server}/${database}`);
     let data = await new Promise(function (resolve, reject) {
         db.collection("test-default-gid").find({}).toArray(function (err, data) {
             if (err)
