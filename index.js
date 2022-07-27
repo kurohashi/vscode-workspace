@@ -1,31 +1,16 @@
-const mongo = require("mongoose");
+// Create an array [1, 2, 3, -2, -4, 5]. Find the contiguous of array.
+// [-1, -2, -3, -4]
 
-const server = 'localhost:27017'; 
-const database = 'events';
+let array = [1, 2, 3, -2, -4, 5];
+let sum = -Infinity;
+let comparator = 0;
 
-start().then(resp => {
-    console.log(resp);
-    process.exit(0);
-}).catch(err => {
-    console.error(err);
-    process.exit(1);
-});
-
-async function start() {
-    let db = mongo.createConnection();
-    await db.openUri(`mongodb://${server}/${database}`);
-    let data = await db.collection("test-default-gid").find({}).toArray();
-    for (let d of data) {
-        for (let i in d) {
-            switch (typeof d[i]) {
-                case "object":
-                    for (let j in d[i]) {
-                        if (j.includes(".")) {
-                            await db.collection("test-default-gid").deleteOne({ _id: d._id });
-                        }
-                    }
-            }
-        }
+for (let i = 0; i < array.length; i++) {
+    // let foo = -Infinity;
+    comparator += array[i];
+    if (comparator > sum) {
+        sum = comparator;
     }
-    return "done";
 }
+
+console.log("Max sum", sum);
