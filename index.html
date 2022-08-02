@@ -40,16 +40,16 @@
     window._ft_ = {
       // rcl: "4f8abdbfcd2f19ee34dda496", // local
       // rcl: "32a4f09f970a1304a43b770c"
-      // rcl: "b46654bda14d03cfa39562de623c89",  // prod/staging main
-      rcl: "d89404ba878c4f874a0171da",   // prod personal
+      rcl: "b46654bda14d03cfa39562de623c89",  // prod/staging main
+      // rcl: "d89404ba878c4f874a0171da",   // prod personal
       // rcl: "fd242d1c18f918f930dcb186",
     }
     var script = document.createElement("script");
     // script.src = "https://cdn.fibotalk.com/widget.js", script.async = 1, script.type = "text/javascript";
     // script.src = "http://ft.divvyhq.com/widget.js", script.async = 1, script.type = "text/javascript";
-    // script.src = "http://localhost/cdn/ss/widget.js", script.async = 1, script.type = "text/javascript";
+    script.src = "http://localhost/cdn/ss/widget.js", script.async = 1, script.type = "text/javascript";
     // script.src = "http://cdn.unireply.com/widget.js", script.async = 1, script.type = "text/javascript";
-    script.src = "https://staging.fibotalk.com/widget/widget.js", script.async = 1, script.type = "text/javascript";
+    // script.src = "https://staging.fibotalk.com/widget/widget.js", script.async = 1, script.type = "text/javascript";
     var firstScript = document.getElementsByTagName("script")[0];
     firstScript.parentNode.insertBefore(script, firstScript);
 
