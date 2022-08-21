@@ -1,16 +1,26 @@
-// Create an array [1, 2, 3, -2, -4, 5]. Find the contiguous of array.
-// [-1, -2, -3, -4]
+const CryptoJS = require("crypto-js");
 
-let array = [1, 2, 3, -2, -4, 5];
-let sum = -Infinity;
-let comparator = 0;
+let keys = "EavQ9t90izEyJ5U1go0D";
 
-for (let i = 0; i < array.length; i++) {
-    // let foo = -Infinity;
-    comparator += array[i];
-    if (comparator > sum) {
-        sum = comparator;
+function set(value) {
+    if (typeof value === 'object') {
+        value = JSON.stringify(value);
     }
+
+    var key = CryptoJS.enc.Utf8.parse(keys);
+    var iv = CryptoJS.enc.Utf8.parse(keys);
+    var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key, {
+        keySize: 128 / 8,
+        iv: iv,
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return encodeURIComponent(encrypted.toString());
 }
 
-console.log("Max sum", sum);
+let saveObj = {
+    "email": "smjackson94@gmail.com",
+    "passwd": "qwerty",
+    signInType: "kaliper"
+};
+console.log(set(JSON.stringify(saveObj)));
