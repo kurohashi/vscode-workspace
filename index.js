@@ -1,26 +1,9 @@
-const CryptoJS = require("crypto-js");
+const jwt = require("jsonwebtoken");
+const secret =  Buffer.from("ABCDKALIPEREFGHZWKVUTSRQPONNMLJI0987654321", "base64");
+// let encodedToken = jwt.sign({ key: "sample" }, secret, { expiresIn: 0 });
+let encodedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1OWU0ZTJlNTdlIiwiZW1haWwiOiJzaHViaGFtQHJ5dGFuZ2xlLmNvbSIsImlhdCI6MTY2MjYxMzkzNiwiZXhwIjoxNjYyNjEzOTQxfQ.Tfb_aCrKou7_05z1KnmizGxhdB0pjcmIV7JUfZnQswE";
+const decoded = jwt.decode(encodedToken, secret);
 
-let keys = "EavQ9t90izEyJ5U1go0D";
+console.log(new Date(decoded.exp * 1000), new Date(decoded.iat * 1000));
 
-function set(value) {
-    if (typeof value === 'object') {
-        value = JSON.stringify(value);
-    }
-
-    var key = CryptoJS.enc.Utf8.parse(keys);
-    var iv = CryptoJS.enc.Utf8.parse(keys);
-    var encrypted = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(value.toString()), key, {
-        keySize: 128 / 8,
-        iv: iv,
-        mode: CryptoJS.mode.CBC,
-        padding: CryptoJS.pad.Pkcs7
-    });
-    return encodeURIComponent(encrypted.toString());
-}
-
-let saveObj = {
-    "email": "smjackson94@gmail.com",
-    "passwd": "qwerty",
-    signInType: "kaliper"
-};
-console.log(set(JSON.stringify(saveObj)));
+jwt.verify(decoded);
