@@ -32,7 +32,7 @@
     "jquery": "^3.6.0",
     "jsdom": "^20.0.0",
     "jsonwebtoken": "^8.5.1",
-    "moment-timezone": "^0.5.33",
+    "moment-timezone": "^0.5.35",
     "mongodb": "^3.6.10",
     "mongoose": "^6.4.6",
     "node-cmd": "^4.0.0",
