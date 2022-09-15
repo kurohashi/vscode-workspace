@@ -1,9 +1,37 @@
-const jwt = require("jsonwebtoken");
-const secret =  Buffer.from("ABCDKALIPEREFGHZWKVUTSRQPONNMLJI0987654321", "base64");
-// let encodedToken = jwt.sign({ key: "sample" }, secret, { expiresIn: 0 });
-let encodedToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiI1OWU0ZTJlNTdlIiwiZW1haWwiOiJzaHViaGFtQHJ5dGFuZ2xlLmNvbSIsImlhdCI6MTY2MjYxMzkzNiwiZXhwIjoxNjYyNjEzOTQxfQ.Tfb_aCrKou7_05z1KnmizGxhdB0pjcmIV7JUfZnQswE";
-const decoded = jwt.decode(encodedToken, secret);
+var conf = {
+    kafka: {
+        brokers: ['b-3.kaliper.b30u2l.c8.kafka.us-west-2.amazonaws.com:9092', 'b-2.kaliper.b30u2l.c8.kafka.us-west-2.amazonaws.com:9092', 'b-1.kaliper.b30u2l.c8.kafka.us-west-2.amazonaws.com:9092'],
+        groupId: "dev-kaliper-events-*-",
+        clientId: "kaliper",
+        topic: (key => `kaliper-${key}`),
+        forwardingTopic: `kaliper-forwards`,
+        partitions: 10,
+        getGid: (topic => topic.replace("kaliper-", "")),
+        failureRetrials: {
+            setOffset: 5
+        },
+    },
+};
 
-console.log(new Date(decoded.exp * 1000), new Date(decoded.iat * 1000));
+const { Kafka } = require("kafkajs");
+const kafka = new Kafka({
+    clientId: conf.kafka.clientId,
+    brokers: conf.kafka.brokers
+});
+const consumer = kafka.consumer({ groupId: conf.kafka.groupId, sessionTimeout: 30000, heartbeatInterval: 3000 });
 
-jwt.verify(decoded);
+start().catch(err => console.error(err));
+
+async function start() {
+    await consumer.subscribe({ topic: conf.kafka.forwardingTopic });
+    await consumer.run({
+        autoCommitThreshold: 1,
+        partitionsConsumedConcurrently: conf.kafka.partitions,
+        eachMessage: eachMessage,
+    });
+}
+
+
+async function eachMessage(resp) {
+    console.log(resp.message.value.toString());
+}
