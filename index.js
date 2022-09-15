@@ -88,7 +88,7 @@ async function handleGA4Destination(data) {
         }],
     };
     if (event.geography)
-        Object.assign(json.events[0].params, event.geography);
+        Object.assign(apiConf.json.events[0].params, event.geography);
     await new Promise(function (resolve, reject) {
         request(apiConf, function (err, resp, body) {
             if (err)
