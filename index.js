@@ -1,7 +1,7 @@
 var conf = {
     kafka: {
         brokers: ['b-3.kaliper.b30u2l.c8.kafka.us-west-2.amazonaws.com:9092', 'b-2.kaliper.b30u2l.c8.kafka.us-west-2.amazonaws.com:9092', 'b-1.kaliper.b30u2l.c8.kafka.us-west-2.amazonaws.com:9092'],
-        groupId: "dev-kaliper-events-*-",
+        groupId: "dev-kaliper-transformations-*-",
         clientId: "kaliper",
         topic: (key => `kaliper-${key}`),
         forwardingTopic: `kaliper-forwards`,
