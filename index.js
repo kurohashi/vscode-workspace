@@ -46,24 +46,7 @@ async function eachMessage(resp) {
     if (data.count >= 3)
         return;
     try {
-        data.destination.name = data.destination.name.toLowerCase();
-        switch (data.destination.name) {
-            case "ga4":
-                if (data.destination.api) {
-                    await new Promise(function (resolve, reject) {
-                        request(api, function (err, resp, body) {
-                            if (err)
-                                return reject(err);
-                            try {
-                                body = JSON.parse(body);
-                            } catch (error) { }
-                            console.log("GA4 response", resp.statusCode);
-                            resolve();
-                        });
-                    });
-                }
-                break;
-        }
+        await handleDestinations(data);
     } catch (error) {
         data.count++;
         await producer.send({
@@ -72,4 +55,46 @@ async function eachMessage(resp) {
         });
         return true;
     }
+}
+
+/**
+ * Router for destination functions
+ * @param {*} data 
+ */
+async function handleDestinations(data) {
+    data.destination.name = data.destination.name.toLowerCase();
+    switch (data.destination.name) {
+        case "ga4":
+            return handleGA4Destination(data);
+    }
+}
+
+/**
+ * Send events to GA4 using measurement protocol
+ * @param {*} data 
+ */
+async function handleGA4Destination(data) {
+    if (!data.destination.api)
+        return;
+    let apiConf = data.destination.api;
+    let event = data.event;
+    apiConf.json = {
+        client_id: "testApi",
+        user_id: event.userId,
+        "non_personalized_ads": true,
+        events: [{
+            name: event.name,
+            params: event.params,
+        }],
+    };
+    if (event.geography)
+        Object.assign(json.events[0].params, event.geography);
+    await new Promise(function (resolve, reject) {
+        request(apiConf, function (err, resp, body) {
+            if (err)
+                return reject(err);
+            console.log("GA4 response", resp.statusCode);
+            resolve();
+        });
+    });
 }
