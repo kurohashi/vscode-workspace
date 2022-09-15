@@ -47,6 +47,7 @@ async function eachMessage(resp) {
     try {
         await handleDestinations(data);
     } catch (error) {
+        console.error(error);
         data.count++;
         await producer.send({
             topic: conf.kafka.forwardingTopic,
