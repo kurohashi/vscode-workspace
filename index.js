@@ -13,6 +13,7 @@ var conf = {
     },
 };
 
+const request = require("request");
 const { Kafka } = require("kafkajs");
 const kafka = new Kafka({
     clientId: conf.kafka.clientId,
@@ -38,12 +39,31 @@ async function eachMessage(resp) {
     let message = resp.message.value.toString();
     console.log(message);
     let data = JSON.parse(message);
+    if (!data.destination)
+        return;
     if (isNaN(data.count))
         data.count = 0;
     if (data.count >= 3)
         return;
     try {
-        
+        data.destination.name = data.destination.name.toLowerCase();
+        switch (data.destination.name) {
+            case "ga4":
+                if (data.destination.api) {
+                    await new Promise(function (resolve, reject) {
+                        request(api, function (err, resp, body) {
+                            if (err)
+                                return reject(err);
+                            try {
+                                body = JSON.parse(body);
+                            } catch (error) { }
+                            console.log("GA4 response", resp.statusCode);
+                            resolve();
+                        });
+                    });
+                }
+                break;
+        }
     } catch (error) {
         data.count++;
         await producer.send({
