@@ -37,7 +37,6 @@ async function start() {
 
 async function eachMessage(resp) {
     let message = resp.message.value.toString();
-    console.log(message);
     let data = JSON.parse(message);
     if (!data.destination)
         return;
