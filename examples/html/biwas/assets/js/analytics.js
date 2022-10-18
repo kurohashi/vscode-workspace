@@ -168,3 +168,7 @@ function isTabHidden() {
         origOpen.apply(this, arguments);
     };
 })();
+
+new MutationObserver(function (mutationList, observer) {
+    console.log("tracking changes", mutationList, observer);
+});
