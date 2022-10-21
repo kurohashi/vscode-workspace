@@ -176,7 +176,7 @@ function isTabHidden() {
         let requests = performance.getEntriesByType("resource");
         for (let i = index; i < requests.length; i++) {
             for (let trackingDomain of trackingDomains) {
-                if (trackingDomain.includes(requests[i].name)) {
+                if (requests[i].name.includes(trackingDomain)) {
                     console.log("Tracked !!!!", requests[i].name);
                 }
             }
