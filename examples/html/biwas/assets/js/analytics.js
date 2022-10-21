@@ -169,6 +169,16 @@ function isTabHidden() {
     };
 })();
 
-new MutationObserver(function (mutationList, observer) {
-    console.log("tracking changes", mutationList, observer);
-});
+(function () {
+    let index = 0;
+    let trackingDomains = ["www.google-analytics.com/collect"];
+    setInterval(function () {
+        let requests = performance.getEntriesByType("resource");
+        for (let i = index; i < requests.length; i++) {
+            if (trackingDomains.includes(requests[i].name)) {
+                console.log("Tracked !!!!", requests[i].name);
+            }
+        }
+        index = requests.length;
+    }, 10);
+})();
