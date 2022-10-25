@@ -1,38 +1,28 @@
-// (function () {
-//     var origOpen = XMLHttpRequest.prototype.open;
-//     XMLHttpRequest.prototype.open = function () {
-//         this.addEventListener('load', function (e) {
-//             console.log('Tracked by XHR', this);
-//         });
-//         origOpen.apply(this, arguments);
-//     };
-// })();
-
 (function () {
-    // var open = window.XMLHttpRequest.prototype.open;
-    var send = window.XMLHttpRequest.prototype.send;
+    var open = window.XMLHttpRequest.prototype.open,
+        send = window.XMLHttpRequest.prototype.send;
 
-    // function openReplacement(method, url, async, user, password) {
-    //     this._url = url;
-    //     return open.apply(this, arguments);
-    // }
+    function openReplacement(method, url, async, user, password) {
+        this._url = url;
+        return open.apply(this, arguments);
+    }
 
     function sendReplacement(data) {
-        // if (this.onreadystatechange) {
-        //     this._onreadystatechange = this.onreadystatechange;
-        // }
+        if (this.onreadystatechange) {
+            this._onreadystatechange = this.onreadystatechange;
+        }
         console.log('Tracked by XHR', this.responseURL, data);
-        // this.onreadystatechange = onReadyStateChangeReplacement;
+        this.onreadystatechange = onReadyStateChangeReplacement;
         return send.apply(this, arguments);
     }
 
-    // function onReadyStateChangeReplacement() {
-    //     if (this._onreadystatechange) {
-    //         return this._onreadystatechange.apply(this, arguments);
-    //     }
-    // }
+    function onReadyStateChangeReplacement() {
+        if (this._onreadystatechange) {
+            return this._onreadystatechange.apply(this, arguments);
+        }
+    }
 
-    // window.XMLHttpRequest.prototype.open = openReplacement;
+    window.XMLHttpRequest.prototype.open = openReplacement;
     window.XMLHttpRequest.prototype.send = sendReplacement;
 })();
 
