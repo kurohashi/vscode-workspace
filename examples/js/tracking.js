@@ -11,7 +11,7 @@
         if (this.onreadystatechange) {
             this._onreadystatechange = this.onreadystatechange;
         }
-        console.log('Tracked by XHR', this.responseURL, data);
+        console.log('Tracked by XHR', this, data);
         this.onreadystatechange = onReadyStateChangeReplacement;
         return send.apply(this, arguments);
     }
