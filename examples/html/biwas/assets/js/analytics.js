@@ -154,33 +154,3 @@ function isTabHidden() {
         return true;
     return false;
 }//isTabHidden()
-
-
-(function () {
-    var origOpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function () {
-        // console.log('request started!');
-        this.addEventListener('load', function (e) {
-            console.log('request completed!', this.responseURL);
-            // console.log(this.readyState); //will always be 4 (ajax is completed successfully)
-            // console.log(this.responseText); //whatever the response was
-        });
-        origOpen.apply(this, arguments);
-    };
-})();
-
-(function () {
-    let index = 0;
-    let trackingDomains = ["www.google-analytics.com/collect"];
-    setInterval(function () {
-        let requests = performance.getEntriesByType("resource");
-        for (let i = index; i < requests.length; i++) {
-            for (let trackingDomain of trackingDomains) {
-                if (requests[i].name.includes(trackingDomain)) {
-                    console.log("Tracked !!!!", requests[i].name);
-                }
-            }
-        }
-        index = requests.length;
-    }, 10);
-})();
