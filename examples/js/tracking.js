@@ -45,6 +45,18 @@
     }//setEnv()
 
     /** -------------------------------------
+     * return true only if its a JSON object
+     * @param {*} obj 
+     -------------------------------------*/
+    function isObject(obj) {
+        if (Array.isArray(obj))
+            return false;
+        if (typeof obj === "object")
+            return true;
+        return false;
+    }//isObject()
+
+    /** -------------------------------------
      * get URL params as an object
      * @param url : (optional) provide exclusive url string
      -------------------------------------*/
