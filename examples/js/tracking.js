@@ -103,12 +103,11 @@
                     resp = JSON.parse(xhr.responseText);
                 } catch (error) {
                     console.log(error);
-                    return cb("Bad response");
                 }
                 if (status === 0 || (status >= 200 && status < 400)) {
                     return cb(null, resp.data);
                 } else {
-                    return cb(resp.msg || status);
+                    return cb(resp);
                 }
             }
         };
