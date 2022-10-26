@@ -100,7 +100,7 @@
                 var status = xhr.status;
                 var resp = "";
                 try {
-                    console.log(xhr.responseText);
+                    console.log(status, xhr.responseText);
                     resp = JSON.parse(xhr.responseText);
                 } catch (error) {
                     console.log(error);
