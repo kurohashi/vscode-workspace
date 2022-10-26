@@ -5,9 +5,8 @@
         connection: "",
         apis: {
             group: {
-                url: "https://svmnfm1z31.execute-api.us-west-2.amazonaws.com/kaliper-staging-api/project",
+                url: "https://svmnfm1z31.execute-api.us-west-2.amazonaws.com/kaliper-staging-api/project?gid=",
                 method: "GET",
-                qs: { gid: "" },
             }
         }
     };
@@ -132,11 +131,14 @@
      -------------------------------------*/
     function getGroupData(callback) {
         env.apis.group.qs.gid = env.gid;
-        request(env.apis.group, function (err, data) {
-            if (err)
-                return console.log(err);
-            console.log(data);
-        });
+        // request(env.apis.group, function (err, data) {
+        //     if (err)
+        //         return console.log(err);
+        //     console.log(data);
+        // });
+        fetch(env.apis.group.url + env.gid)
+        .then((response) => response.json())
+        .then((data) => console.log(data));
     }//getGroupData()
 
     /** -------------------------------------
