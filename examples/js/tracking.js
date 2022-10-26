@@ -2,15 +2,14 @@
     var env = {
         gid: "",
         cdn: "unireply.com/vscode-workspace/examples/js/tracking.js",
-        connection: "",
-        apis: {
-            group: {
-                url: "https://svmnfm1z31.execute-api.us-west-2.amazonaws.com/kaliper-staging-api/project?gid=",
-                method: "GET",
-            }
+        srcId: "",
+        platform: "",
+    };
+    var conf = {
+        platDomainMap: {
+            ga: ["www.google-analytics.com"],
         }
     };
-    var xhr = new XMLHttpRequest();
 
     init();
 
@@ -19,7 +18,7 @@
      -------------------------------------*/
     function init() {
         setEnv();
-        getGroupData(setTracking);
+        setTracking();
     }
 
     /** -------------------------------------
@@ -33,9 +32,11 @@
                     var src = scripts[i].src;
                     src = src.slice(src.indexOf('?') + 1);
                     src = getQuery(src);
-                    if (src.rcl && src.connection) {
-                        env.gid = src.rcl;
-                        env.connection = src.connection;
+                    if (src.rcl) {
+                        let data = JSON.parse(decodeURIComponent(atob(src.rcl)));
+                        for (var i in data) {
+                            env[i] = data[i];
+                        }
                     }
                 }
             }
@@ -43,18 +44,6 @@
             console.log(error);
         }
     }//setEnv()
-
-    /** -------------------------------------
-     * return true only if its a JSON object
-     * @param {*} obj 
-     -------------------------------------*/
-    function isObject(obj) {
-        if (Array.isArray(obj))
-            return false;
-        if (typeof obj === "object")
-            return true;
-        return false;
-    }//isObject()
 
     /** -------------------------------------
      * get URL params as an object
@@ -80,82 +69,10 @@
     }//getQuery()
 
     /** -------------------------------------
-     * Generic API call request
-     * @param {*} apiObj : request object containing {url: "", qs: {}, headers: {}, json: {}, method: "GET/POST/PUT/DELETE"}
-     * @param {*} cb : callback to receive response
-     -------------------------------------*/
-    function request(apiObj, cb) {
-        if (!(apiObj.url && apiObj.method))
-            return cb("URL not provided");
-        var url = apiObj.url;
-        if (apiObj.qs && isObject(apiObj.qs)) {
-            url += '?';
-            for (var i in apiObj.qs)
-                url += i + '=' + apiObj.qs[i] + '&';
-            url = url.slice(0, -1);
-        }
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                var status = xhr.status;
-                var resp = "";
-                try {
-                    console.log(status, xhr.responseText);
-                    resp = JSON.parse(xhr.responseText);
-                } catch (error) {
-                    console.log(error);
-                }
-                if (status === 0 || (status >= 200 && status < 400)) {
-                    return cb(null, resp.data);
-                } else {
-                    return cb(resp);
-                }
-            }
-        };
-        xhr.open(apiObj.method, url);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        if (apiObj.headers && isObject(apiObj.headers)) {
-            for (var i in apiObj.headers) {
-                if (i && apiObj.headers[i])
-                    xhr.setRequestHeader(i, apiObj.headers[i]);
-            }
-        }
-        var body = {};
-        if (apiObj.json)
-            body = apiObj.json;
-        xhr.send(JSON.stringify(body));
-    }//request()
-
-    /** -------------------------------------
-     * Fetch group data from gid
-     * @param callback : callback after group data is fetched
-     -------------------------------------*/
-    function getGroupData(callback) {
-        env.apis.group.url += env.gid;
-        request(env.apis.group, function (err, data) {
-            if (err)
-                return console.log(err);
-            console.log(data);
-            callback(data[0]);
-        });
-        // fetch(env.apis.group.url)
-        // .then((response) => response.json())
-        // .then((data) => console.log(data));
-    }//getGroupData()
-
-    /** -------------------------------------
      * Set trackers
-     * @param {*} group 
-     * @returns 
      -------------------------------------*/
-    function setTracking(group) {
-        try {
-            if (!group.settings.tracking.status)
-                return;
-        } catch (error) {
-            return console.log("tracking disabled", error);
-        }
-
-        var trackingDomains = group.settings.tracking.domains;
+    function setTracking() {
+        var trackingDomains = conf.platDomainMap[env.platform];
 
         // XHR tracker
         (function () {
