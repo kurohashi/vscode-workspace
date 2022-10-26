@@ -102,6 +102,7 @@
                 try {
                     resp = JSON.parse(xhr.responseText);
                 } catch (error) {
+                    console.log(error);
                     return cb("Bad response");
                 }
                 if (status === 0 || (status >= 200 && status < 400)) {
@@ -132,7 +133,9 @@
     function getGroupData(callback) {
         env.apis.group.qs.gid = env.gid;
         request(env.apis.group, function (err, data) {
-            console.log(err, data);
+            if (err)
+                return console.log(err);
+            console.log(data);
         });
     }//getGroupData()
 
