@@ -130,15 +130,15 @@
      * @param callback : callback after group data is fetched
      -------------------------------------*/
     function getGroupData(callback) {
-        // env.apis.group.qs.gid = env.gid;
-        // request(env.apis.group, function (err, data) {
-        //     if (err)
-        //         return console.log(err);
-        //     console.log(data);
-        // });
-        fetch(env.apis.group.url + env.gid)
-        .then((response) => response.json())
-        .then((data) => console.log(data));
+        env.apis.group.url += env.gid;
+        request(env.apis.group, function (err, data) {
+            if (err)
+                return console.log(err);
+            console.log(data);
+        });
+        // fetch(env.apis.group.url)
+        // .then((response) => response.json())
+        // .then((data) => console.log(data));
     }//getGroupData()
 
     /** -------------------------------------
