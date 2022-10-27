@@ -82,6 +82,9 @@ function handleClickEvent(e) {
         page: (window.location.pathname + window.location.hash) || '-',
         elType: el.localName || '-',
         html: el.outerHTML,
+        value: 10,
+        event_category: "click",
+        event_label: "Test clicked"
     };
     analytics.track("click_event", obj);
     gtag("event", "click_event", obj);
