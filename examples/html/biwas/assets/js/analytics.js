@@ -90,6 +90,14 @@ function handleClickEvent(e) {
     gtag("event", "click_event", obj);
 }
 
+
+function textEvent() {
+    gtag("event", "test", {
+        event_category: "test anchor tags",
+        event_label: "explore axis"
+    });
+}
+
 /** -------------------------------------
  * Generate default label for click_event
  * @param {*} clicked_on 
