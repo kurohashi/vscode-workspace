@@ -91,7 +91,7 @@ function handleClickEvent(e) {
 }
 
 
-function textEvent() {
+function testEvent() {
     gtag("event", "test", {
         event_category: "test anchor tags",
         event_label: "explore axis"
