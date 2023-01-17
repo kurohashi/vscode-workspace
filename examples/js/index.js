@@ -82,7 +82,8 @@ function customEvent() {
 function clickMe() {
     let eventName = "test_event";
     let params = {
-        custom_action: "click"
+        custom_action: "click",
+        cust2: "done something",
     };
     analytics.track(eventName, params);
     gtag('event', eventName, params);
