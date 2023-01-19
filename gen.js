@@ -5,8 +5,8 @@ async function start() {
     let db = d.db();
     let versions = await db.collection("versions").find({ commitVersion: { $exists: true } }).toArray();
     for (let version of versions) {
-        let update = { $set: {
-            commitMsg: version.desc,
+        let update = { $unset: {
+            desc: false,
         } };
         console.log(JSON.stringify(update));
         await db.collection("versions").updateOne({ VersionId: version.VersionId }, update);
