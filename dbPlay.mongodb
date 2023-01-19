@@ -1,2 +1,0 @@
-use('analysis');
-db['4f8abdbfcd2f19ee34dda496'].find()
