@@ -19,8 +19,8 @@ function set(value) {
 }
 
 let saveObj = {
-    "email": "smjackson94@gmail.com",
-    "passwd": "qwerty",
+    "email": "shubham@rytangle.com",
+    "passwd": "9868418995",
     signInType: "kaliper"
 };
 console.log(set(JSON.stringify(saveObj)));
