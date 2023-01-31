@@ -933,7 +933,7 @@ function setEvent(name, params) {
     analytics.track(name, params);
     gtag("event", name, params);
     rudderanalytics.track(name, params);
-    fibo.setEvent(name, null, params);
+    // fibo.setEvent(name, null, params);
     mixpanel.track(name, params);
     amplitude.track(name, params);
 }
