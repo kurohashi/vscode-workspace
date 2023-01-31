@@ -63,7 +63,7 @@ gtag('js', new Date());
 }();
 
 // TrackingPlan
-(function() {
+(function () {
     function a(a) {
         var b = {
             method: "POST",
@@ -78,23 +78,23 @@ gtag('js', new Date());
             try {
                 g(a)
             }
-        catch (a) {
-            F(a)
-        }
+            catch (a) {
+                F(a)
+            }
         if (_.includes("xhr"))
             try {
                 i(a)
             }
-        catch (a) {
-            F(a)
-        }
+            catch (a) {
+                F(a)
+            }
         if (_.includes("beacon"))
             try {
                 j(a)
             }
-        catch (a) {
-            F(a)
-        }
+            catch (a) {
+                F(a)
+            }
         if (_.includes("form")) try {
             m(a)
         } catch (a) {
@@ -143,7 +143,7 @@ gtag('js', new Date());
     function g(a) {
         var b = a.Object.getOwnPropertyDescriptor(a.HTMLImageElement.prototype, "src").set;
         a.Object.defineProperty(a.HTMLImageElement.prototype, "src", {
-            set: function(a) {
+            set: function (a) {
                 return !f(a) || 2048 < a.length ? b.apply(this, arguments) : (n({
                     method: "GET",
                     endpoint: a,
@@ -152,7 +152,7 @@ gtag('js', new Date());
             }
         });
         var c = a.HTMLImageElement.prototype.setAttribute;
-        a.HTMLImageElement.prototype.setAttribute = function(a, b) {
+        a.HTMLImageElement.prototype.setAttribute = function (a, b) {
             if ("src" == a.toLowerCase()) {
                 if (!f(b) || b.length > 2048) return c.apply(this, arguments);
                 n({
@@ -169,16 +169,16 @@ gtag('js', new Date());
         var b = a;
         try {
             b instanceof FormData && (b = JSON.stringify(Object.fromEntries(b)))
-        } catch (a) {}
+        } catch (a) { }
         return b
     }
 
     function i(a) {
         var b = a.XMLHttpRequest.prototype.open,
             c = a.XMLHttpRequest.prototype.send;
-        a.XMLHttpRequest.prototype.open = function(a, c) {
+        a.XMLHttpRequest.prototype.open = function (a, c) {
             return this._tpUrl = c, this._tpMethod = a, b.apply(this, arguments)
-        }, a.XMLHttpRequest.prototype.send = function(a) {
+        }, a.XMLHttpRequest.prototype.send = function (a) {
             var b = h(a);
             return n({
                 method: this._tpMethod,
@@ -191,7 +191,7 @@ gtag('js', new Date());
 
     function j(a) {
         var b = a.navigator.sendBeacon;
-        a.navigator.sendBeacon = function(a, c) {
+        a.navigator.sendBeacon = function (a, c) {
             if (!f(a) || 2048 < a.length) return b.apply(this, arguments);
             var d = h(c);
             return n({
@@ -205,7 +205,7 @@ gtag('js', new Date());
 
     function k(a) {
         var b = a.fetch;
-        a.fetch = function(a, c) {
+        a.fetch = function (a, c) {
             if (!f(a) || 2048 < a.length) return b.apply(this, arguments);
             var d = "GET",
                 e = null;
@@ -220,11 +220,11 @@ gtag('js', new Date());
 
     function l(a) {
         var c = a.WebSocket;
-        a.WebSocket = function(d, a) {
+        a.WebSocket = function (d, a) {
             return a ? new c(d, a) : new c(d)
         };
         var b = c.prototype.send;
-        c.prototype.send = function(a) {
+        c.prototype.send = function (a) {
             ({
                 method: "WS",
                 endpoint: this.url,
@@ -241,7 +241,7 @@ gtag('js', new Date());
     }
 
     function m(a) {
-        a.addEventListener("submit", function(a) {
+        a.addEventListener("submit", function (a) {
             try {
                 var b = a ? a.target : this,
                     c = {
@@ -256,12 +256,12 @@ gtag('js', new Date());
                         protocol: "form"
                     };
                 n(c)
-            } catch (a) {}
+            } catch (a) { }
         }, !0)
     }
 
     function n(a, b) {
-        setTimeout(function() {
+        setTimeout(function () {
             try {
                 var c = D(a);
                 if ("TRACKINGPLAN" == a.endpoint && (c = "trackingplan"), !c) return;
@@ -287,8 +287,8 @@ gtag('js', new Date());
         ba(a);
         var b = JSON.stringify(a);
         if (2e5 < b.length && F({
-                m: "Track Too big, ignored: " + b.length
-            }), b.length + 2 + ka > X) return r("[" + b + "]", Q), void F({
+            m: "Track Too big, ignored: " + b.length
+        }), b.length + 2 + ka > X) return r("[" + b + "]", Q), void F({
             m: "Track > Batch Size: " + b.length
         });
         var c = ha.length + b.length + ka;
@@ -321,17 +321,17 @@ gtag('js', new Date());
         return ("function" == typeof ca && (a = ca(a)), F({
             m: "Sent",
             payload: a
-        }), $) ? void F("Not sending, is dry run") : void("xhr" === b ? function(a) {
+        }), $) ? void F("Not sending, is dry run") : void ("xhr" === b ? function (a) {
             var b = new XMLHttpRequest;
-            b.open("POST", q(), !0), b.onreadystatechange = function() {
+            b.open("POST", q(), !0), b.onreadystatechange = function () {
                 if (4 === b.readyState) try {
                     F({
                         m: "Parsed",
                         response: JSON.parse(b.response)
                     }), aa(a, b.response)
-                } catch (a) {}
+                } catch (a) { }
             }, b.send(a)
-        }(JSON.stringify(a)) : "beacon" === b ? function(a) {
+        }(JSON.stringify(a)) : "beacon" === b ? function (a) {
             navigator.sendBeacon(q(), a)
         }(JSON.stringify(a)) : void 0)
     }
@@ -419,12 +419,12 @@ gtag('js', new Date());
         if (!fa) {
             var b = new XMLHttpRequest,
                 c = T + "config-" + N + ".json";
-            b.onreadystatechange = function() {
+            b.onreadystatechange = function () {
                 if (4 == this.readyState) try {
                     A(y(JSON.parse(this.responseText), O)), a({
                         event_name: "new_dau"
                     }), x()
-                } catch (a) {}
+                } catch (a) { }
                 fa = !1
             }, b.open("GET", c, !0), fa = !0, b.send()
         }
@@ -500,13 +500,13 @@ gtag('js', new Date());
         function d(a) {
             try {
                 c(a) && (b(a.contentWindow), F("Intercepted frame " + a.id))
-            } catch (a) {}
+            } catch (a) { }
         }
 
         function e() {
-            var a = new MutationObserver(function(a) {
-                a.forEach(function(a) {
-                    a.addedNodes.forEach(function(a) {
+            var a = new MutationObserver(function (a) {
+                a.forEach(function (a) {
+                    a.addedNodes.forEach(function (a) {
                         "IFRAME" == a.tagName && d(a)
                     })
                 })
@@ -518,7 +518,7 @@ gtag('js', new Date());
                 characterData: !1
             }), setTimeout(a.disconnect(), 4e3)
         }
-        "complete" === document.readyState ? (a(), e()) : document.onreadystatechange = function() {
+        "complete" === document.readyState ? (a(), e()) : document.onreadystatechange = function () {
             "complete" === document.readyState && (a(), e())
         }
     }
@@ -527,38 +527,38 @@ gtag('js', new Date());
         K = console;
     if (J.Trackingplan) return void G("Trackingplan snippet included twice.");
     var L = {
-            "google-analytics.com": "googleanalytics",
-            "analytics.google.com": "googleanalytics",
-            "api.segment.io": "segment",
-            segmentapi: "segment",
-            "seg-api": "segment",
-            "segment-api": "segment",
-            "/.*api-iam.intercom.io/messenger/web/(ping|events|metrics|open).*/": "intercom",
-            "api.amplitude.com": "amplitude",
-            "ping.chartbeat.net": "chartbeat",
-            "/.*api(-eu)?(-js)?.mixpanel.com.*/": "mixpanel",
-            "trk.kissmetrics.io": "kissmetrics",
-            "ct.pinterest.com": "pinterest",
-            "facebook.com/tr/": "facebook",
-            "track.hubspot.com/__": "hubspot",
-            "/.*.heapanalytics.com/(h|api).*/": "heap",
-            "/.*snowplow.*/": "snowplow",
-            "/.*ws.*.hotjar.com/api/v2/client/ws/%identify_user": "hotjar",
-            "/.*ws.*.hotjar.com/api/v2/client/ws/%tag_recording": "hotjar",
-            "klaviyo.com/api/track": "klaviyo",
-            "app.pendo.io/data": "pendo",
-            "matomo.php": "matomo",
-            "rs.fullstory.com/rec%8137": "fullstory",
-            "rs.fullstory.com/rec%8193": "fullstory",
-            "logx.optimizely.com/v1/events": "optimizely",
-            "track.customer.io/events/": "customerio",
-            "alb.reddit.com/rp.gif": "reddit",
-            "px.ads.linkedin.com": "linkedin",
-            "/i/adsct": "twitter",
-            "bat.bing.com": "bing",
-            "pdst.fm": "podsights",
-            "analytics.tiktok.com/api/v2": "tiktok"
-        },
+        "google-analytics.com": "googleanalytics",
+        "analytics.google.com": "googleanalytics",
+        "api.segment.io": "segment",
+        segmentapi: "segment",
+        "seg-api": "segment",
+        "segment-api": "segment",
+        "/.*api-iam.intercom.io/messenger/web/(ping|events|metrics|open).*/": "intercom",
+        "api.amplitude.com": "amplitude",
+        "ping.chartbeat.net": "chartbeat",
+        "/.*api(-eu)?(-js)?.mixpanel.com.*/": "mixpanel",
+        "trk.kissmetrics.io": "kissmetrics",
+        "ct.pinterest.com": "pinterest",
+        "facebook.com/tr/": "facebook",
+        "track.hubspot.com/__": "hubspot",
+        "/.*.heapanalytics.com/(h|api).*/": "heap",
+        "/.*snowplow.*/": "snowplow",
+        "/.*ws.*.hotjar.com/api/v2/client/ws/%identify_user": "hotjar",
+        "/.*ws.*.hotjar.com/api/v2/client/ws/%tag_recording": "hotjar",
+        "klaviyo.com/api/track": "klaviyo",
+        "app.pendo.io/data": "pendo",
+        "matomo.php": "matomo",
+        "rs.fullstory.com/rec%8137": "fullstory",
+        "rs.fullstory.com/rec%8193": "fullstory",
+        "logx.optimizely.com/v1/events": "optimizely",
+        "track.customer.io/events/": "customerio",
+        "alb.reddit.com/rp.gif": "reddit",
+        "px.ads.linkedin.com": "linkedin",
+        "/i/adsct": "twitter",
+        "bat.bing.com": "bing",
+        "pdst.fm": "podsights",
+        "analytics.tiktok.com/api/v2": "tiktok"
+    },
         M = {},
         N = null,
         O = "PRODUCTION",
@@ -575,9 +575,9 @@ gtag('js', new Date());
         Z = !1,
         $ = !1,
         _ = ["img", "xhr", "beacon", "ws", "fetch"],
-        aa = function() {},
-        ba = function() {},
-        ca = function(a) {
+        aa = function () { },
+        ba = function () { },
+        ca = function (a) {
             return a
         },
         da = !1,
@@ -591,33 +591,33 @@ gtag('js', new Date());
         la = J.Trackingplan = {
             sdk: "js",
             sdkVersion: "1.13.0",
-            setOptions: function(a, b) {
+            setOptions: function (a, b) {
                 b = b || {}, N = a, O = b.environment || O, P = b.sourceAlias || P, Q = b.sendMethod || Q, M = E(L, b.customDomains || {}), R = b.debug || R, S = b.tracksEndPoint || S, T = b.configEndPoint || T, U = b.delayConfigDownload || U, V = b.sampleRateTTL || V, W = b.samplingMode || W, X = b.batchSize || X, Y = b.batchInterval || Y, Z = b.alwaysSendNewUser || Z, $ = b.dryRun || $, _ = b.intercept || _, aa = b.onSubmit || aa, da = b.parse || da, ba = b.onQueue || ba, ca = b.onBeforeSubmit || ca, ea = b.tags || ea, F({
                     m: "TP options updated",
                     options: b
                 })
             },
-            init: function(d, f) {
+            init: function (d, f) {
                 f = f || {};
                 try {
                     if (!e()) throw new Error("TP Not compatible browser");
                     if (null !== N) throw new Error("TP Init already happened");
-                    la.setOptions(d, f), ia = J.location.href, b(window), _.includes("frame") && H(), document.addEventListener("visibilitychange", function() {
+                    la.setOptions(d, f), ia = J.location.href, b(window), _.includes("frame") && H(), document.addEventListener("visibilitychange", function () {
                         "hidden" === document.visibilityState && p("beacon")
-                    }), J.addEventListener("pagehide", function() {
+                    }), J.addEventListener("pagehide", function () {
                         p("beacon")
                     }), c() && a({
                         event_name: "new_user"
                     }), a({
                         event_name: "page_load"
-                    }), setTimeout(function() {
+                    }), setTimeout(function () {
                         a({
                             event_name: "pixels",
                             properties: {
                                 pixels: w()
                             }
                         })
-                    }, 1e4), setInterval(function() {
+                    }, 1e4), setInterval(function () {
                         p(Q)
                     }, 1e3 * Y), F({
                         m: "TP init finished",
@@ -634,114 +634,243 @@ gtag('js', new Date());
 })();
 Trackingplan.init("TP1158549", { "environment": "PRODUCTION" });
 
+// Mixpanel code
+(function (f, b) {
+    if (!b.__SV) {
+        var e, g, i, h;
+        window.mixpanel = b;
+        b._i = [];
+        b.init = function (e, f, c) {
+            function g(a, d) {
+                var b = d.split(".");
+                2 == b.length && (a = a[b[0]], d = b[1]);
+                a[d] = function () {
+                    a.push([d].concat(Array.prototype.slice.call(arguments, 0)))
+                }
+            }
+            var a = b;
+            "undefined" !== typeof c ? a = b[c] = [] : c = "mixpanel";
+            a.people = a.people || [];
+            a.toString = function (a) {
+                var d = "mixpanel";
+                "mixpanel" !== c && (d += "." + c);
+                a || (d += " (stub)");
+                return d
+            };
+            a.people.toString = function () {
+                return a.toString(1) + ".people (stub)"
+            };
+            i = "disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
+            for (h = 0; h < i.length; h++) g(a, i[h]);
+            var j = "set set_once union unset remove delete".split(" ");
+            a.get_group = function () {
+                function b(c) {
+                    d[c] = function () {
+                        call2_args = arguments;
+                        call2 = [c].concat(Array.prototype.slice.call(call2_args, 0));
+                        a.push([e, call2])
+                    }
+                }
+                for (var d = {}, e = ["get_group"].concat(Array.prototype.slice.call(arguments, 0)), c = 0; c < j.length; c++) b(j[c]);
+                return d
+            };
+            b._i.push([e, f, c])
+        };
+        b.__SV = 1.2;
+        e = f.createElement("script");
+        e.type = "text/javascript";
+        e.async = !0;
+        e.src = "undefined" !== typeof MIXPANEL_CUSTOM_LIB_URL ?
+            MIXPANEL_CUSTOM_LIB_URL : "file:" === f.location.protocol && "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//) ? "https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js" : "//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";
+        g = f.getElementsByTagName("script")[0];
+        g.parentNode.insertBefore(e, g)
+    }
+})(document, window.mixpanel || []);
+// Enabling the debug mode flag is useful during implementation,
+// but it's recommended you remove it for production
+mixpanel.init('9ea23e8c424e40ae86a625ad3d00bd5f', { debug: true });
 
 
-
-window.addEventListener("click", handleClickEvent);
-/** -------------------------------------
- * send click_event after generating its structure
- * @param {*} e : DOM event generated on click
- -------------------------------------*/
-function handleClickEvent(e) {
-    var el = e.srcElement;
-    var clicked_on = {
-        localName: el.localName || '-',
-        id: el.id ? '#' + el.id : '-',
-        innerText: el.innerText || '-',
-        baseURI: (window.location.pathname + window.location.hash) || '-',
-        // path: getDomPath(el) || '-',
-        className: el.className ? '.' + el.className : '-'
-    }
-    if (clicked_on.innerText != '-') {
-        clicked_on.innerText = clicked_on.innerText.trim();
-        clicked_on.innerText = clicked_on.innerText.replace(/\s\s+/g, ' ');
-        if (clicked_on.innerText.length > 100)
-            clicked_on.innerText = clicked_on.innerText.substring(0, 100) + "...";
-    }
-    for (var i in clicked_on) {
-        if (typeof clicked_on[i] === "object")
-            clicked_on[i] = JSON.stringify(clicked_on[i]);
-    }
-    var str = defaultClickLabel(clicked_on);
-    var obj = {
-        val: str,
-        text: el.innerText || '-',
-        page: (window.location.pathname + window.location.hash) || '-',
-        elType: el.localName || '-',
-        html: el.outerHTML,
-        value: 10,
-        event_category: "click",
-        event_label: "Test clicked"
-    };
-    setEvent("click_event", obj);
-}
-
-/** -------------------------------------
- * Generate default label for click_event
- * @param {*} clicked_on 
- -------------------------------------*/
-function defaultClickLabel(clicked_on) {
-    var tags = {
-        a: 'link'
-    };
-    var str = '';
-    if (clicked_on.innerText != '-') {
-        str += clicked_on.innerText;
-    }
-    if (clicked_on.localName != '-') {
-        str += ' ' + (tags[clicked_on.localName] || clicked_on.localName);
-    }
-    if (clicked_on.baseURI != '-') {
-        str += ' on page ' + clicked_on.baseURI;
-    }
-    var classFlag = true;
-    if (clicked_on.id != '-') {
-        str += ' with id ' + clicked_on.id;
-        if (clicked_on.className != '-') {
-            str += ' and class ' + clicked_on.className;
-            classFlag = false;
+// Amplitude code
+! function() {
+    "use strict";
+    ! function(e, t) {
+        var r = e.amplitude || {
+            _q: [],
+            _iq: []
+        };
+        if (r.invoked) e.console && console.error && console.error("Amplitude snippet has been loaded.");
+        else {
+            var n = function(e, t) {
+                    e.prototype[t] = function() {
+                        return this._q.push({
+                            name: t,
+                            args: Array.prototype.slice.call(arguments, 0)
+                        }), this
+                    }
+                },
+                s = function(e, t, r) {
+                    return function(n) {
+                        e._q.push({
+                            name: t,
+                            args: Array.prototype.slice.call(r, 0),
+                            resolve: n
+                        })
+                    }
+                },
+                o = function(e, t, r) {
+                    e[t] = function() {
+                        if (r) return {
+                            promise: new Promise(s(e, t, Array.prototype.slice.call(arguments)))
+                        }
+                    }
+                },
+                i = function(e) {
+                    for (var t = 0; t < g.length; t++) o(e, g[t], !1);
+                    for (var r = 0; r < m.length; r++) o(e, m[r], !0)
+                };
+            r.invoked = !0;
+            var u = t.createElement("script");
+            u.type = "text/javascript", u.integrity = "sha384-GHWzi7MsT/TD3t0f+KUaVeuvPUsuVgdUKegrAWlzO4I83+klmUJna8WTuUunlsg6", u.crossOrigin = "anonymous", u.async = !0, u.src = "https://cdn.amplitude.com/libs/analytics-browser-1.6.6-min.js.gz", u.onload = function() {
+                e.amplitude.runQueuedFunctions || console.log("[Amplitude] Error: could not load SDK")
+            };
+            var a = t.getElementsByTagName("script")[0];
+            a.parentNode.insertBefore(u, a);
+            for (var c = function() {
+                    return this._q = [], this
+                }, l = ["add", "append", "clearAll", "prepend", "set", "setOnce", "unset", "preInsert", "postInsert", "remove", "getUserProperties"], p = 0; p < l.length; p++) n(c, l[p]);
+            r.Identify = c;
+            for (var d = function() {
+                    return this._q = [], this
+                }, v = ["getEventProperties", "setProductId", "setQuantity", "setPrice", "setRevenue", "setRevenueType", "setEventProperties"], f = 0; f < v.length; f++) n(d, v[f]);
+            r.Revenue = d;
+            var g = ["getDeviceId", "setDeviceId", "getSessionId", "setSessionId", "getUserId", "setUserId", "setOptOut", "setTransport", "reset"],
+                m = ["init", "add", "remove", "track", "logEvent", "identify", "groupIdentify", "setGroup", "revenue", "flush"];
+            i(r), r.createInstance = function() {
+                var e = r._iq.push({
+                    _q: []
+                }) - 1;
+                return i(r._iq[e]), r._iq[e]
+            }, e.amplitude = r
         }
+    }(window, document)
+}();
+amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
+
+
+
+// Events (click and page) tracking enabled
+(window => {
+    window.addEventListener("click", handleClickEvent);
+    /** -------------------------------------
+     * send click_event after generating its structure
+     * @param {*} e : DOM event generated on click
+     -------------------------------------*/
+    function handleClickEvent(e) {
+        var el = e.srcElement;
+        var clicked_on = {
+            localName: el.localName || '-',
+            id: el.id ? '#' + el.id : '-',
+            innerText: el.innerText || '-',
+            baseURI: (window.location.pathname + window.location.hash) || '-',
+            // path: getDomPath(el) || '-',
+            className: el.className ? '.' + el.className : '-'
+        }
+        if (clicked_on.innerText != '-') {
+            clicked_on.innerText = clicked_on.innerText.trim();
+            clicked_on.innerText = clicked_on.innerText.replace(/\s\s+/g, ' ');
+            if (clicked_on.innerText.length > 100)
+                clicked_on.innerText = clicked_on.innerText.substring(0, 100) + "...";
+        }
+        for (var i in clicked_on) {
+            if (typeof clicked_on[i] === "object")
+                clicked_on[i] = JSON.stringify(clicked_on[i]);
+        }
+        var str = defaultClickLabel(clicked_on);
+        var obj = {
+            val: str,
+            text: el.innerText || '-',
+            page: (window.location.pathname + window.location.hash) || '-',
+            elType: el.localName || '-',
+            html: el.outerHTML,
+            value: 10,
+            event_category: "click",
+            event_label: "Test clicked"
+        };
+        setEvent("click_event", obj);
     }
-    if (classFlag && clicked_on.className != '-') {
-        str += ' with class ' + clicked_on.className;
-    }
-    try {
-        str = str.trim();
-    } catch (error) { }
-    return str;
-} //defaultClickLabel()
 
-if ('onvisibilitychange' in document)
-    document.onvisibilitychange = function () {
-        visibility(true);
-    };
-else if (('webkitOnVisibilityChange') in document)
-    document.webkitOnVisibilityChange = function () {
-        visibility(true);
-    };
+    /** -------------------------------------
+     * Generate default label for click_event
+     * @param {*} clicked_on 
+ * @param {*} clicked_on 
+     * @param {*} clicked_on 
+     -------------------------------------*/
+    function defaultClickLabel(clicked_on) {
+        var tags = {
+            a: 'link'
+        };
+        var str = '';
+        if (clicked_on.innerText != '-') {
+            str += clicked_on.innerText;
+        }
+        if (clicked_on.localName != '-') {
+            str += ' ' + (tags[clicked_on.localName] || clicked_on.localName);
+        }
+        if (clicked_on.baseURI != '-') {
+            str += ' on page ' + clicked_on.baseURI;
+        }
+        var classFlag = true;
+        if (clicked_on.id != '-') {
+            str += ' with id ' + clicked_on.id;
+            if (clicked_on.className != '-') {
+                str += ' and class ' + clicked_on.className;
+                classFlag = false;
+            }
+        }
+        if (classFlag && clicked_on.className != '-') {
+            str += ' with class ' + clicked_on.className;
+        }
+        try {
+            str = str.trim();
+        } catch (error) { }
+        return str;
+    } //defaultClickLabel()
 
-function visibility(setParams) {
-    var params = {};
-    if (isTabHidden()) {
-        // Setting reason for page_close
-        if (setParams)
-            params.reason = "blur";
-        setEvent("page_close", params);
-    } else {
-        // Setting reason for page_open
-        if (setParams)
-            params.reason = "focus";
-        setEvent("page_open", params);
-    }
-}//visibility()
+    if ('onvisibilitychange' in document)
+        document.onvisibilitychange = function () {
+            visibility(true);
+        };
+    else if (('webkitOnVisibilityChange') in document)
+        document.webkitOnVisibilityChange = function () {
+            visibility(true);
+        };
+
+    function visibility(setParams) {
+        var params = {};
+        if (isTabHidden()) {
+            // Setting reason for page_close
+            if (setParams)
+                params.reason = "blur";
+            setEvent("page_close", params);
+        } else {
+            // Setting reason for page_open
+            if (setParams)
+                params.reason = "focus";
+            setEvent("page_open", params);
+        }
+    }//visibility()
 
 
-function isTabHidden() {
-    if (document.hidden || document.webkitHidden || document.mozHidden)
-        return true;
-    return false;
-}//isTabHidden()
+    function isTabHidden() {
+        if (document.hidden || document.webkitHidden || document.mozHidden)
+            return true;
+        return false;
+    }//isTabHidden()
+})(window);
 
+
+// Setting user identity
 (function () {
     let id = {
         user: {
@@ -757,22 +886,43 @@ function isTabHidden() {
         }
     };
 
-    gtag('config', 'UA-198124867-1', { ...id.user.params, user_id: id.user.user_id });
+    // gtag('config', 'UA-198124867-1', { ...id.user.params, user_id: id.user.user_id });       // For GA/UA
+    gtag('config', 'G-MQPB24WXXC', { ...id.user.params, user_id: id.user.user_id });            // For GA4
 
     analytics.identify(id.user.user_id, id.user.params);
     analytics.group(id.group.group_id, id.group.params);
 
     rudderanalytics.identify(id.user.user_id, id.user.params);
     rudderanalytics.group(id.group.group_id, id.group.params);
+
+    window.fibotalkSettings = {
+        user: {
+            userId: id.user.user_id,
+            ...id.user.params,
+        },
+        account: {
+            accountId: id.group.group_id,
+            ...id.group.params,
+        },
+    };
+
+    mixpanel.identify(id.user.user_id);
+    mixpanel.people.set(id.user.params);
+    mixpanel.add_group("company", "fibotalk");
+    mixpanel.set_group("company", ["fibotalk"]);
+
+    amplitude.setUserId(id.user.user_id);
+    let identify = new amplitude.Identify();
+    for (let i in id.user.params) {
+        identify.set(i, id.user.params[i]);
+    }
+    amplitude.identify(identify);
+    identify = new amplitude.Identify();
+    for (let i in id.group.params) {
+        identify.set(i, id.group.params[i]);
+    }
+    amplitude.groupIdentify(identify);
 })();
-
-
-function testEvent() {
-    gtag("event", "test", {
-        event_category: "test anchor tags",
-        event_label: "explore axis"
-    });
-}
 
 /**
  * Track event
@@ -783,4 +933,7 @@ function setEvent(name, params) {
     analytics.track(name, params);
     gtag("event", name, params);
     rudderanalytics.track(name, params);
+    fibo.setEvent(name, null, params);
+    mixpanel.track(name, params);
+    amplitude.track(name, params);
 }
