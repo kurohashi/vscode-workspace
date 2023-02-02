@@ -922,7 +922,7 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
     for (let i in id.group.params) {
         identify.set(i, id.group.params[i]);
     }
-    amplitude.groupIdentify(identify);
+    amplitude.groupIdentify("name", "Shubham", identify);
 })();
 
 /**
