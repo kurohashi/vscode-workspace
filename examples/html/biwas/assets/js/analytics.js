@@ -917,6 +917,7 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
         identify.set(i, id.user.params[i]);
     }
     amplitude.identify(identify);
+    amplitude.setGroup("name", ["Shubham"]);
     identify = new amplitude.Identify();
     for (let i in id.group.params) {
         identify.set(i, id.group.params[i]);
