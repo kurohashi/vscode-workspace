@@ -878,6 +878,7 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
             params: {
                 name: "Shubham",
                 address: { street: "Dwarka" },
+                customId: { testData: [{ a: 1 }, {b: 2}] },
             }
         },
         group: {
