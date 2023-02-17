@@ -3,9 +3,9 @@ const client = new RudderAnalytics("2LrQHmJlcCW6EFa3OALs5KPdVpv", {
     dataPlaneUrl: "https://fibotalkssrl.dataplane.rudderstack.com", // default: https://hosted.rudderlabs.com
 })
 
-setInterval(sendEvent, 1000);
+sendEvent();
 
-function sendEvent(...args) {
+function sendEvent() {
     let option = Math.random();
     switch (option) {
         case 0:
