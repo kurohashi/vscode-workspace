@@ -8,16 +8,12 @@ for (let i = 0; i < 60; i++)
 
 function sendEvent() {
     let option = Math.random();
-    switch (option) {
-        case 0:
-            identify();
-            break;
-        case 0.9:
-            group();
-            break;
-        default:
-            track();
-    }
+    if (option <= 0.2)
+        identify();
+    else if (option >= 0.9)
+        group();
+    else
+        track();
 }
 
 function identify() {
