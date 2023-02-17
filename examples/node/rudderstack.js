@@ -3,7 +3,8 @@ const client = new RudderAnalytics("2LrQHmJlcCW6EFa3OALs5KPdVpv", {
     dataPlaneUrl: "https://fibotalkssrl.dataplane.rudderstack.com", // default: https://hosted.rudderlabs.com
 })
 
-sendEvent();
+for (let i = 0; i < 60; i++)
+    sendEvent();
 
 function sendEvent() {
     let option = Math.random();
