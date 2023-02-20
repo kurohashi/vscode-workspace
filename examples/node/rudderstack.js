@@ -23,6 +23,8 @@ function identify() {
             name: "Node user",
             email: "user@node.com",
             type: "server",
+            $city: "New Delhi",
+            $country_code: "IN",
         },
     });
 }
@@ -34,6 +36,8 @@ function track() {
         properties: {
             currentSentAt: new Date(),
             method: "server api",
+            $city: "New Delhi",
+            $country_code: "IN",
         },
     })
 }
