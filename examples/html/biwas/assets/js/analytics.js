@@ -887,8 +887,8 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
         }
     };
 
-    // gtag('config', 'UA-198124867-1', { ...id.user.params, user_id: id.user.user_id });       // For GA/UA
-    gtag('config', 'G-MQPB24WXXC', { ...id.user.params, user_id: id.user.user_id });            // For GA4
+    gtag('config', 'UA-198124867-1', { ...id.user.params, user_id: id.user.user_id });       // For GA/UA
+    // gtag('config', 'G-MQPB24WXXC', { ...id.user.params, user_id: id.user.user_id });            // For GA4
 
     analytics.identify(id.user.user_id, id.user.params);
     analytics.group(id.group.group_id, id.group.params);
