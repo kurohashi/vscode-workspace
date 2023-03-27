@@ -38,6 +38,9 @@
                     console.log("rejecting", domain);
                     return;
                 }
+                try {
+                    body = JSON.parse(body);
+                } catch (error) { }
                 switch (body.type) {
                     case "page":
                         break;
