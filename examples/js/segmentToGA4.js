@@ -88,9 +88,9 @@
          * @param {*} params
          -------------------------------------*/
         function publish(...params) {
-            if (!gtag)
-                return;
-            gtag(...params);
+            console.log("Publishing", params);
+            window.dataLayer = window.dataLayer || [];
+            dataLayer.push(...params);
         }
     }// SetTracking()
 })();
