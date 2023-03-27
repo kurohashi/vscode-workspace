@@ -1,7 +1,7 @@
 (function () {
     var env = {
         domain: "api.segment.io",
-        ga4Id: "UA-198124867-1",
+        ga4Id: "G-RH3RP1FD12",
     };
 
     setTracking();
@@ -46,10 +46,11 @@
                         break;
                     case "identify":
                     case "group":
-                        // publish("config", env.ga4Id, { user_id: body.userId, ...objSerialize(body.traits) });
+                        publish("config", env.ga4Id, { user_id: body.userId, ...objSerialize(body.traits) });
                         break;
                     case "track":
-                        publish({ event: body.event, ...objSerialize(body.properties) });
+                        publish("event", body.event, objSerialize(body.properties));
+                        // publish({ event: body.event, ...objSerialize(body.properties) });
                 }
             } catch (error) {
                 console.log(error);
