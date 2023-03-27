@@ -10,42 +10,6 @@
      * Set trackers
      -------------------------------------*/
     function setTracking() {
-        var apiCall = window.fetch;
-
-        // XHR tracker
-        (function () {
-            try {
-                var open = window.XMLHttpRequest.prototype.open,
-                    send = window.XMLHttpRequest.prototype.send;
-
-                function openReplacement(method, url, async, user, password) {
-                    this._url = url;
-                    this._method = method;
-                    return open.apply(this, arguments);
-                }
-
-                function sendReplacement(data) {
-                    if (this.onreadystatechange) {
-                        this._onreadystatechange = this.onreadystatechange;
-                    }
-                    trackEvent(this._url, this._method, data, "XHR");
-                    this.onreadystatechange = onReadyStateChangeReplacement;
-                    return send.apply(this, arguments);
-                }
-
-                function onReadyStateChangeReplacement() {
-                    if (this._onreadystatechange) {
-                        return this._onreadystatechange.apply(this, arguments);
-                    }
-                }
-
-                window.XMLHttpRequest.prototype.open = openReplacement;
-                window.XMLHttpRequest.prototype.send = sendReplacement;
-            } catch (error) {
-                console.log(error);
-            }
-        })();
-
         // Fetch tracker
         (function () {
             const nativeFetch = window.fetch;
@@ -58,41 +22,6 @@
                 }
                 return nativeFetch.apply(window, args);
             }
-        })();
-
-        // Ping tracker
-        (function () {
-            const nativeFetch = navigator.sendBeacon;
-            navigator.sendBeacon = function (...args) {
-                try {
-                    var data = args[1];
-                    try {
-                        data = JSON.parse(data);
-                    } catch (error) { }
-                    trackEvent(args[0], "POST", data, "ping");
-                    return nativeFetch.apply(this, args);
-                } catch (error) {
-                    console.log(error);
-                }
-            }
-        })();
-
-        // GIF tracker
-        (function () {
-            var index = 0;
-            setInterval(function () {
-                try {
-                    var requests = performance.getEntriesByType("resource");
-                    for (var i = index; i < requests.length; i++) {
-                        if (requests[i].initiatorType != "img")
-                            continue;
-                        trackEvent(requests[i].name, "GET", null, "GIF");
-                    }
-                    index = requests.length;
-                } catch (error) {
-                    console.log(error);
-                }
-            }, 10);
         })();
 
         /** -------------------------------------
