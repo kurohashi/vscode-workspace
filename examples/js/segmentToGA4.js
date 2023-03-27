@@ -34,8 +34,10 @@
         function trackEvent(url, method, body, type) {
             try {
                 var domain = domainOf(url);
-                if (env.domain != domain)
+                if (env.domain != domain) {
+                    console.log("rejecting", domain);
                     return;
+                }
                 switch (body.type) {
                     case "page":
                         break;
