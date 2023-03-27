@@ -51,11 +51,12 @@
             const nativeFetch = window.fetch;
             window.fetch = function (...args) {
                 try {
-                    trackEvent(args[0], args[1].method, args[1].body, "fetch");
-                    return nativeFetch.apply(window, args);
+                    args[1] = args[1] || {};
+                    trackEvent(args[0], args[1].method || "GET", args[1].body || {}, "fetch");
                 } catch (error) {
                     console.log(error);
                 }
+                return nativeFetch.apply(window, args);
             }
         })();
 
