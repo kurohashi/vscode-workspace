@@ -49,7 +49,7 @@
                         // publish("config", env.ga4Id, { user_id: body.userId, ...objSerialize(body.traits) });
                         break;
                     case "track":
-                        publish("event", body.event, objSerialize(body.properties));
+                        publish({ event: body.event, ...objSerialize(body.properties) });
                 }
             } catch (error) {
                 console.log(error);
