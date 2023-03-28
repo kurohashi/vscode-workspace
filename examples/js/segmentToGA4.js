@@ -35,7 +35,6 @@
             try {
                 var domain = domainOf(url);
                 if (env.domain != domain) {
-                    console.log("rejecting", domain);
                     return;
                 }
                 try {
@@ -94,7 +93,6 @@
          * @param {*} params
          -------------------------------------*/
         function publish(...params) {
-            console.log("Publishing", params);
             window.dataLayer = window.dataLayer || [];
             dataLayer.push(...params);
         }
