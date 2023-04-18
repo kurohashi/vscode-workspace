@@ -20,7 +20,7 @@
                 } catch (error) {
                     console.log(error);
                 }
-                return nativeFetch.apply(window, arguments);
+                return nativeFetch.apply(window, Object.assign([], arguments));
             }
         })();
 
@@ -37,6 +37,7 @@
                 if (env.domain != domain) {
                     return;
                 }
+                window.dataLayer = window.dataLayer || [];
                 try {
                     body = JSON.parse(body);
                 } catch (error) { }
@@ -47,11 +48,11 @@
                     case "group":
                         var traits = { user_id: body.userId };
                         Object.assign(traits, objSerialize(body.traits));
-                        publish("config", env.ga4Id, traits);
+                        gtag("config", env.ga4Id, traits);
                         break;
                     case "track":
-                        publish("event", body.event, objSerialize(body.properties));
-                        // publish({ event: body.event, ...objSerialize(body.properties) });
+                        gtag("event", body.event, objSerialize(body.properties));
+                    // publish({ event: body.event, ...objSerialize(body.properties) });
                 }
             } catch (error) {
                 console.log(error);
@@ -90,13 +91,12 @@
             return domain;
         }
 
-        /** -------------------------------------
-         * Publish to gtag
-         * @param {*} params
-         -------------------------------------*/
-        function publish() {
+        /**
+         * GTAG function from the GA4 script
+         */
+        function gtag() {
             window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push.apply(window, arguments);
+            window.dataLayer.push(arguments);
         }
     }// SetTracking()
 })();
