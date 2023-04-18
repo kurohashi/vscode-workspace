@@ -12,15 +12,15 @@
     function setTracking() {
         // Fetch tracker
         (function () {
-            const nativeFetch = window.fetch;
-            window.fetch = function (...args) {
+            var nativeFetch = window.fetch;
+            window.fetch = function () {
                 try {
-                    args[1] = args[1] || {};
-                    trackEvent(args[0], args[1].method || "GET", args[1].body || {}, "fetch");
+                    arguments[1] = arguments[1] || {};
+                    trackEvent(arguments[0], arguments[1].method || "GET", arguments[1].body || {}, "fetch");
                 } catch (error) {
                     console.log(error);
                 }
-                return nativeFetch.apply(window, args);
+                return nativeFetch.apply(window, arguments);
             }
         })();
 
@@ -45,7 +45,9 @@
                         break;
                     case "identify":
                     case "group":
-                        publish("config", env.ga4Id, { user_id: body.userId, ...objSerialize(body.traits) });
+                        var traits = { user_id: body.userId };
+                        Object.assign(traits, objSerialize(body.traits));
+                        publish("config", env.ga4Id, traits);
                         break;
                     case "track":
                         publish("event", body.event, objSerialize(body.properties));
@@ -67,7 +69,7 @@
             prefix = prefix || "";
             switch (typeof obj) {
                 case "object":
-                    for (let i in obj)
+                    for (var i in obj)
                         objSerialize(obj[i], merger, result, prefix + i + merger);
                     break;
                 default:
@@ -92,9 +94,9 @@
          * Publish to gtag
          * @param {*} params
          -------------------------------------*/
-        function publish(...params) {
+        function publish() {
             window.dataLayer = window.dataLayer || [];
-            dataLayer.push(...params);
+            window.dataLayer.push.apply(window, arguments);
         }
     }// SetTracking()
 })();

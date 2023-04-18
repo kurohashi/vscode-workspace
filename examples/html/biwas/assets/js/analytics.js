@@ -1,10 +1,3 @@
-// Google tag
-window.dataLayer = window.dataLayer || [];
-function gtag() {
-    dataLayer.push(arguments);
-}
-gtag('js', new Date());
-
 // Segments
 !function () {
     var analytics = window.analytics = window.analytics || [];
@@ -886,10 +879,6 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
             params: { name: "abc" },
         }
     };
-
-    // gtag('config', 'UA-198124867-1', { ...id.user.params, user_id: id.user.user_id });       // For GA/UA
-    gtag('config', 'G-MQPB24WXXC', { ...id.user.params, user_id: id.user.user_id });            // For GA4
-
     analytics.identify(id.user.user_id, id.user.params);
     analytics.group(id.group.group_id, id.group.params);
 
@@ -933,7 +922,6 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
  */
 function setEvent(name, params) {
     analytics.track(name, params);
-    gtag("event", name, params);
     rudderanalytics.track(name, params);
     fibo.setEvent(name, null, params);
     mixpanel.track(name, params);
