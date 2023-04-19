@@ -879,7 +879,8 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
             params: { name: "abc" },
         }
     };
-    analytics.identify(id.user.user_id, id.user.params);
+    // analytics.identify(id.user.user_id, id.user.params);
+    window.dataLayer.push({ event: "identify" });
     analytics.group(id.group.group_id, id.group.params);
 
     rudderanalytics.identify(id.user.user_id, id.user.params);
