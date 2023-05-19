@@ -922,11 +922,19 @@ amplitude.init("a937b463fd36ee7292b78c98f2ca5e0c");
  * @param {object} params 
  */
 function setEvent(name, params) {
-    analytics.track(name, params);
-    rudderanalytics.track(name, params);
+    try {
+        analytics.track(name, params);
+    } catch (error) { }
+    try {
+        rudderanalytics.track(name, params);
+    } catch (error) { }
     try {
         fibo.setEvent(name, null, params);
     } catch (error) { }
-    mixpanel.track(name, params);
-    amplitude.track(name, params);
+    try {
+        mixpanel.track(name, params);
+    } catch (error) { }
+    try {
+        amplitude.track(name, params);
+    } catch (error) { }
 }
