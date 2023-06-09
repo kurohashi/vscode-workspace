@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/kurohashi/vscode-workspace#readme",
   "dependencies": {
+    "@apollo/client": "^3.7.15",
     "@apollo/server": "^4.7.3",
     "@atlaskit/adf-utils": "^18.0.3",
     "@fortawesome/fontawesome-free": "^5.15.3",
@@ -40,6 +41,7 @@
     "fs": "^0.0.1-security",
     "graphql": "^16.6.0",
     "graphql-http": "^1.19.0",
+    "graphql-request": "^6.1.0",
     "helmet": "^6.0.1",
     "himalaya": "^1.1.0",
     "hpp": "^0.2.3",
