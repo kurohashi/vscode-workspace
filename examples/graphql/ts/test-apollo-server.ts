@@ -45,7 +45,10 @@ async function start() {
   // This resolver retrieves books from the "books" array above.
   const resolvers = {
     Query: {
-      books: () => books,
+      books: (...args: any[]) => {
+        console.log(args);
+        return books;
+      },
     },
   };
 
@@ -62,7 +65,7 @@ async function start() {
 
   // Same ApolloServer initialization as before, plus the drain plugin
   // for our httpServer.
-  const server = new ApolloServer<MyContext>({
+  const server = new ApolloServer({
     typeDefs,
     resolvers,
     // plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
@@ -78,7 +81,7 @@ async function start() {
     // expressMiddleware accepts the same arguments:
     // an Apollo Server instance and optional configuration options
     expressMiddleware(server, {
-      // context: async ({ req }) => ({ token: req.headers.token }),
+      context: async ({ req }) => req.headers,
     }),
   );
 
