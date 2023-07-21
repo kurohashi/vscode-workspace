@@ -1,6 +1,6 @@
 let restaurants = require("../../assets/restaurants");
 let { JSDOM } = require("jsdom");
-
+let toExcel = require("./jsonToExcel");
 
 let mapFuncData = {
     delivery: getDeliveryData,
@@ -12,7 +12,8 @@ let result = Object.values({
     ...getData("nightlife"), ...getData("dining"), ...getData("delivery")
 });
 
-console.log(result);
+toExcel(result, "restaurants");
+
 
 /**
  * 
@@ -54,7 +55,7 @@ function getDeliveryData(elem) {
     }
     return {
         name: name.textContent.trim().replace(/\s\s+/g, ' '),
-        price: extractPrice(price) * 2,
+        price_for_2: extractPrice(price) * 2,
         cuisine,
     };
 }
@@ -72,7 +73,7 @@ function getNightlifeData(elem) {
     return {
         name: name.textContent.trim().replace(/\s\s+/g, ' '),
         cuisine: foo[0],
-        price: extractPrice(foo[1]),
+        price_for_2: extractPrice(foo[1]),
         address: foo[2],
     };
 }

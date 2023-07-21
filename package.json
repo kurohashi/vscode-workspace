@@ -59,6 +59,7 @@
     "node-fetch": "^3.3.0",
     "node-html-parser": "^6.1.5",
     "node-run-cmd": "^1.0.1",
+    "node-xlsx": "^0.23.0",
     "puppeteer": "^20.9.0",
     "redis": "^4.1.0",
     "request": "^2.88.2",
