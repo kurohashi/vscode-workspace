@@ -15,7 +15,7 @@ class Sel(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
-        self.base_url = "https://www.zomato.com/ncr/dine-out-in-noida"
+        self.base_url = "https://www.zomato.com/ncr"
         self.verificationErrors = []
         self.accept_next_alert = True
     def test_sel(self):
