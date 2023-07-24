@@ -15,7 +15,7 @@ class Sel(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(30)
-        self.base_url = "https://www.zomato.com/ncr"
+        self.base_url = "https://www.zomato.com/ncr/dine-out"
         self.verificationErrors = []
         self.accept_next_alert = True
     def test_sel(self):
@@ -25,8 +25,8 @@ class Sel(unittest.TestCase):
         # driver.find_element_by_link_text("All").click()
         for i in range(1,1000):
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight - 200);")
             time.sleep(2)
-            self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight - 50);")
         html_source = driver.page_source
         data = html_source.encode('utf-8')
 

@@ -12,7 +12,13 @@ let result = Object.values({
     ...getData("nightlife"), ...getData("dining"), ...getData("delivery")
 });
 
-toExcel(result, "restaurants");
+let cuisines = new Set();
+for (let res of result) {
+    let foo = res.cuisine.split(",");
+    foo.forEach(item => cuisines.add(item));
+}
+console.log(JSON.stringify(Array.from(cuisines)));
+// toExcel(result, "restaurants");
 
 
 /**
