@@ -5,6 +5,7 @@ import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHt
 import express from 'express';
 import http from 'http';
 import bodyParser from 'body-parser';
+import DataLoader from "dataloader";
 
 start().catch(err => console.log(err));
 
@@ -21,6 +22,25 @@ async function start() {
     },
   ];
 
+  interface User {
+    id: string, name: string
+  };
+
+  interface Post {
+    id: string, title: string, authorId: string
+  }
+
+  const users: User[] = [
+    { id: '123', name: 'Alice' },
+    { id: '456', name: 'Bob' },
+  ];
+
+  const posts: Post[] = [
+    { id: '101', title: 'First Post', authorId: '123' },
+    { id: '102', title: 'Second Post', authorId: '123' },
+    { id: '103', title: 'Hello World', authorId: '456' },
+  ];
+
   // A schema is a collection of type definitions (hence "typeDefs")
   // that together define the "shape" of queries that are executed against
   // your data.
@@ -33,24 +53,75 @@ async function start() {
     author: String
   }
 
+  type User {
+    id: ID!
+    name: String!
+    posts: [Post!]!
+  }
+
+  type Post {
+    id: ID!
+    title: String!
+    content: String!
+    author: User!
+  }
+
+ type UserName{
+  id:ID!
+  name:String!
+  posts: Post!
+
+ }
+
+  type Query {
+    getUser(id: ID!): UserName
+    getPost(id: ID!): Post
+  }
+
+
   # The "Query" type is special: it lists all of the available queries that
   # clients can execute, along with the return type for each. In this
   # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
+  # type Query {
+  #   books: [Book]
+  # }
 `;
 
   // Resolvers define how to fetch the types defined in your schema.
   // This resolver retrieves books from the "books" array above.
   const resolvers = {
     Query: {
-      books: (...args: any[]) => {
-        console.log(args);
-        return books;
+      // books: (...args: any[]) => {
+      //   console.log(args);
+      //   return books;
+      // },
+      getUser: (_: number, { id }: { id: string }) => userLoader.load(id),
+      getPost: (_: number, { id }: { id: string }) => postLoader.load(id),
+    },
+    UserName: {
+      posts: async (user: User) => {
+        let result = await postLoader.loadMany(posts.filter(post => post.authorId === user.id).map((post)=> {
+        console.log("1");
+          return post.id;
+        } ));
+        return result[0];
       },
     },
+    Post: {
+      author: (post: Post) => userLoader.load(post.authorId),
+    },
   };
+
+  const userLoader = new DataLoader(ids => {
+    return Promise.resolve(ids.map(id => users.find(function(user) {
+      console.log("2")
+      return user.id === id;
+    })));
+  });
+  
+  const postLoader = new DataLoader(ids => {
+    return Promise.resolve(ids.map(id => posts.find(post => post.id === id)));
+  });
 
   interface MyContext {
     token?: string;
