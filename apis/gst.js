@@ -11,8 +11,14 @@ const api = {
  * @returns 
  */
 module.exports = async function (gstin) {
-  let result = await callApi(gstin);
-  return result?.data?.gstin_data;
+  try {
+    let result = await callApi(gstin);
+    return result?.data?.gstin_data;
+  } catch (error) {
+    let foo = JSON.stringify(error?.response?.data);
+    console.error(foo, gstin);
+    throw new Error(JSON.stringify(error?.response?.data));
+  }
 }
 
 
