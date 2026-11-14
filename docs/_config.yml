@@ -1,0 +1,86 @@
+# Site Settings
+title: "Scaling Delivery Capacity: Architecture, Data Model, and Redis Design"
+description: "Architecture, data model, and Redis design for scaling fulfillment center delivery capacity, atomic reservations, and persistence."
+url: "https://kurohashi.github.io"
+baseurl: "/vscode-workspace"   # repo name
+
+# Theme (GitHub Pages supported)
+# theme: jekyll-theme-minimal
+remote_theme: just-the-docs/just-the-docs
+
+# Color scheme
+color_scheme: light
+
+# Footer
+footer_content: "© Scaling Delivery Capacity"
+
+# Aux links (top right)
+# aux_links:
+#   "Support":
+#     - "mailto:api-support@yourcompany.com"
+#   "Status":
+#     - "https://status.yourcompany.com"
+
+# Back to top
+back_to_top: true
+back_to_top_text: "Back to top"
+
+# Callouts
+callouts:
+  note:
+    title: Note
+    color: blue
+  warning:
+    title: Warning
+    color: red
+  tip:
+    title: Tip
+    color: green
+
+# Build Settings
+markdown: kramdown
+highlighter: rouge
+
+# Plugins (GitHub Pages safe)
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Navigation (used by themes)
+header_pages:
+  - index.md
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: page
+
+# API Metadata (Custom variables)
+api:
+  name: "Delivery Capacity API"
+  version: "v1"
+  environments:
+    qa:
+      base_url: "https://dit-backend-api-qa-d7cfe3hgh9dmf4dw.centralindia-01.azurewebsites.net"
+    production:
+      base_url: "https://api.deliverit.net.in"
+  authentication:
+    type: "API Key"
+    header: "api-key"
+
+# Social / SEO
+author:
+  name: "Shubham Srivastava"
+  email: "smjackson94@gmail.com"
+
+# Exclude files from build
+exclude:
+  - README.md
+  - node_modules
+  - vendor
+  - Gemfile
+  - Gemfile.lock
