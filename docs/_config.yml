@@ -50,6 +50,7 @@ plugins:
 # Navigation (used by themes)
 header_pages:
   - index.md
+  - sql-prep-stmt.md
 
 # Defaults
 defaults:
