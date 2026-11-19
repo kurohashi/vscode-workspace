@@ -2,7 +2,7 @@
 title: "Scaling Delivery Capacity: Architecture, Data Model, and Redis Design"
 description: "Architecture, data model, and Redis design for scaling fulfillment center delivery capacity, atomic reservations, and persistence."
 url: "https://kurohashi.github.io"
-baseurl: "/vscode-workspace"   # repo name
+baseurl: "/tech"   # repo name
 
 # Theme (GitHub Pages supported)
 # theme: jekyll-theme-minimal
